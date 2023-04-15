@@ -2,11 +2,10 @@ package com.example.gazi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.List;
 
-@Table(name = "POSTS")
+@Table(name = "POST")
 @Entity
 public class Post {
 

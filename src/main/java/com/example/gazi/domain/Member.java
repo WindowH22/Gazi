@@ -5,9 +5,10 @@ import lombok.*;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Table(name = "MEMBERS")
+@Table(name = "MEMBER")
 @Entity
 public class Member {
 
@@ -16,10 +17,10 @@ public class Member {
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String password;
-    @Column(nullable = false, unique = true, length = 10)
-    private String nickname;
+    @Column(nullable = false, unique = true)
+    private String nickName;
     @Enumerated(EnumType.STRING)
     private Role role;
 }
