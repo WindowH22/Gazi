@@ -1,6 +1,7 @@
 package com.example.gazi.controller;
 
 import com.example.gazi.dto.RequestMember;
+import com.example.gazi.service.EmailService;
 import com.example.gazi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import static com.example.gazi.dto.Response.Body;
 public class MemberController {
 
     private final MemberService memberService;
+    private final EmailService emailService;
     @PostMapping("/signup")
     public ResponseEntity<SignUp> signUp(@RequestBody SignUp memberDto) {
 
@@ -47,4 +49,15 @@ public class MemberController {
         return memberService.getInfo();
     }
 
+    @PostMapping("/change-nickname")
+    public ResponseEntity<Body> changeNickname(@RequestBody String nickName){
+        return memberService.changeNickName(nickName);
+    }
+
+    @PostMapping("/emailConfirm")
+    public String emailConfirm(@RequestParam String email) throws Exception {
+
+        String confirm = emailService.sendSimpleMessage(email);
+        return confirm;
+    }
 }
