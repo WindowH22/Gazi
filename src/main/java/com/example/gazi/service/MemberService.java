@@ -20,4 +20,11 @@ public interface MemberService {
     ResponseEntity<Body> logout(RequestMember.Logout logoutDto);
 
     ResponseEntity<Body> getInfo();
+
+    // 아이디 찾기
+
+    // 비밀번호 찾기
+
+    // 닉네임 수정
+    ResponseEntity<Body> changeNickName(String nickName);
 }
