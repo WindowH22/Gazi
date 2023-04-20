@@ -49,6 +49,11 @@ public class MemberController {
         return memberService.changeNickName(nickName);
     }
 
+    @GetMapping("/check-nickname")
+    public ResponseEntity<Body> checkNickName(@RequestBody String nickName){
+        return memberService.checkNickName(nickName);
+    }
+
     @PostMapping("/emailConfirm")
     public String emailConfirm(@RequestBody String email) throws Exception {
         String confirm = emailService.sendSimpleMessage(email);
