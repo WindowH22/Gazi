@@ -3,6 +3,9 @@ package com.example.gazi.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
+
 @Getter
 @Setter
 @Builder
@@ -23,4 +26,12 @@ public class Member {
     private String nickName;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id") // 내림차순;
+    private List<Keyword> keywords;
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OrderBy("id")
+    private List<Agreement> agreements;
 }
