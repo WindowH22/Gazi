@@ -20,13 +20,8 @@ public class MemberController {
     private final EmailService emailService;
     @PostMapping("/signup")
     public ResponseEntity<SignUp> signUp(@RequestBody SignUp memberDto) {
-
-        if (memberService.checkEmail(memberDto.getEmail()) && memberService.checkNickName(memberDto.getNickName())) {
-            memberService.signUp(memberDto);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        memberService.signUp(memberDto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
@@ -55,8 +50,7 @@ public class MemberController {
     }
 
     @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestParam String email) throws Exception {
-
+    public String emailConfirm(@RequestBody String email) throws Exception {
         String confirm = emailService.sendSimpleMessage(email);
         return confirm;
     }

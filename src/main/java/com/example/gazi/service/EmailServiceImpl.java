@@ -15,6 +15,7 @@ import java.util.Random;
 public class EmailServiceImpl implements EmailService{
 
     private final JavaMailSender emailSender;
+    private final MemberService memberService;
 
     public static final String ePw = createKey();
 
@@ -59,7 +60,9 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String sendSimpleMessage(String to) throws Exception {
-        // TODO Auto-generated method stub
+
+        memberService.checkEmail(to);
+
         MimeMessage message = createMessage(to);
         try{//예외처리
             emailSender.send(message);

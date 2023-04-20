@@ -46,13 +46,23 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public boolean checkEmail(String email) {
-        return !memberRepository.existsByEmail(email);
+    public ResponseEntity<Body> checkEmail(String email)
+    {
+        if(memberRepository.existsByEmail(email)){
+            return response.fail("이미 존재하는 회원의 이메일입니다.",HttpStatus.UNAUTHORIZED);
+        }else{
+            return response.success("회원가입이 가능한 이메일입니다.");
+        }
+
     }
 
     @Override
-    public boolean checkNickName(String nickName) {
-        return !memberRepository.existsByNickName(nickName);
+    public ResponseEntity<Body> checkNickName(String nickName) {
+        if(memberRepository.existsByEmail(nickName)){
+            return response.fail("이미 존재하는 닉네임입니다.",HttpStatus.UNAUTHORIZED);
+        }else{
+            return response.success("사용가능한 닉네임입니다.");
+        }
     }
 
     @Transactional
@@ -162,7 +172,6 @@ public class MemberServiceImpl implements MemberService {
         }else{
             return response.fail("토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
-
     }
 
 }

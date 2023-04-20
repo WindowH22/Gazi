@@ -9,9 +9,9 @@ import org.springframework.http.ResponseEntity;
 public interface MemberService {
     Member signUp(RequestMember.SignUp signUpDto);
 
-    boolean checkEmail(String email);
+    ResponseEntity<Body> checkEmail(String email);
 
-    boolean checkNickName(String nickName);
+    ResponseEntity<Body> checkNickName(String nickName);
 
     ResponseEntity<Body> login(RequestMember.Login loginDto);
 
