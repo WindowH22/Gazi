@@ -1,5 +1,6 @@
 package com.example.gazi.service;
 
+import com.example.gazi.dto.Response;
 import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -61,7 +62,10 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public String sendSimpleMessage(String to) throws Exception {
 
-        memberService.checkEmail(to);
+        Response.Body body = memberService.checkEmail(to).getBody();
+        if(body.getResult().equals("fail")){
+            return body.getMessage();
+        }
 
         MimeMessage message = createMessage(to);
         try{//예외처리
