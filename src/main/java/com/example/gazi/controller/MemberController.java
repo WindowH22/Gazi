@@ -45,7 +45,7 @@ public class MemberController {
     }
 
     @PostMapping("/change-nickname")
-    public ResponseEntity<Body> changeNickname(@RequestBody String nickName){
+    public ResponseEntity<Body> changeNickName(@RequestBody String nickName){
         return memberService.changeNickName(nickName);
     }
 
