@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final CartRepository cartRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder managerBuilder;
     private final PasswordEncoder passwordEncoder;
@@ -42,6 +43,13 @@ public class MemberServiceImpl implements MemberService {
     public Member signUp(RequestMember.SignUp signUpDto) {
         Member member = signUpDto.toMember(passwordEncoder);
         memberRepository.save(member);
+
+        // 회원가입과 동시에 키워드카트 생성
+        Cart cart = cartRepository.findByMemberId(member.getId());
+        if(cart == null){
+            cart = Cart.addCart(member);
+            cartRepository.save(cart);
+        }
         return member;
     }
 
