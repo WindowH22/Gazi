@@ -3,6 +3,9 @@ package com.example.gazi.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -19,7 +22,6 @@ public class Keyword {
     // 이름
     @Column
     private String keywordName;
-
-    @ManyToOne
-    private Member member;
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.REMOVE)
+    private List<KeywordCart> keywordCarts = new ArrayList<>();
 }
