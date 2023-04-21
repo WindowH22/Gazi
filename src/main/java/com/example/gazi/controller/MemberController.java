@@ -25,7 +25,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody RequestMember.Login loginDto) {
+    public ResponseEntity<?> login(@RequestBody Login loginDto) {
         return memberService.login(loginDto);
     }
 
@@ -45,18 +45,18 @@ public class MemberController {
     }
 
     @PostMapping("/change-nickname")
-    public ResponseEntity<Body> changeNickName(@RequestBody String nickName){
-        return memberService.changeNickName(nickName);
+    public ResponseEntity<Body> changeNickName(@RequestBody NickName nickName){
+        return memberService.changeNickName(nickName.getNickName());
     }
 
     @GetMapping("/check-nickname")
-    public ResponseEntity<Body> checkNickName(@RequestBody String nickName){
-        return memberService.checkNickName(nickName);
+    public ResponseEntity<Body> checkNickName(@RequestBody NickName nickName){
+        return memberService.checkNickName(nickName.getNickName());
     }
 
     @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestBody String email) throws Exception {
-        String confirm = emailService.sendSimpleMessage(email);
+    public String emailConfirm(@RequestBody Email email) throws Exception {
+        String confirm = emailService.sendSimpleMessage(email.getEmail());
         return confirm;
     }
 }
