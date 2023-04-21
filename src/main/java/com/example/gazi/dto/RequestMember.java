@@ -51,4 +51,14 @@ public class RequestMember {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Getter
+    public static class NickName{
+        private String nickName;
+    }
+
+    @Getter
+    public static class Email{
+        private String email;
+    }
 }
