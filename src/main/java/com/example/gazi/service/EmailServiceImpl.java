@@ -18,11 +18,9 @@ public class EmailServiceImpl implements EmailService{
     private final JavaMailSender emailSender;
     private final MemberService memberService;
 
-    public static final String ePw = createKey();
-
-    private MimeMessage createMessage(String to)throws Exception{
+    private MimeMessage createMessage(String to,String keyValue)throws Exception{
         System.out.println("보내는 대상 : "+ to);
-        System.out.println("인증 번호 : "+ePw);
+        System.out.println("인증 번호 : "+keyValue);
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
@@ -40,7 +38,7 @@ public class EmailServiceImpl implements EmailService{
         msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
         msgg+= "<div style='font-size:130%'>";
         msgg+= "CODE : <strong>";
-        msgg+= ePw+"</strong><div><br/> ";
+        msgg+= keyValue+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
         message.setFrom(new InternetAddress("changheeckdgml@gmail.com","leechanghee"));//보내는 사람
@@ -67,13 +65,15 @@ public class EmailServiceImpl implements EmailService{
             return body.getMessage();
         }
 
-        MimeMessage message = createMessage(to);
+        String keyValue = createKey();
+
+        MimeMessage message = createMessage(to,keyValue);
         try{//예외처리
             emailSender.send(message);
         }catch(MailException es){
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
-        return ePw;
+        return keyValue;
     }
 }
