@@ -2,12 +2,14 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.JwtTokenProvider;
 import com.example.gazi.config.SecurityUtil;
+import com.example.gazi.domain.Cart;
 import com.example.gazi.domain.Member;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.dto.ResponseMember.MemberInfo;
 import com.example.gazi.dto.ResponseToken;
+import com.example.gazi.repository.CartRepository;
 import com.example.gazi.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
