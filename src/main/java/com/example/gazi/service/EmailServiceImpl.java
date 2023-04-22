@@ -5,6 +5,7 @@ import jakarta.mail.Message;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.Random;
 @Service
 public class EmailServiceImpl implements EmailService{
 
+    private final RedisTemplate redisTemplate;
+    private final RedisUtilService redisUtilService;
     private final JavaMailSender emailSender;
     private final MemberService memberService;
 
@@ -74,6 +77,16 @@ public class EmailServiceImpl implements EmailService{
             es.printStackTrace();
             throw new IllegalArgumentException();
         }
+
+        if(redisUtilService.getData(to).isEmpty()){
+            //유효시간 5분
+            redisUtilService.setDataExpire(to,keyValue,60*5L);
+        }else{
+            redisTemplate.delete(to);
+            redisUtilService.setDataExpire(to,keyValue,60*5L);
+        }
+
         return keyValue;
     }
+
 }
