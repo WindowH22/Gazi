@@ -51,8 +51,8 @@ public class MemberController {
     }
 
     @GetMapping("/check-nickname")
-    public ResponseEntity<Body> checkNickName(@RequestBody NickName nickName){
-        return memberService.checkNickName(nickName.getNickName());
+    public ResponseEntity<Body> checkNickName(@RequestParam String nickName){
+        return memberService.checkNickName(nickName);
     }
 
     @PostMapping("/emailConfirm")
