@@ -50,6 +50,12 @@ public class MemberController {
         return memberService.changeNickName(nickName.getNickName());
     }
 
+    @PostMapping("/email-confirm")
+    public ResponseEntity<Body> emailConfirm(@RequestBody Email email) throws Exception {
+        return emailService.sendSimpleMessage(email.getEmail());
+    }
+
+
     @GetMapping("/check-nickname")
     public ResponseEntity<Body> checkNickName(@RequestParam String nickName){
         return memberService.checkNickName(nickName);

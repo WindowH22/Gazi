@@ -1,5 +1,8 @@
 package com.example.gazi.service;
 
+import com.example.gazi.dto.Response;
+import org.springframework.http.ResponseEntity;
+
 public interface EmailService {
-    String sendSimpleMessage(String to)throws Exception;
+    ResponseEntity<Response.Body> sendSimpleMessage(String to)throws Exception;
 }

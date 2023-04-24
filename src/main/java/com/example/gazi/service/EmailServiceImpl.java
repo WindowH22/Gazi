@@ -6,6 +6,8 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class EmailServiceImpl implements EmailService{
     private final RedisUtilService redisUtilService;
     private final JavaMailSender emailSender;
     private final MemberService memberService;
+    private final Response response;
 
     private MimeMessage createMessage(String to,String keyValue)throws Exception{
         System.out.println("보내는 대상 : "+ to);
@@ -61,15 +64,12 @@ public class EmailServiceImpl implements EmailService{
 
 
     @Override
-    public String sendSimpleMessage(String to) throws Exception {
-
-        Response.Body body = memberService.checkEmail(to).getBody();
-        if(body.getResult().equals("fail")){
-            return body.getMessage();
+    public ResponseEntity<Response.Body> sendSimpleMessage(String to) throws Exception {
+        Response.Body chekEmailBody = memberService.checkEmail(to).getBody();
+        if(chekEmailBody.getResult().equals("fail")){
+            return response.fail(chekEmailBody.getMessage(), HttpStatus.CONFLICT);
         }
-
         String keyValue = createKey();
-
         MimeMessage message = createMessage(to,keyValue);
         try{//예외처리
             emailSender.send(message);
@@ -78,7 +78,7 @@ public class EmailServiceImpl implements EmailService{
             throw new IllegalArgumentException();
         }
 
-        if(redisUtilService.getData(to).isEmpty()){
+        if(redisUtilService.getData(to) == null){
             //유효시간 5분
             redisUtilService.setDataExpire(to,keyValue,60*5L);
         }else{
@@ -86,7 +86,7 @@ public class EmailServiceImpl implements EmailService{
             redisUtilService.setDataExpire(to,keyValue,60*5L);
         }
 
-        return keyValue;
+        return response.success(keyValue,"인증번호를 발송하였습니다.", HttpStatus.OK);
     }
 
 }
