@@ -62,9 +62,13 @@ public class MemberController {
         return memberService.checkNickName(nickName);
     }
 
-    @PostMapping("/emailConfirm")
-    public String emailConfirm(@RequestBody Email email) throws Exception {
-        String confirm = emailService.sendSimpleMessage(email.getEmail());
-        return confirm;
+    @GetMapping("/myKeyword")
+    public ResponseEntity<Body> myKeyword(){
+        return keywordService.myKeywordList();
+    }
+
+    @PostMapping("/delete-member")
+    public ResponseEntity<Body> deleteMember(){
+        return memberService.DeleteMember();
     }
 }
