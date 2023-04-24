@@ -23,6 +23,7 @@ public class Cart {
     private Member member;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.REMOVE)
+    @Builder.Default
     private List<KeywordCart> keywordCarts = new ArrayList<>();
 
     public static Cart addCart(Member member){
