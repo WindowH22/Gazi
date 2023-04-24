@@ -11,10 +11,12 @@ import com.example.gazi.dto.ResponseMember.MemberInfo;
 import com.example.gazi.dto.ResponseToken;
 import com.example.gazi.repository.CartRepository;
 import com.example.gazi.repository.MemberRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -59,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Body> checkEmail(String email)
     {
         if(memberRepository.existsByEmail(email)){
-            return response.fail("이미 존재하는 회원의 이메일입니다.",HttpStatus.UNAUTHORIZED);
+            return response.fail("이미 존재하는 회원의 이메일입니다.",HttpStatus.CONFLICT);
         }else{
             return response.success("회원가입이 가능한 이메일입니다.");
         }
@@ -69,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<Body> checkNickName(String nickName) {
         if(memberRepository.existsByNickName(nickName)){
-            return response.fail("이미 존재하는 닉네임입니다.",HttpStatus.UNAUTHORIZED);
+            return response.fail("이미 존재하는 닉네임입니다.",HttpStatus.CONFLICT);
         }else{
             return response.success("사용가능한 닉네임입니다.");
         }
