@@ -21,6 +21,7 @@ public class RequestMember {
                     .email(email)
                     .password(passwordEncoder.encode(password))
                     .nickName(nickName)
+                    .isAgree(true)
                     .role(Role.ROLE_USER)
                     .build();
         }
