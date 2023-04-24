@@ -23,7 +23,10 @@ public class Member {
     @Column(nullable = false, unique = true)
     private String nickName;
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
+    @Column(nullable = false)
+    private Boolean isAgree;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Cart cart;
 
