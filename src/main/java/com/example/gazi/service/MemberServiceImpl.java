@@ -173,6 +173,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public ResponseEntity<Body> DeleteMember() {
+        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
+        );
+        memberRepository.delete(member);
+        return response.success("탈퇴 되었습니다.");
+    }
+
+    @Override
     public ResponseEntity<Body> changeNickName(String nickName) {
         Optional<Member> memberRes = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
         if (memberRes.isPresent()){
