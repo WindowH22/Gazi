@@ -79,26 +79,32 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<Body> login(RequestMember.Login loginDto) {
         if (memberRepository.findByEmail(loginDto.getEmail()).orElse(null) == null) {
-            return response.fail("해당 유저가 존재하지않습니다.", HttpStatus.BAD_REQUEST);
+            return response.fail("해당 유저가 존재하지않습니다.", HttpStatus.UNAUTHORIZED);
         }
         // LoginDto email, password 를 기반으로 Authentication 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.usernamePasswordAuthenticationToken();
 
-        // 실제 검증 (사용자 비밀번호 체크)
-        // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
-        Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken);
 
-        // 인증 정보를 기반으로 JWT 토큰 생성
-        ResponseToken responseToken = jwtTokenProvider.generateToken(authentication);
+        try{
+            // 실제 검증 (사용자 비밀번호 체크)
+            // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
+            Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken); // 인증 정보를 기반으로 JWT 토큰 생성
+            ResponseToken responseToken = jwtTokenProvider.generateToken(authentication);
 
-        // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
-        redisTemplate.opsForValue()
-                .set("RT:" + authentication.getName(),
-                        responseToken.getRefreshToken(),
-                        responseToken.getRefreshTokenExpirationTime(),
-                        TimeUnit.MILLISECONDS);
+            // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
+            redisTemplate.opsForValue()
+                    .set("RT:" + authentication.getName(),
+                            responseToken.getRefreshToken(),
+                            responseToken.getRefreshTokenExpirationTime(),
+                            TimeUnit.MILLISECONDS);
 
-        return response.success(responseToken,"로그인에 성공했습니다.",HttpStatus.OK);
+            return response.success(responseToken,"로그인에 성공했습니다.",HttpStatus.OK);
+        }
+        catch (BadCredentialsException e){
+            e.printStackTrace();
+            return response.fail("비밀번호가 틀렸습니다.", HttpStatus.UNAUTHORIZED);
+        }
+
     }
 
     @Override
