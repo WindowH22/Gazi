@@ -1,8 +1,7 @@
 package com.example.gazi.controller;
 
-import com.example.gazi.dto.RequestKeywordCartDto;
-import com.example.gazi.dto.RequestMember;
 import com.example.gazi.service.EmailService;
+import com.example.gazi.service.KeywordService;
 import com.example.gazi.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +18,8 @@ public class MemberController {
 
     private final MemberService memberService;
     private final EmailService emailService;
+    private final KeywordService keywordService;
+
     @PostMapping("/signup")
     public ResponseEntity<SignUp> signUp(@RequestBody SignUp memberDto) {
         memberService.signUp(memberDto);
