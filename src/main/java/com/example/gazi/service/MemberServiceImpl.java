@@ -24,7 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +65,7 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Body> checkEmail(String email)
     {
         if(memberRepository.existsByEmail(email)){
-            return response.fail("이미 존재하는 회원의 이메일입니다.",HttpStatus.CONFLICT);
+            return response.fail("이미 가입된 이메일입니다.",HttpStatus.CONFLICT);
         }else{
             return response.success("회원가입이 가능한 이메일입니다.");
         }
@@ -71,7 +75,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<Body> checkNickName(String nickName) {
         if(memberRepository.existsByNickName(nickName)){
-            return response.fail("이미 존재하는 닉네임입니다.",HttpStatus.CONFLICT);
+            return response.fail("중복된 닉네임입니다.",HttpStatus.CONFLICT);
         }else{
             return response.success("사용가능한 닉네임입니다.");
         }
@@ -81,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseEntity<Body> login(RequestMember.Login loginDto) {
         if (memberRepository.findByEmail(loginDto.getEmail()).orElse(null) == null) {
-            return response.fail("해당 유저가 존재하지않습니다.", HttpStatus.UNAUTHORIZED);
+            return response.fail("등록되지 않은 이메일입니다.", HttpStatus.UNAUTHORIZED);
         }
         // LoginDto email, password 를 기반으로 Authentication 객체 생성
         UsernamePasswordAuthenticationToken authenticationToken = loginDto.usernamePasswordAuthenticationToken();
@@ -104,7 +108,7 @@ public class MemberServiceImpl implements MemberService {
         }
         catch (BadCredentialsException e){
             e.printStackTrace();
-            return response.fail("비밀번호가 틀렸습니다.", HttpStatus.UNAUTHORIZED);
+            return response.fail("비밀번호가 올바르지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
 
     }
@@ -139,7 +143,7 @@ public class MemberServiceImpl implements MemberService {
 
         return response.success(tokenInfo, "Token 정보가 갱신되었습니다.", HttpStatus.OK);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public ResponseEntity<Body> logout(RequestMember.Logout logoutDto) {
         // Access Token 검증
@@ -179,16 +183,22 @@ public class MemberServiceImpl implements MemberService {
             return response.fail("토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
     }
-
+    @Transactional(readOnly = true)
     @Override
     public ResponseEntity<Body> DeleteMember() {
-        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
-                () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
-        );
-        memberRepository.delete(member);
-        return response.success("탈퇴 되었습니다.");
+        try{
+            Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                    () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
+            );
+            memberRepository.delete(member);
+            return response.success("탈퇴 되었습니다.");
+        }
+        catch (Exception e){
+            return response.fail(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 
+    @Transactional
     @Override
     public ResponseEntity<Body> changeNickName(String nickName) {
         Optional<Member> memberRes = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
@@ -201,4 +211,17 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
+    /* 회원가입 시, 유효성 체크 */
+    @Transactional(readOnly = true)
+    @Override
+    public ResponseEntity<Body> validateHandling(Errors errors){
+        Map<String,String> validatorResult = new HashMap<>();
+
+        // 유효성 검사에 실패한 필드 목록을 받음
+        for (FieldError error : errors.getFieldErrors()) {
+            String validKeyName = String.format("valid_%s",error.getField());
+            validatorResult.put(validKeyName,error.getDefaultMessage());
+        }
+        return response.fail(validatorResult,"유효성 검증 실패",HttpStatus.BAD_REQUEST);
+    }
 }

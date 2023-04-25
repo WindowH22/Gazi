@@ -2,6 +2,8 @@ package com.example.gazi.dto;
 
 import com.example.gazi.domain.Member;
 import com.example.gazi.domain.Role;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,8 +14,11 @@ public class RequestMember {
     @Getter
     @Setter
     public static class SignUp {
+        @NotBlank
         private String email;
+        @NotBlank
         private String password;
+        @NotBlank
         private String nickName;
 
         public Member toMember(PasswordEncoder passwordEncoder) {
@@ -31,7 +36,10 @@ public class RequestMember {
     @Getter
     @Setter
     public static class Login {
+        @NotBlank(message = "Email는 필수 입력 값입니다.")
         private String email;
+
+        @NotBlank(message = "Password는 필수 입력 값입니다.")
         private String password;
 
         public UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken() {
@@ -60,6 +68,8 @@ public class RequestMember {
 
     @Getter
     public static class Email{
+        @NotBlank(message = "아이디는 필수 입력 값입니다.")
+        @Pattern(regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,6}$",message = "올바른 이메일 형식이 아닙니다.")
         private String email;
     }
 }

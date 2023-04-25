@@ -3,8 +3,10 @@ package com.example.gazi.controller;
 import com.example.gazi.service.EmailService;
 import com.example.gazi.service.KeywordService;
 import com.example.gazi.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import static com.example.gazi.dto.RequestMember.*;
@@ -21,7 +23,9 @@ public class MemberController {
     private final KeywordService keywordService;
 
     @PostMapping("/signup")
-    public ResponseEntity<Body> signUp(@RequestBody SignUp memberDto) {
+    public ResponseEntity<Body> signUp(@RequestBody @Valid SignUp memberDto, Errors errors) {
+
+        memberService.validateHandling(errors);
         memberService.signUp(memberDto);
 
         Login loginDto = new Login();
@@ -32,7 +36,8 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Login loginDto) {
+    public ResponseEntity<?> login(@RequestBody @Valid Login loginDto, Errors errors) {
+        memberService.validateHandling(errors);
         return memberService.login(loginDto);
     }
 
@@ -52,28 +57,32 @@ public class MemberController {
     }
 
     @PostMapping("/change-nickname")
-    public ResponseEntity<Body> changeNickName(@RequestBody NickName nickName){
+    public ResponseEntity<Body> changeNickName(@RequestBody NickName nickName) {
         return memberService.changeNickName(nickName.getNickName());
     }
 
     @PostMapping("/email-confirm")
-    public ResponseEntity<Body> emailConfirm(@RequestBody Email email) throws Exception {
+    public ResponseEntity<Body> emailConfirm(@RequestBody @Valid Email email, Errors errors) throws Exception {
+
+        if (errors.hasErrors()) {
+            return memberService.validateHandling(errors);
+        }
         return emailService.sendSimpleMessage(email.getEmail());
     }
 
 
     @GetMapping("/check-nickname")
-    public ResponseEntity<Body> checkNickName(@RequestParam String nickName){
+    public ResponseEntity<Body> checkNickName(@RequestParam String nickName) {
         return memberService.checkNickName(nickName);
     }
 
     @GetMapping("/myKeyword")
-    public ResponseEntity<Body> myKeyword(){
+    public ResponseEntity<Body> myKeyword() {
         return keywordService.myKeywordList();
     }
 
     @PostMapping("/delete-member")
-    public ResponseEntity<Body> deleteMember(){
+    public ResponseEntity<Body> deleteMember() {
         return memberService.DeleteMember();
     }
 }
