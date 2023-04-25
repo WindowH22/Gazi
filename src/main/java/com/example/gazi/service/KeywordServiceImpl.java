@@ -2,7 +2,6 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
-import com.example.gazi.dto.RequestKeywordCartDto;
 import com.example.gazi.dto.RequestKeywordDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
@@ -33,14 +32,14 @@ public class KeywordServiceImpl implements KeywordService{
     //관심 키워드 등록
     @Override
     @Transactional
-    public ResponseEntity<Body> interestKeyword(List<RequestKeywordCartDto> keywordCartDtoList) {
+    public ResponseEntity<Body> interestKeyword(List<Long> keywordList) {
 
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
                 () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
         );
 
-        for (RequestKeywordCartDto keywordCartDto : keywordCartDtoList){
-            Keyword keyword = keywordRepository.findById(keywordCartDto.getKeywordId()).orElseThrow(
+        for (Long keywordId : keywordList){
+            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(
                     () -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다.")
             );
             Cart cart = cartRepository.findByMemberId(member.getId());
@@ -48,10 +47,7 @@ public class KeywordServiceImpl implements KeywordService{
             if(keywordCartRepository.existsByCartAndKeyword(cart,keyword)) {
                 return response.fail(keyword.getKeywordName() +"은(는) 존재합니다.", HttpStatus.BAD_REQUEST);
             }
-
-            KeywordCart keywordCart = keywordCartDto.toEntity(cart,keyword);
-
-            keywordCart.addKeywordCart(cart,keyword);
+            KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
             keywordCartRepository.save(keywordCart);
         }
 

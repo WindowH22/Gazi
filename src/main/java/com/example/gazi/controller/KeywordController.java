@@ -1,6 +1,5 @@
 package com.example.gazi.controller;
 
-import com.example.gazi.dto.RequestKeywordCartDto;
 import com.example.gazi.dto.RequestKeywordDto;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.service.KeywordService;
@@ -19,8 +18,8 @@ public class KeywordController {
     private final KeywordService keywordService;
     //관심 키워드 등록
     @PostMapping("interest-keyword")
-    public ResponseEntity<Body> interestKeyword(@RequestBody List<RequestKeywordCartDto> dto){
-       return keywordService.interestKeyword(dto);
+    public ResponseEntity<Body> interestKeyword(@RequestBody List<Long> keywordList){
+       return keywordService.interestKeyword(keywordList);
     }
 
     //키워드 추가
