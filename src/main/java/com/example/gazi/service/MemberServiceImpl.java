@@ -183,7 +183,7 @@ public class MemberServiceImpl implements MemberService {
             return response.fail("토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
     }
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public ResponseEntity<Body> DeleteMember() {
         try{
