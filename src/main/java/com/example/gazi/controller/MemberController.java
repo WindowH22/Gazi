@@ -21,9 +21,14 @@ public class MemberController {
     private final KeywordService keywordService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignUp> signUp(@RequestBody SignUp memberDto) {
+    public ResponseEntity<Body> signUp(@RequestBody SignUp memberDto) {
         memberService.signUp(memberDto);
-        return ResponseEntity.ok().build();
+
+        Login loginDto = new Login();
+        loginDto.setEmail(memberDto.getEmail());
+        loginDto.setPassword(memberDto.getPassword());
+        // 회원가입 완료시 로그인
+        return memberService.login(loginDto);
     }
 
     @PostMapping("/login")
