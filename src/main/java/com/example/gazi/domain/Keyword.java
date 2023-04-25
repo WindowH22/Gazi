@@ -1,6 +1,5 @@
 package com.example.gazi.domain;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +28,8 @@ public class Keyword {
     // 이름
     @Column(nullable = false)
     private String keywordName;
+
+    @Builder.Default
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.REMOVE)
     private List<KeywordCart> keywordCarts = new ArrayList<>();
 }
