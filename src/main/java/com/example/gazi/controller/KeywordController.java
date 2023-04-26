@@ -18,8 +18,8 @@ public class KeywordController {
     private final KeywordService keywordService;
     //관심 키워드 등록
     @PostMapping("interest-keyword")
-    public ResponseEntity<Body> interestKeyword(@RequestBody List<Long> keywordList){
-       return keywordService.interestKeyword(keywordList);
+    public ResponseEntity<Body> interestKeyword(@RequestBody RequestKeywordCartDto dto){
+       return keywordService.interestKeyword(dto.getMyKeywordList());
     }
 
     //키워드 추가
