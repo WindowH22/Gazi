@@ -1,5 +1,6 @@
 package com.example.gazi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,13 +24,14 @@ public class Keyword {
     private KeywordEnum keywordEnum;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @Column
     private Vehicle vehicleType;
     // 이름
     @Column(nullable = false)
     private String keywordName;
 
     @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.REMOVE)
     private List<KeywordCart> keywordCarts = new ArrayList<>();
 }
