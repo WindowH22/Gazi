@@ -1,13 +1,12 @@
 package com.example.gazi.controller;
 
+import com.example.gazi.dto.RequestKeywordCartDto;
 import com.example.gazi.dto.RequestKeywordDto;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.service.KeywordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @CrossOrigin
@@ -26,5 +25,11 @@ public class KeywordController {
     @PostMapping("/add-keyword")
     public ResponseEntity<Body> addKeyword(@RequestBody RequestKeywordDto dto){
         return keywordService.addKeyword(dto);
+    }
+
+    //키워드 조회
+    @GetMapping
+    public ResponseEntity<Body> keywordList(){
+        return keywordService.keywordList();
     }
 }

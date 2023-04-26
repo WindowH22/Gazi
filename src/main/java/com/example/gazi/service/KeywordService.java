@@ -10,4 +10,6 @@ public interface KeywordService {
     ResponseEntity<Body> interestKeyword(List<Long> keywordList);
     ResponseEntity<Body> addKeyword(RequestKeywordDto keywordDto);
     ResponseEntity<Body> myKeywordList();
+
+    ResponseEntity<Body> keywordList();
 }

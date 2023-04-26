@@ -108,4 +108,10 @@ public class KeywordServiceImpl implements KeywordService{
         return keywordCarts;
     }
 
+    @Override
+    public ResponseEntity<Body> keywordList(){
+        List<Keyword> keywordList = keywordRepository.findAll();
+        return response.success(keywordList,"키워드 리스트입니다.",HttpStatus.OK);
+    }
+
 }
