@@ -6,10 +6,13 @@ import com.example.gazi.domain.KeywordCart;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class RequestKeywordCartDto {
-    private Long keywordId;
+
+    private List<Long> myKeywordList;
 
     public KeywordCart toEntity(Cart cart, Keyword keyword){
         return KeywordCart.builder()
