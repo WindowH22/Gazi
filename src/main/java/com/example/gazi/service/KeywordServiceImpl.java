@@ -59,19 +59,14 @@ public class KeywordServiceImpl implements KeywordService{
     public ResponseEntity<Body> addKeyword(RequestKeywordDto dto){
         Keyword keyword;
 
-        //유효성 검사
-        if(keywordRepository.existsByKeywordName(dto.getKeywordName())){
-            return response.fail(dto.getKeywordName()+"는 이미 존재하는 값입니다.",HttpStatus.CONFLICT);
-        }
-
-        if(KeywordEnum.KEYWORD_VEHICLE.equals(dto.getKeywordEnum())){
+        if(KeywordEnum.VEHICLE.equals(dto.getKeywordEnum())){
             keyword = dto.toEntity(dto.getKeywordEnum(), dto.getVehicle(), dto.getKeywordName());
         }else{
             keyword = dto.toEntity(dto.getKeywordEnum(), dto.getKeywordName());
         }
         keywordRepository.save(keyword);
-        return response.success("키워드가 등록되었습니다.");
 
+        return response.success("키워드가 등록되었습니다.");
 
     }
 
@@ -93,12 +88,14 @@ public class KeywordServiceImpl implements KeywordService{
 
             if(keyword.getVehicleType() != null){
                 keywordDto = new RequestKeywordDto(
+                        keyword.getId(),
                         keyword.getKeywordEnum(),
                         keyword.getVehicleType(),
                         keyword.getKeywordName()
                 );
             }else{
                 keywordDto = new RequestKeywordDto(
+                        keyword.getId(),
                         keyword.getKeywordEnum(),
                         keyword.getKeywordName()
                 );

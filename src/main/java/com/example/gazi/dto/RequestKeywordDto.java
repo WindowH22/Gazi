@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RequestKeywordDto {
 
+    private Long id;
     private KeywordEnum keywordEnum;
     private Vehicle vehicle;
     private String keywordName;
@@ -28,12 +29,14 @@ public class RequestKeywordDto {
                 .build();
     }
 
-    public RequestKeywordDto(KeywordEnum keywordEnum, String keywordName){
+    public RequestKeywordDto(Long id,KeywordEnum keywordEnum, String keywordName){
+        this.id = id;
         this.keywordEnum = keywordEnum;
         this.keywordName = keywordName;
     }
 
-    public RequestKeywordDto(KeywordEnum keywordEnum, Vehicle vehicle,String keywordName){
+    public RequestKeywordDto(Long id, KeywordEnum keywordEnum, Vehicle vehicle,String keywordName){
+        this.id = id;
         this.keywordEnum = keywordEnum;
         this.vehicle = vehicle;
         this.keywordName = keywordName;
