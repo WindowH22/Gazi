@@ -33,25 +33,43 @@ public class KeywordServiceImpl implements KeywordService{
     @Override
     @Transactional
     public ResponseEntity<Body> interestKeyword(List<Long> keywordList) {
-
-        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
-                () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
-        );
-
-        for (Long keywordId : keywordList){
-            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(
-                    () -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다.")
+        try{
+            Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                    () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
             );
-            Cart cart = cartRepository.findByMemberId(member.getId());
+            List<String> existErrors = new ArrayList<>();
+            for (Long keywordId : keywordList){
+                Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(
+                        () -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다.")
+                );
+                Cart cart = cartRepository.findByMemberId(member.getId());
 
-            if(keywordCartRepository.existsByCartAndKeyword(cart,keyword)) {
-                return response.fail(keyword.getKeywordName() +"은(는) 존재합니다.", HttpStatus.BAD_REQUEST);
+                if(keywordCartRepository.existsByCartAndKeyword(cart,keyword)) {
+                    existErrors.add(keyword.getKeywordName());
+                }
+                KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
+                keywordCartRepository.save(keywordCart);
             }
-            KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
-            keywordCartRepository.save(keywordCart);
+
+            if(existErrors.size() > 0 ){
+                String msg = "";
+                for (int i = 0 ; i<existErrors.size(); i++){
+                    if(i != existErrors.size()-1){
+                        msg += existErrors.get(i)+", ";
+                    }else{
+                        msg += existErrors.get(i) + "은(는) 이미 관심 키워드에 존재합니다.";
+                    }
+                }
+
+                return response.fail(msg,HttpStatus.CONFLICT);
+            }
+
+            return response.success("관심 키워드가 추가되었습니다.");
+        }
+        catch (Exception e){
+            return response.fail(e.getMessage(),HttpStatus.UNAUTHORIZED);
         }
 
-        return response.success("관심 키워드가 추가되었습니다.");
     }
 
     @Override
