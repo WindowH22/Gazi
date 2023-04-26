@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum KeywordEnum {
-    KEYWORD_VEHICLE("KEYWORD_VEHICLE"),
-    KEYWORD_ISSUE("KEYWORD_ISSUE");
+    VEHICLE("VEHICLE"),
+    ISSUE("ISSUE");
 
     KeywordEnum(String keywordEnum) {
     }
