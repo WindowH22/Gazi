@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Table(name = " REPLY")
 @Entity
-public class Reply {
+public class Reply extends AuditingFields{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

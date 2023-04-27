@@ -7,7 +7,7 @@ import java.util.List;
 
 @Table(name = "POST")
 @Entity
-public class Post {
+public class Post extends AuditingFields{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //  일련번호
