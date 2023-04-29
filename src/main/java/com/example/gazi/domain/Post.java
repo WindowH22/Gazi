@@ -1,10 +1,10 @@
 package com.example.gazi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -16,10 +16,11 @@ import java.util.List;
 @Entity
 public class Post extends AuditingFields {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //  일련번호
 
-    @Column(nullable = false, length =100)
+    @Column(nullable = false, length = 100)
     private String title; // 제목
 
     @Lob //아주 긴 문자데이터(GB)를 저장할 수 있는 설정
@@ -35,23 +36,26 @@ public class Post extends AuditingFields {
     @Column
     private Double longitude; // 경도
 
+    @Column
+    private String placeName; // 장소명
+
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"post"}) // 무한참조 방지
     @OrderBy("id desc") // 내림차순;
     private List<FilePost> filePosts;
 
-    @Column
-    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<KeywordPost> keywordPosts = new ArrayList<>();
+    @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private PostCart postCart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "keyword_id")
-    private Keyword keyword; // 대표 키워드
+    @JsonIgnore
+    @JoinColumn(name = "HeadKeyword_id")
+    private Keyword headKeyword; // 대표 키워드
 
     // 포스트 : 회원은 N : 1 관계다.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="MEMBER_ID")
+    @JsonIgnore
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
