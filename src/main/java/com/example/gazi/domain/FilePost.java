@@ -10,13 +10,26 @@ import lombok.*;
 @Builder
 @Table(name = "FILE_POST")
 @Entity
-public class FilePost extends File{
+public class FilePost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String fileName;
+    @Column
+    private String fileUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="POST_ID")
+    @JoinColumn(name = "POST_ID")
     private Post post;
+
+
+    public static FilePost toEntity(String fileName, String fileUrl, Post post) {
+        FilePost filePost = new FilePost();
+        filePost.setFileName(fileName);
+        filePost.setFileUrl(fileUrl);
+        filePost.setPost(post);
+        return filePost;
+    }
 }
