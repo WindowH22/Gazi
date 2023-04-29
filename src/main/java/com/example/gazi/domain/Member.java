@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Table(name = "MEMBER")
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-public class Member {
+public class Member extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
