@@ -131,7 +131,7 @@ public class MemberServiceImpl implements MemberService {
             return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
         }
         if(!refreshToken.equals(reissue.getRefreshToken())) {
-            return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+            return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.NOT_FOUND);
         }
 
         // 새로운 토큰 생성
