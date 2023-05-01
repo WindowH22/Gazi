@@ -34,4 +34,9 @@ public class Keyword {
     @JsonIgnore
     @OneToMany(mappedBy = "keyword", cascade = CascadeType.REMOVE)
     private List<KeywordCart> keywordCarts = new ArrayList<>();
+
+    @Builder.Default
+    @JsonIgnore
+    @OneToMany(mappedBy = "keyword", cascade = CascadeType.REMOVE)
+    private List<KeywordPost> keywordPosts = new ArrayList<>();
 }
