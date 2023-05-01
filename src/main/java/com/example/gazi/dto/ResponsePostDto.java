@@ -21,7 +21,7 @@ public class ResponsePostDto {
         private String content;
         private List<Long> keywordIdList;
         private Long headKeywordId;
-        private List<String> fileUrlList;
+        private List<ResponseFilePostDto> fileUrlList;
         private List<RePost> rePostList;
         private LocalDateTime createdAt;
         private String nickName;
