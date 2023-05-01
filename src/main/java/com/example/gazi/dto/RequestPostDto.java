@@ -42,7 +42,7 @@ public class RequestPostDto {
         private String content;
         private List<Long> keywordIdList;
         private Long headKeywordId;
-        private List<String> deleteFileUrlList;
+        private List<String> deleteFileNameList;
 
         public Post toEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword, Member member){
             return Post.builder()
