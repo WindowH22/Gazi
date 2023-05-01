@@ -5,6 +5,7 @@ import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
 import com.example.gazi.dto.RequestPostDto;
 import com.example.gazi.dto.Response;
+import com.example.gazi.dto.ResponseFilePostDto;
 import com.example.gazi.dto.ResponsePostDto;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -216,9 +217,10 @@ public class PostServiceImpl implements PostService {
 //        }
 
             List<Long> keywordIdList = new ArrayList<>();
-            List<String> fileUrlList = new ArrayList<>();
+            List<ResponseFilePostDto> fileList = new ArrayList<>();
             for (FilePost filePost : filePosts) {
-                fileUrlList.add(filePost.getFileUrl());
+                ResponseFilePostDto filePostDto = new ResponseFilePostDto(filePost.getFileName(), filePost.getFileUrl());
+                fileList.add(filePostDto);
             }
 
             for (KeywordPost keywordPost : post.getPostCart().getKeywordPosts()) {
@@ -233,7 +235,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getPostDto responsePostDto = new ResponsePostDto.getPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileUrlList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit());
+            ResponsePostDto.getPostDto responsePostDto = new ResponsePostDto.getPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit());
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
