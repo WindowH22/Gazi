@@ -4,7 +4,6 @@ import com.example.gazi.domain.Member;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response.Body;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 
