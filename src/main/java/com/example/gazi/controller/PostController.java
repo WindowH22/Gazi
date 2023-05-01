@@ -18,22 +18,22 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/topPost")
-    public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart List<MultipartFile> files){
-        return postService.addPost(dto,files);
+    public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart(required = false) List<MultipartFile> files) {
+        return postService.addPost(dto, files);
     }
 
     @GetMapping("/topPost")
-    public ResponseEntity<Body> getPost(@RequestParam Long postId){
+    public ResponseEntity<Body> getPost(@RequestParam Long postId) {
         return postService.getPost(postId);
     }
 
     @PutMapping("/topPost")
-    public ResponseEntity<Body> updatePost(@RequestParam Long postId,@RequestPart RequestPostDto.updatePostDto dto, @RequestPart List<MultipartFile> files){
-        return postService.updatePost(postId,dto,files);
+    public ResponseEntity<Body> updatePost(@RequestParam Long postId, @RequestPart RequestPostDto.updatePostDto dto, @RequestPart(required = false) List<MultipartFile> files) {
+        return postService.updatePost(postId, dto, files);
     }
 
     @DeleteMapping("/topPost")
-    public ResponseEntity<Body> deletePost(@RequestParam Long postId){
+    public ResponseEntity<Body> deletePost(@RequestParam Long postId) {
         return postService.deletePost(postId);
     }
 }

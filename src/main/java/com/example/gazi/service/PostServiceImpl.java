@@ -1,6 +1,5 @@
 package com.example.gazi.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
 import com.example.gazi.dto.RequestPostDto;
@@ -12,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -37,10 +35,7 @@ public class PostServiceImpl implements PostService {
     private final PostCartRepository postCartRepository;
     private final RePostRepository rePostRepository;
     private final Response response;
-    private final AmazonS3Client amazonS3Client;
     private final FileService fileService;
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
@@ -83,14 +78,17 @@ public class PostServiceImpl implements PostService {
         }
 
         // 3. 파일추가
-        for (MultipartFile file : fileList) {
-            LocalDateTime date = LocalDateTime.now();
-            int randomNum = (int) (Math.random() * 100);
-            String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        if (fileList != null) {
+            for (MultipartFile file : fileList) {
+                LocalDateTime date = LocalDateTime.now();
+                int randomNum = (int) (Math.random() * 100);
+                String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
 
-            FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
-            filePostRepository.save(filePost);
+                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
+                filePostRepository.save(filePost);
+            }
         }
+
         return response.success("글 작성을 완료했습니다.");
     }
 
@@ -121,7 +119,6 @@ public class PostServiceImpl implements PostService {
                                 return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
                             }
 
-                            log.info(keyword.getId() + "");
                             KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
 
                             keywordPostRepository.save(keywordPost);
@@ -135,20 +132,26 @@ public class PostServiceImpl implements PostService {
                     post.setHeadKeyword(headKeyword);
                 }
 
-                //파일 삭제
-                for (String fileName : dto.getDeleteFileUrlList()) {
-                    FilePost filePost = filePostRepository.findByFileName(fileName).orElseThrow(() -> new EntityNotFoundException("해당 파일이름은 존재하지 않습니다."));
-                    filePostRepository.delete(filePost);
-                    fileService.deleteFile(fileName);
+
+                if (dto.getDeleteFileNameList() != null) {
+                    //파일 삭제
+                    for (String fileName : dto.getDeleteFileNameList()) {
+                        FilePost filePost = filePostRepository.findByFileName(fileName).orElseThrow(() -> new EntityNotFoundException("삭제하려는 파일이 존재하지 않습니다."));
+                        filePostRepository.delete(filePost);
+                        fileService.deleteFile(fileName);
+                    }
                 }
 
-                // 파일 업로드
-                for (MultipartFile file : multipartFiles) {
-                    LocalDateTime date = LocalDateTime.now();
-                    int randomNum = (int) (Math.random() * 100);
-                    String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-                    fileService.uploadFile(file, fileName);
+                if (multipartFiles != null) {
+                    // 파일 업로드
+                    for (MultipartFile file : multipartFiles) {
+                        LocalDateTime date = LocalDateTime.now();
+                        int randomNum = (int) (Math.random() * 100);
+                        String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+                        fileService.uploadFile(file, fileName);
+                    }
                 }
+
                 postRepository.save(post);
             } else {
                 return response.fail("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
