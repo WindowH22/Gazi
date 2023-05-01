@@ -26,5 +26,7 @@ public class ResponsePostDto {
         private LocalDateTime createdAt;
         private String nickName;
         private Long hit;
+        private Long memberId;
+        private Boolean isLike;
     }
 }
