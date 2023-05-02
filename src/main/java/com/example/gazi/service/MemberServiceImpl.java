@@ -3,14 +3,18 @@ package com.example.gazi.service;
 import com.example.gazi.config.JwtTokenProvider;
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.Cart;
+import com.example.gazi.domain.Like;
 import com.example.gazi.domain.Member;
+import com.example.gazi.domain.Report;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.dto.ResponseMember.MemberInfo;
 import com.example.gazi.dto.ResponseToken;
 import com.example.gazi.repository.CartRepository;
+import com.example.gazi.repository.LikeRepository;
 import com.example.gazi.repository.MemberRepository;
+import com.example.gazi.repository.ReportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -39,6 +43,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
+    private final LikeRepository likeRepository;
+    private final ReportRepository reportRepository;
+
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder managerBuilder;
     private final PasswordEncoder passwordEncoder;
@@ -53,11 +60,15 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.save(member);
 
         // 회원가입과 동시에 키워드카트 생성
-        Cart cart = cartRepository.findByMemberId(member.getId());
-        if(cart == null){
-            cart = Cart.addCart(member);
-            cartRepository.save(cart);
-        }
+        cartRepository.save(Cart.addCart(member));
+
+        // 회원가입과 동시에 좋아요 리스트 생성
+        likeRepository.save(Like.addLike(member));
+
+        // 회원가입과 동시에 신고 리스트 생성
+        reportRepository.save(Report.addReport(member));
+
+
         return member;
     }
 
@@ -84,7 +95,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public ResponseEntity<Body> login(RequestMember.Login loginDto) {
-        if (memberRepository.findByEmail(loginDto.getEmail()).orElse(null) == null) {
+        Member member= memberRepository.findByEmail(loginDto.getEmail()).orElse(null);
+        if (member == null) {
             return response.fail("등록되지 않은 이메일입니다.", HttpStatus.UNAUTHORIZED);
         }
         // LoginDto email, password 를 기반으로 Authentication 객체 생성
@@ -96,7 +108,7 @@ public class MemberServiceImpl implements MemberService {
             // authenticate 메서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드 실행
             Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken); // 인증 정보를 기반으로 JWT 토큰 생성
             ResponseToken responseToken = jwtTokenProvider.generateToken(authentication);
-
+            responseToken.setMemberId(member.getId());
             // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
             redisTemplate.opsForValue()
                     .set("RT:" + authentication.getName(),

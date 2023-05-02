@@ -3,7 +3,6 @@ package com.example.gazi.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -34,6 +33,10 @@ public class Member extends AuditingFields {
     private Boolean isAgree;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Cart cart;
+    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private Like like;
+    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private Report report;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
