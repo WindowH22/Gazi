@@ -2,10 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
-import com.example.gazi.dto.RequestPostDto;
-import com.example.gazi.dto.Response;
-import com.example.gazi.dto.ResponseFilePostDto;
-import com.example.gazi.dto.ResponsePostDto;
+import com.example.gazi.dto.*;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +29,11 @@ public class PostServiceImpl implements PostService {
     private final KeywordPostRepository keywordPostRepository;
     private final FilePostRepository filePostRepository;
     private final FileRePostRepository fileRePostRepository;
+    private final LikePostRepository likePostRepository;
+    private final LikeRepository likeRepository;
     private final PostCartRepository postCartRepository;
+    private final ReportRepository reportRepository;
+    private final ReportPostRepository reportPostRepository;
     private final RePostRepository rePostRepository;
     private final Response response;
     private final FileService fileService;
@@ -196,6 +197,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public ResponseEntity<Response.Body> getPost(Long postId) {
         try {
+            Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
             List<RePost> rePosts = rePostRepository.findAllByPost(post);
             List<FilePost> filePosts = filePostRepository.findAllByPost(post);
@@ -230,6 +232,17 @@ public class PostServiceImpl implements PostService {
                 keywordIdList.add(keywordPost.getKeyword().getId());
             }
 
+            Like like = likeRepository.findByMemberId(member.getId()).orElseThrow(
+                    () -> new EntityNotFoundException()
+            );
+            boolean isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(),post.getId());
+
+            Report report = reportRepository.findByMemberId(member.getId()).orElseThrow(
+                    () -> new EntityNotFoundException("신고 테이블을 찾을 수 없습니다.")
+            );
+
+            boolean isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(),post.getId());
+
             // 조회수 증가
             if (post.getHit() == null) {
                 post.setHit(1L);
@@ -238,7 +251,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getPostDto responsePostDto = new ResponsePostDto.getPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit());
+            ResponsePostDto.getPostDto responsePostDto = new ResponsePostDto.getPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
