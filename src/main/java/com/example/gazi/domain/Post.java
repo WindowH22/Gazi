@@ -44,6 +44,16 @@ public class Post extends AuditingFields {
     @OrderBy("id desc") // 내림차순;
     private List<FilePost> filePosts;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"post"}) // 무한참조 방지
+    @OrderBy("id desc") // 내림차순;
+    private List<LikePost> likePosts;
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"post"}) // 무한참조 방지
+    @OrderBy("id desc") // 내림차순;
+    private List<ReportPost> reportPosts;
+
     @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
     private PostCart postCart;
 
