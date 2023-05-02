@@ -28,5 +28,6 @@ public class ResponsePostDto {
         private Long hit;
         private Long memberId;
         private Boolean isLike;
+        private Boolean isReport;
     }
 }
