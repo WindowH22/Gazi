@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/vi/like")
+@RequestMapping("/api/v1/like")
 public class LikeController {
 
     private final LikeService likeService;
 
     @PostMapping
-    public ResponseEntity<Body> LikePost(@RequestBody RequestLikeDto dto) {
+    public ResponseEntity<Body> likePost(@RequestBody RequestLikeDto dto) {
         return likeService.likePost(dto);
     }
 

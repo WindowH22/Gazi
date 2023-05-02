@@ -44,6 +44,10 @@ public class LikeServiceImpl implements LikeService {
                     () -> new EntityNotFoundException("좋아요 테이블을 찾을 수 없습니다.")
             );
 
+            if(likePostRepository.existsByLikeIdAndPostId(like.getId(),post.getId())){
+                return response.fail("이미 도움돼요 버튼을 누른 게시물입니다.",HttpStatus.UNAUTHORIZED);
+            }
+
             LikePost likePost = LikePost.addLikePost(like, post);
 
             likePostRepository.save(likePost);
