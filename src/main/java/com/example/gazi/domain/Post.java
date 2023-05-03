@@ -61,7 +61,7 @@ public class Post extends AuditingFields {
     @JsonIgnore
     private PostCart postCart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @JoinColumn(name = "HeadKeyword_id")
     private Keyword headKeyword; // 대표 키워드
