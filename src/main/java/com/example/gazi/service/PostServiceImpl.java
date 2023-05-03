@@ -251,11 +251,109 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getPostDto responsePostDto = new ResponsePostDto.getPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
+            ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport,post.getThumbNail());
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
-            return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
+            return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ResponseEntity<Response.Body> getPost() {
+        // 회원인지확인
+        try {
+            memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+            List<Post> postList = postRepository.findAll();
+            List<ResponsePostDto.getTopPostDto> postDtoList = new ArrayList<>();
+//
+//            for (Post post: postList){
+//                ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
+//            }
+
+            return response.success(postList);
+
+        }
+        catch (Exception e){
+            return response.fail(e.getMessage(),HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY,Pageable pageable) {
+        try {
+            memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+            // 지도 내에 추출한 postData
+            Page<Post> postList = postRepository.findAllByLocation(minLat,minLon,maxLat,maxLon, pageable);
+            System.out.println(postList.getTotalPages());
+
+
+
+            List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+
+
+
+            for (Post post : postList){
+                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post,getTime(post.getCreatedAt()),getDistance(curX,curY,post.getLatitude(),post.getLongitude()));
+                postDtoList.add(postDto);
+            }
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
+            Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end),pageRequest,postDtoList.size());
+
+            return response.success(postDtoPage);
+        }
+        catch (Exception e){
+            return response.fail(e.getMessage(),HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    // 거리 구하기 로직
+    public String getDistance(double lat1, double lon1, double lat2, double lon2) {
+        final Long EARTH_RADIUS = 6371L;
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat/2)* Math.sin(dLat/2)+ Math.cos(Math.toRadians(lat1))* Math.cos(Math.toRadians(lat2))* Math.sin(dLon/2)* Math.sin(dLon/2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double d =EARTH_RADIUS* c * 1000;    // Distance in m
+        String distance;
+
+        if(d>1000L){
+            d = d/1000;
+            distance = (int)d + "Km";
+        }else{
+            distance = (int)d + "m";
+        }
+        return distance;
+    }
+
+    // 시간 구하기 로직
+    private String getTime(LocalDateTime writeTime){
+
+        LocalDateTime nowDate= LocalDateTime.now();
+        Duration duration = Duration.between(writeTime,nowDate);
+        Long time = duration.getSeconds();
+        String formatTime;
+
+        if(time > 60 && time <= 3600){
+            // 분
+            time = time/60;
+            formatTime = time + "분 전";
+        } else if (time > 3600 && time<= 86400) {
+            time = time/(60*60);
+            formatTime = time + "시간 전";
+        } else if (time > 86400){
+            time = time/86400;
+            formatTime = time + "일 전";
+        }else{
+            formatTime = time + "초 전";
+        }
+
+        return formatTime;
     }
 }
