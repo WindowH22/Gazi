@@ -1,10 +1,9 @@
 package com.example.gazi.dto;
 
+import com.example.gazi.domain.Keyword;
+import com.example.gazi.domain.Post;
 import com.example.gazi.domain.RePost;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +14,7 @@ public class ResponsePostDto {
     @Setter
     @RequiredArgsConstructor
     @AllArgsConstructor
-    public static class getPostDto {
+    public static class getTopPostDto {
         private String title;
         private String placeName;
         private String content;
@@ -29,5 +28,40 @@ public class ResponsePostDto {
         private Long memberId;
         private Boolean isLike;
         private Boolean isReport;
+        private String thumbnail;
     }
-}
+
+
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class getPostDto {
+        private String title;
+        private String distance;
+        private String time;
+        private Long rePostCount;
+        private String content;
+        private Double latitude;
+        private Double longitude;
+        private Keyword headKeyword;
+        private String thumbNail;
+        private Long postId;
+
+        public static getPostDto toDto(Post post,String time, String distance){
+            return getPostDto.builder()
+                    .title(post.getTitle())
+                    .distance(distance)
+                    .time(time)
+                    .rePostCount(post.getRePosts().stream().count())
+                    .content(post.getContent())
+                    .latitude(post.getLatitude())
+                    .longitude(post.getLongitude())
+                    .headKeyword(post.getHeadKeyword())
+                    .thumbNail(post.getThumbNail())
+                    .postId(post.getId())
+                    .build();
+
+        }
+    }

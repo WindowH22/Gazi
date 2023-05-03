@@ -60,4 +60,16 @@ public class RequestPostDto {
         }
     }
 
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    public static class getPostDto {
+        Double minLat;
+        Double minLon;
+        Double maxLat;
+        Double maxLon;
+        Double curX;
+        Double curY;
+    }
+
 }
