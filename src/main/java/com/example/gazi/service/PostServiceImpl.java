@@ -2,18 +2,26 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
-import com.example.gazi.dto.*;
+import com.example.gazi.dto.RequestPostDto;
+import com.example.gazi.dto.Response;
+import com.example.gazi.dto.ResponseFilePostDto;
+import com.example.gazi.dto.ResponsePostDto;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -40,7 +48,7 @@ public class PostServiceImpl implements PostService {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
-    public ResponseEntity<Response.Body> addPost(RequestPostDto.addPostDto dto, List<MultipartFile> fileList) {
+    public ResponseEntity<Response.Body> addPost(RequestPostDto.addPostDto dto, List<MultipartFile> fileList, MultipartFile thumbnail) {
         Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
 
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
@@ -52,8 +60,10 @@ public class PostServiceImpl implements PostService {
         if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
             return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
         }
+        String uploadFileName = makeFileName(thumbnail);
+        String uploadFileUrl = fileService.uploadFile(thumbnail, uploadFileName);
         // 1.포스트 추가
-        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, member);
+        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadFileUrl, member);
         postRepository.save(post);
 
         // 포스트 생성과 동시에 포스트 키워드 카트 생성
@@ -81,10 +91,7 @@ public class PostServiceImpl implements PostService {
         // 3. 파일추가
         if (fileList != null) {
             for (MultipartFile file : fileList) {
-                LocalDateTime date = LocalDateTime.now();
-                int randomNum = (int) (Math.random() * 100);
-                String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-
+                String fileName = makeFileName(file);
                 FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
                 filePostRepository.save(filePost);
             }
@@ -93,6 +100,12 @@ public class PostServiceImpl implements PostService {
         return response.success("글 작성을 완료했습니다.");
     }
 
+    public String makeFileName(MultipartFile file) {
+        LocalDateTime date = LocalDateTime.now();
+        int randomNum = (int) (Math.random() * 100);
+        String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return fileName;
+    }
 
     @Transactional
     @Override
@@ -195,7 +208,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<Response.Body> getPost(Long postId) {
+    public ResponseEntity<Response.Body> getTopPost(Long postId) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
@@ -221,13 +234,13 @@ public class PostServiceImpl implements PostService {
 //            rePostDtos.add()
 //        }
 
-            List<Long> keywordIdList = new ArrayList<>();
             List<ResponseFilePostDto> fileList = new ArrayList<>();
             for (FilePost filePost : filePosts) {
                 ResponseFilePostDto filePostDto = new ResponseFilePostDto(filePost.getFileName(), filePost.getFileUrl());
                 fileList.add(filePostDto);
             }
 
+            List<Long> keywordIdList = new ArrayList<>();
             for (KeywordPost keywordPost : post.getPostCart().getKeywordPosts()) {
                 keywordIdList.add(keywordPost.getKeyword().getId());
             }
@@ -235,13 +248,13 @@ public class PostServiceImpl implements PostService {
             Like like = likeRepository.findByMemberId(member.getId()).orElseThrow(
                     () -> new EntityNotFoundException()
             );
-            boolean isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(),post.getId());
+            boolean isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(), post.getId());
 
             Report report = reportRepository.findByMemberId(member.getId()).orElseThrow(
                     () -> new EntityNotFoundException("신고 테이블을 찾을 수 없습니다.")
             );
 
-            boolean isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(),post.getId());
+            boolean isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(), post.getId());
 
             // 조회수 증가
             if (post.getHit() == null) {
@@ -251,7 +264,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport,post.getThumbNail());
+            ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(), post.getMember().getId(), isLike, isReport, post.getThumbNail());
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -274,40 +287,36 @@ public class PostServiceImpl implements PostService {
 
             return response.success(postList);
 
-        }
-        catch (Exception e){
-            return response.fail(e.getMessage(),HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY,Pageable pageable) {
+    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable) {
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             // 지도 내에 추출한 postData
-            Page<Post> postList = postRepository.findAllByLocation(minLat,minLon,maxLat,maxLon, pageable);
+            Page<Post> postList = postRepository.findAllByLocation(minLat, minLon, maxLat, maxLon, pageable);
             System.out.println(postList.getTotalPages());
-
 
 
             List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
 
-
-            for (Post post : postList){
-                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post,getTime(post.getCreatedAt()),getDistance(curX,curY,post.getLatitude(),post.getLongitude()));
+            for (Post post : postList) {
+                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()));
                 postDtoList.add(postDto);
             }
             int start = (int) pageRequest.getOffset();
             int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
-            Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end),pageRequest,postDtoList.size());
+            Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end), pageRequest, postDtoList.size());
 
             return response.success(postDtoPage);
-        }
-        catch (Exception e){
-            return response.fail(e.getMessage(),HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -318,39 +327,39 @@ public class PostServiceImpl implements PostService {
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
 
-        double a = Math.sin(dLat/2)* Math.sin(dLat/2)+ Math.cos(Math.toRadians(lat1))* Math.cos(Math.toRadians(lat2))* Math.sin(dLon/2)* Math.sin(dLon/2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double d =EARTH_RADIUS* c * 1000;    // Distance in m
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = EARTH_RADIUS * c * 1000;    // Distance in m
         String distance;
 
-        if(d>1000L){
-            d = d/1000;
-            distance = (int)d + "Km";
-        }else{
-            distance = (int)d + "m";
+        if (d > 1000L) {
+            d = d / 1000;
+            distance = (int) d + "Km";
+        } else {
+            distance = (int) d + "m";
         }
         return distance;
     }
 
     // 시간 구하기 로직
-    private String getTime(LocalDateTime writeTime){
+    private String getTime(LocalDateTime writeTime) {
 
-        LocalDateTime nowDate= LocalDateTime.now();
-        Duration duration = Duration.between(writeTime,nowDate);
+        LocalDateTime nowDate = LocalDateTime.now();
+        Duration duration = Duration.between(writeTime, nowDate);
         Long time = duration.getSeconds();
         String formatTime;
 
-        if(time > 60 && time <= 3600){
+        if (time > 60 && time <= 3600) {
             // 분
-            time = time/60;
+            time = time / 60;
             formatTime = time + "분 전";
-        } else if (time > 3600 && time<= 86400) {
-            time = time/(60*60);
+        } else if (time > 3600 && time <= 86400) {
+            time = time / (60 * 60);
             formatTime = time + "시간 전";
-        } else if (time > 86400){
-            time = time/86400;
+        } else if (time > 86400) {
+            time = time / 86400;
             formatTime = time + "일 전";
-        }else{
+        } else {
             formatTime = time + "초 전";
         }
 
