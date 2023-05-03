@@ -146,8 +146,14 @@ public class MemberServiceImpl implements MemberService {
             return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.NOT_FOUND);
         }
 
+        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
+        );
+
         // 새로운 토큰 생성
         ResponseToken tokenInfo = jwtTokenProvider.generateToken(authentication);
+        tokenInfo.setMemberId(member.getId());
+        tokenInfo.setNickName(member.getNickName());
 
         // RefreshToken Redis 업데이트
         redisTemplate.opsForValue()
