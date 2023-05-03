@@ -22,7 +22,7 @@ public class PostController {
 
     @PostMapping("/topPost")
     public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail) {
-        return postService.addPost(dto, files,thumbnail);
+        return postService.addPost(dto, files, thumbnail);
     }
 
     @GetMapping("/topPost")
@@ -34,8 +34,28 @@ public class PostController {
     public ResponseEntity<Body> updatePost(@RequestParam Long postId, @RequestPart RequestPostDto.updatePostDto dto, @RequestPart(required = false) List<MultipartFile> files) {
         return postService.updatePost(postId, dto, files);
     }
+
     @DeleteMapping("/topPost")
     public ResponseEntity<Body> deletePost(@RequestParam Long postId) {
         return postService.deletePost(postId);
     }
+
+    @GetMapping
+    public ResponseEntity<Body> getPost(@PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getPost();
+    }
+
+    @GetMapping("/locationPost")
+    public ResponseEntity<Body> getPostByLocation(
+            @RequestParam("minLat") Double minLat,
+            @RequestParam("minLon") Double minLon,
+            @RequestParam("maxLat") Double maxLat,
+            @RequestParam("maxLon") Double maxLon,
+            @RequestParam("curLat") Double curLat,
+            @RequestParam("curLon") Double curLon,
+            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getPostByLocation(minLat, minLon, maxLat, maxLon, curLat, curLon, pageable);
+    }
+
+
 }
