@@ -27,6 +27,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.gazi.service.FileServiceImpl.makeFileName;
+
 @RequiredArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
@@ -47,6 +49,7 @@ public class PostServiceImpl implements PostService {
     private final FileService fileService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
+
     @Override
     public ResponseEntity<Response.Body> addPost(RequestPostDto.addPostDto dto, List<MultipartFile> fileList, MultipartFile thumbnail) {
         Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
@@ -60,10 +63,9 @@ public class PostServiceImpl implements PostService {
         if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
             return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
         }
-        String uploadFileName = makeFileName(thumbnail);
-        String uploadFileUrl = fileService.uploadFile(thumbnail, uploadFileName);
+        String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
         // 1.포스트 추가
-        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadFileUrl, member);
+        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadThumbnailUrl, member);
         postRepository.save(post);
 
         // 포스트 생성과 동시에 포스트 키워드 카트 생성
@@ -91,20 +93,13 @@ public class PostServiceImpl implements PostService {
         // 3. 파일추가
         if (fileList != null) {
             for (MultipartFile file : fileList) {
-                String fileName = makeFileName(file);
-                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
+                String fileName = makeFileName("postFile");
+                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, makeFileName("postFile")), post);
                 filePostRepository.save(filePost);
             }
         }
 
         return response.success("글 작성을 완료했습니다.");
-    }
-
-    public String makeFileName(MultipartFile file) {
-        LocalDateTime date = LocalDateTime.now();
-        int randomNum = (int) (Math.random() * 100);
-        String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-        return fileName;
     }
 
     @Transactional
@@ -162,7 +157,7 @@ public class PostServiceImpl implements PostService {
                         LocalDateTime date = LocalDateTime.now();
                         int randomNum = (int) (Math.random() * 100);
                         String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-                        fileService.uploadFile(file, fileName);
+                        fileService.uploadFile(file, "postFile");
                     }
                 }
 

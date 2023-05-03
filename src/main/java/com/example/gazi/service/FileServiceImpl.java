@@ -2,7 +2,6 @@ package com.example.gazi.service;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -15,6 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +32,7 @@ public class FileServiceImpl implements FileService {
     private String secretkey;
 
     @Value("${cloud.aws.region.static}")
-    private Regions clientRegion;
+    private String clientRegion;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket; // 버킷 명
 
@@ -41,11 +43,18 @@ public class FileServiceImpl implements FileService {
         objectMetadata.setContentType(contentType);
     }
 
+    public static String makeFileName(String folder) {
+        LocalDateTime date = LocalDateTime.now();
+        int randomNum = (int) (Math.random() * 100);
+        String fileName = folder + "/" + randomNum + UUID.randomUUID() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return fileName;
+    }
+
     @Override
     public String uploadFile(MultipartFile file, String fileName) {
 
         try {
-            String fileUrl = "https://" + bucket + "/test" + fileName;
+            String fileUrl = "https://" + bucket + ".s3." + clientRegion + ".amazonaws.com/" + fileName;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
