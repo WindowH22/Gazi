@@ -165,7 +165,7 @@ public class PostServiceImpl implements PostService {
             } else {
                 return response.fail("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
-            return response.success("상위 게시글 업데이트 완료");
+            return response.success("글 수정을 완료 했습니다.");
         } catch (EntityNotFoundException e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -195,7 +195,7 @@ public class PostServiceImpl implements PostService {
                 return response.fail("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
 
-            return response.success("게시물 삭제 완료");
+            return response.success("글 삭제를 완료 했습니다.");
         } catch (EntityNotFoundException e) {
             return response.fail(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
         }
