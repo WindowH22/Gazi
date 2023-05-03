@@ -16,12 +16,13 @@ public class RequestPostDto {
         private String title;
         private String placeName;
         private String content;
+        private String thumbNail;
         private Double latitude;
         private Double longitude;
         private List<Long> keywordIdList;
         private Long headKeywordId;
 
-        public Post toEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword, Member member){
+        public Post toEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword,String thumbNail, Member member){
             return Post.builder()
                     .placeName(placeName)
                     .title(title)
@@ -29,6 +30,7 @@ public class RequestPostDto {
                     .latitude(latitude)
                     .longitude(longitude)
                     .headKeyword(headKeyword)
+                    .thumbNail(thumbNail)
                     .member(member)
                     .build();
         }
@@ -44,11 +46,12 @@ public class RequestPostDto {
         private Long headKeywordId;
         private List<String> deleteFileNameList;
 
-        public Post toEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword, Member member){
+        public Post toEntity(String placeName,String title, String content,String thumbNail, Double latitude, Double longitude, Keyword headKeyword, Member member){
             return Post.builder()
                     .placeName(placeName)
                     .title(title)
                     .content(content)
+                    .thumbNail(thumbNail)
                     .latitude(latitude)
                     .longitude(longitude)
                     .headKeyword(headKeyword)

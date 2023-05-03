@@ -39,6 +39,9 @@ public class Post extends AuditingFields {
     @Column
     private String placeName; // 장소명
 
+    @Column
+    private String thumbNail; // 썸네일
+
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"post"}) // 무한참조 방지
     @OrderBy("id desc") // 내림차순;
@@ -55,6 +58,7 @@ public class Post extends AuditingFields {
     private List<ReportPost> reportPosts;
 
     @OneToOne(mappedBy = "post", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private PostCart postCart;
 
     @ManyToOne(fetch = FetchType.LAZY)
