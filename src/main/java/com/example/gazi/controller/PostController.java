@@ -26,8 +26,8 @@ public class PostController {
     }
 
     @GetMapping("/topPost")
-    public ResponseEntity<Body> getTopPost(@RequestParam Long postId) {
-        return postService.getTopPost(postId);
+    public ResponseEntity<Body> getTopPost(@RequestParam Long postId, @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getTopPost(postId,pageable);
     }
 
     @PutMapping("/topPost")
@@ -42,7 +42,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<Body> getPost(@PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postService.getPost();
+        return postService.getPost(pageable);
     }
 
     @GetMapping("/locationPost")
