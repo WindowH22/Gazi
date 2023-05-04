@@ -26,7 +26,7 @@ public class Repost extends AuditingFields{
     @OrderBy("id desc") // 내림차순;
     private List<FileRepost> fileRePosts;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="POST_ID")
     private Post post;
 
