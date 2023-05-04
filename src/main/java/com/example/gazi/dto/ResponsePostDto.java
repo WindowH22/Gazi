@@ -15,13 +15,14 @@ public class ResponsePostDto {
     @RequiredArgsConstructor
     @AllArgsConstructor
     public static class getTopPostDto {
+        private Long userId;
         private String title;
         private String placeName;
         private String content;
         private List<Long> keywordIdList;
         private Long headKeywordId;
         private List<ResponseFilePostDto> fileUrlList;
-        private List<RePost> rePostList;
+        private Page<ResponseRepostDto> rePostList;
         private LocalDateTime createdAt;
         private String nickName;
         private Long hit;
