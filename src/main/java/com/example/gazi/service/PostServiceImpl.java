@@ -2,10 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
-import com.example.gazi.dto.RequestPostDto;
-import com.example.gazi.dto.Response;
-import com.example.gazi.dto.ResponseFilePostDto;
-import com.example.gazi.dto.ResponsePostDto;
+import com.example.gazi.dto.*;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,9 +52,6 @@ public class PostServiceImpl implements PostService {
 
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
 
-        if (fileList.size() > 10) {
-            return response.fail("파일은 10개까지 업로드가능합니다.", HttpStatus.BAD_REQUEST);
-        }
 
         if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
             return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
@@ -113,8 +106,6 @@ public class PostServiceImpl implements PostService {
 
 
             if (post.getMember().getId().equals(member.getId())) {
-
-
                 if (dto.getTitle() != null) post.setTitle(dto.getTitle());
                 if (dto.getPlaceName() != null) post.setPlaceName(dto.getPlaceName());
                 if (dto.getContent() != null) post.setContent(dto.getContent());
@@ -183,7 +174,6 @@ public class PostServiceImpl implements PostService {
                 List<FilePost> filePosts = filePostRepository.findAllByPostId(post.getId());
                 //s3 삭제
                 for (FilePost filePost : filePosts) {
-                    log.info("fileName: " + filePost.getFileName());
                     fileService.deleteFile(filePost.getFileName());
 
                 }
@@ -204,30 +194,35 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public ResponseEntity<Response.Body> getTopPost(Long postId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Response.Body> getTopPost(Long postId, Pageable pageable) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
-            List<RePost> rePosts = rePostRepository.findAllByPost(post);
+            Page<Repost> rePosts = rePostRepository.findAllByPost(post, pageable);
             List<FilePost> filePosts = filePostRepository.findAllByPost(post);
 
+            List<ResponseRepostDto> rePostList = new ArrayList<>();
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
-//        List<ResponseRePostDto> rePostDtos = new ArrayList<>();
-//        for(RePost rePost : rePosts){
-//            List<FileRePost> fileRePosts = fileRePostRepository.findAllByRePost(rePost);
-//            List<String> fileUrlList = new ArrayList<>();
-//            for(FileRePost fileRePost : fileRePosts){
-//                fileUrlList.add(fileRePost.getFileUrl());
-//            }
-//
-//            ResponseRePostDto rePostDto = new ResponseRePostDto(
-//                    rePost.getContent(),
-//                    fileUrlList,
-//                    rePost.getMember().getNickName(),
-//                    rePost.getC
-//            );
-//
-//            rePostDtos.add()
-//        }
+            for (Repost repost : rePosts) {
+                List<FileRepost> fileReposts = repost.getFileRePosts();
+                List<ResponseFileRepostDto> fileList = new ArrayList<>();
+
+                for (FileRepost fileRepost : fileReposts) {
+                    ResponseFileRepostDto dto = new ResponseFileRepostDto(fileRepost.getFileName(), fileRepost.getFileUrl());
+                    fileList.add(dto);
+                }
+                ResponseRepostDto rePostDto = new ResponseRepostDto(repost.getContent(), fileList, repost.getMember().getNickName(), getTime(repost.getCreatedAt()));
+                rePostList.add(rePostDto);
+            }
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min((start + pageRequest.getPageSize()), rePostList.size());
+            Page<ResponseRepostDto> postDtoPage = new PageImpl<>(rePostList.subList(start, end), pageRequest, rePostList.size());
+
 
             List<ResponseFilePostDto> fileList = new ArrayList<>();
             for (FilePost filePost : filePosts) {
