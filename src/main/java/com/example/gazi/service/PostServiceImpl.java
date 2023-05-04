@@ -87,7 +87,7 @@ public class PostServiceImpl implements PostService {
         if (fileList != null) {
             for (MultipartFile file : fileList) {
                 String fileName = makeFileName("postFile");
-                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, makeFileName("postFile")), post);
+                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
                 filePostRepository.save(filePost);
             }
         }
@@ -145,18 +145,17 @@ public class PostServiceImpl implements PostService {
                 if (multipartFiles != null) {
                     // 파일 업로드
                     for (MultipartFile file : multipartFiles) {
-                        LocalDateTime date = LocalDateTime.now();
-                        int randomNum = (int) (Math.random() * 100);
-                        String fileName = randomNum + file.getOriginalFilename() + date.format(DateTimeFormatter.ISO_LOCAL_DATE);
-                        fileService.uploadFile(file, "postFile");
+                        String fileName = makeFileName("postFile");
+                        FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
+                        filePostRepository.save(filePost);
                     }
                 }
-
                 postRepository.save(post);
+                return response.success("글 수정을 완료 했습니다.");
             } else {
                 return response.fail("수정 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
-            return response.success("글 수정을 완료 했습니다.");
+
         } catch (EntityNotFoundException e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -178,14 +177,11 @@ public class PostServiceImpl implements PostService {
 
                 }
                 postRepository.delete(post);
-                log.info("요기");
-
-
+                return response.success("글 삭제를 완료 했습니다.");
             } else {
                 return response.fail("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
 
-            return response.success("글 삭제를 완료 했습니다.");
         } catch (EntityNotFoundException e) {
             return response.fail(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
         }
@@ -264,15 +260,15 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<Response.Body> getPost() {
+    public ResponseEntity<Response.Body> getPost(Pageable pageable) {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             List<Post> postList = postRepository.findAll();
             List<ResponsePostDto.getTopPostDto> postDtoList = new ArrayList<>();
-//
+
 //            for (Post post: postList){
-//                ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, rePosts, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
+//                ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), post.getHeadKeyword().getId(), post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
 //            }
 
             return response.success(postList);
@@ -289,12 +285,9 @@ public class PostServiceImpl implements PostService {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             // 지도 내에 추출한 postData
             Page<Post> postList = postRepository.findAllByLocation(minLat, minLon, maxLat, maxLon, pageable);
-            System.out.println(postList.getTotalPages());
-
 
             List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-
 
             for (Post post : postList) {
                 ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()));

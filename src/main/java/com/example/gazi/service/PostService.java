@@ -5,6 +5,7 @@ import com.example.gazi.dto.RequestPostDto.addPostDto;
 import com.example.gazi.dto.Response.Body;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,7 +20,11 @@ public interface PostService {
 
     ResponseEntity<Body> getTopPost(Long postId);
 
-    ResponseEntity<Body> getPost();
+    ResponseEntity<Body> getTopPost(Long postId, Pageable pageable);
 
+    @Transactional(readOnly = true)
+    ResponseEntity<Body> getPost(Pageable pageable);
+
+    @Transactional(readOnly = true)
     ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable);
 }
