@@ -290,7 +290,7 @@ public class PostServiceImpl implements PostService {
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
 
             for (Post post : postList) {
-                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()));
+                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
                 postDtoList.add(postDto);
             }
             int start = (int) pageRequest.getOffset();
@@ -348,4 +348,14 @@ public class PostServiceImpl implements PostService {
 
         return formatTime;
     }
+
+    // 내용 축약
+    public String contentSummary(String content){
+        if(content.length() > 45){
+            return content.substring(0,46);
+        }else{
+            return content;
+        }
+    }
+
 }

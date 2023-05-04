@@ -50,13 +50,13 @@ public class ResponsePostDto {
         private String thumbNail;
         private Long postId;
 
-        public static getPostDto toDto(Post post, String time, String distance) {
+        public static getPostDto toDto(Post post, String time, String distance,String content) {
             return getPostDto.builder()
                     .title(post.getTitle())
                     .distance(distance)
                     .time(time)
                     .rePostCount(post.getRePosts().stream().count())
-                    .content(post.getContent())
+                    .content(content)
                     .latitude(post.getLatitude())
                     .longitude(post.getLongitude())
                     .headKeyword(post.getHeadKeyword())
