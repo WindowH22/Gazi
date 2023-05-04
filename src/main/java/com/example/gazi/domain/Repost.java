@@ -2,20 +2,18 @@ package com.example.gazi.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = " REPOST")
 @Entity
-public class RePost extends AuditingFields{
+public class Repost extends AuditingFields{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,10 +21,10 @@ public class RePost extends AuditingFields{
     @Column(nullable = true)
     private String content;
 
-    @OneToMany(mappedBy = "rePost", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "repost", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"rePost"}) // 무한참조 방지
     @OrderBy("id desc") // 내림차순;
-    private List<FileRePost> fileRePosts;
+    private List<FileRepost> fileRePosts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="POST_ID")
