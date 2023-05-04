@@ -2,8 +2,8 @@ package com.example.gazi.dto;
 
 import com.example.gazi.domain.Keyword;
 import com.example.gazi.domain.Post;
-import com.example.gazi.domain.RePost;
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,7 +50,7 @@ public class ResponsePostDto {
         private String thumbNail;
         private Long postId;
 
-        public static getPostDto toDto(Post post,String time, String distance){
+        public static getPostDto toDto(Post post, String time, String distance) {
             return getPostDto.builder()
                     .title(post.getTitle())
                     .distance(distance)
