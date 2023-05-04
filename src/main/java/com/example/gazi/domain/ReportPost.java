@@ -24,7 +24,7 @@ public class ReportPost {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repost_id")
     @JsonIgnore
-    private Repost rePost;
+    private Repost repost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "report_id")
@@ -37,10 +37,10 @@ public class ReportPost {
         return reportPost;
     }
 
-    public static ReportPost addReportPost(Report report, Repost rePost) {
+    public static ReportPost addReportRepost(Report report, Repost repost) {
         ReportPost reportPost = new ReportPost();
         reportPost.setReport(report);
-        reportPost.setRePost(rePost);
+        reportPost.setRepost(repost);
         return reportPost;
     }
 }
