@@ -24,7 +24,7 @@ public class LikePost {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repost_id")
     @JsonIgnore
-    private RePost rePost;
+    private Repost rePost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "like_id")
