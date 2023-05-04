@@ -24,7 +24,7 @@ public class LikePost {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repost_id")
     @JsonIgnore
-    private Repost rePost;
+    private Repost repost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "like_id")
@@ -34,6 +34,13 @@ public class LikePost {
         LikePost likePost = new LikePost();
         likePost.setLike(like);
         likePost.setPost(post);
+        return likePost;
+    }
+
+    public static LikePost addLikePost(Like like, Repost repost) {
+        LikePost likePost = new LikePost();
+        likePost.setLike(like);
+        likePost.setRepost(repost);
         return likePost;
     }
 }
