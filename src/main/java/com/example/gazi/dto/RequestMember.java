@@ -63,6 +63,7 @@ public class RequestMember {
 
     @Getter
     public static class NickName{
+        @Pattern(regexp = "^[A-Za-z0-9가-힣]{1,7}$") // 7글자 수정 영어 소문자, 대문자,번호, 한글(ㄱ,ㄴ,ㄷ 같은형식 입력불가능)
         private String nickName;
     }
 
