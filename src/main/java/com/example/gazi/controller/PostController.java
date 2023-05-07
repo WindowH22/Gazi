@@ -53,8 +53,9 @@ public class PostController {
             @RequestParam("maxLon") Double maxLon,
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
+            @RequestParam("isNearSearch") Boolean isNearSearch,
             @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postService.getPostByLocation(minLat, minLon, maxLat, maxLon, curLat, curLon, pageable);
+        return postService.getPostByLocation(minLat, minLon, maxLat, maxLon, curLat, curLon, pageable, isNearSearch);
     }
 
 

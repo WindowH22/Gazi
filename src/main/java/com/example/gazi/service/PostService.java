@@ -23,8 +23,5 @@ public interface PostService {
     ResponseEntity<Body> getTopPost(Long postId, Pageable pageable);
 
     @Transactional(readOnly = true)
-    ResponseEntity<Body> getPost(Pageable pageable);
-
-    @Transactional(readOnly = true)
-    ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable);
+    ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch);
 }

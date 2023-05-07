@@ -280,11 +280,18 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable) {
+    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch) {
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             // 지도 내에 추출한 postData
-            Page<Post> postList = postRepository.findAllByLocation(minLat, minLon, maxLat, maxLon, pageable);
+            Page<Post> postList;
+            if (isNearSearch) {
+                postList = findBy5km(curX, curY, pageable);
+            } else {
+                postList = postRepository.findAllByLocation(minLat, minLon, maxLat, maxLon, pageable);
+            }
+
+            Page<ResponsePostDto.getPostDto> postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
 
             List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
@@ -322,6 +329,25 @@ public class PostServiceImpl implements PostService {
             distance = (int) d + "m";
         }
         return distance;
+    }
+
+    // 현재 위치에서 5km 찾는 로직
+    public Page<Post> findBy5km(double nowLatitude, double nowLongitude, Pageable pageable) {
+        final Long EARTH_RADIUS = 6371L;
+        //m당 y 좌표 이동 값
+        double mForLatitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180))) / 1000;
+        //m당 x 좌표 이동 값
+        double mForLongitude = (1 / (EARTH_RADIUS * 1 * (Math.PI / 180) * Math.cos(Math.toRadians(nowLatitude)))) / 1000;
+
+        //현재 위치 기준 검색 거리 좌표
+        double maxY = nowLatitude + (5000L * mForLatitude);
+        double minY = nowLatitude - (5000L * mForLatitude);
+        double maxX = nowLongitude + (5000L * mForLongitude);
+        double minX = nowLongitude - (5000L * mForLongitude);
+
+        System.out.println(getDistance(minY, minX, maxY, maxX));
+
+        return postRepository.findAllByLocation(minY, minX, maxY, maxX, pageable);
     }
 
     // 시간 구하기 로직
