@@ -109,6 +109,7 @@ public class MemberServiceImpl implements MemberService {
             Authentication authentication = managerBuilder.getObject().authenticate(authenticationToken); // 인증 정보를 기반으로 JWT 토큰 생성
             ResponseToken responseToken = jwtTokenProvider.generateToken(authentication);
             responseToken.setMemberId(member.getId());
+            responseToken.setNickName(member.getNickName());
             // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
             redisTemplate.opsForValue()
                     .set("RT:" + authentication.getName(),
