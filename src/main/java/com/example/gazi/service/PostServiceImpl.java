@@ -8,10 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -77,9 +74,7 @@ public class PostServiceImpl implements PostService {
                 return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
             }
 
-            log.info(keyword.getId() + "");
             KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
-
             keywordPostRepository.save(keywordPost);
         }
 
@@ -264,7 +259,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getMember().getId(), post.getTitle(), post.getPlaceName(), post.getContent(), keywordIdList, post.getHeadKeyword().getId(), fileList, postDtoPage, post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(), post.getMember().getId(), isLike, isReport, post.getThumbNail());
+            ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getMember().getId(), post.getTitle(), postList.size(), post.getPlaceName(), post.getHeadKeyword().getId(), postDtoPage, post.getHit());
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -353,8 +348,6 @@ public class PostServiceImpl implements PostService {
         double minY = nowLatitude - (5000L * mForLatitude);
         double maxX = nowLongitude + (5000L * mForLongitude);
         double minX = nowLongitude - (5000L * mForLongitude);
-
-        System.out.println(getDistance(minY, minX, maxY, maxX));
 
         return postRepository.findAllByLocation(minY, minX, maxY, maxX, pageable);
     }
