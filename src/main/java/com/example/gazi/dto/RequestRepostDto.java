@@ -13,13 +13,17 @@ public class RequestRepostDto {
     public static class addDto {
         private Long postId;
         private String content;
+        private Double latitude;
+        private Double longitude;
+        private List<Long> keywordIdList;
 
-
-        public Repost toEntity(Post post, String content, Member member) {
+        public Repost toEntity(Post post, String content, Member member,Double latitude,Double longitude, List<Long> keywordIdList) {
             return Repost.builder()
                     .content(content)
                     .post(post)
                     .member(member)
+                    .latitude(latitude)
+                    .longitude(longitude)
                     .build();
         }
 
