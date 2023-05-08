@@ -5,9 +5,6 @@ import com.example.gazi.domain.Post;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 public class ResponsePostDto {
 
     @Getter
@@ -17,19 +14,11 @@ public class ResponsePostDto {
     public static class getTopPostDto {
         private Long userId;
         private String title;
+        private int rePostCount;
         private String placeName;
-        private String content;
-        private List<Long> keywordIdList;
         private Long headKeywordId;
-        private List<ResponseFilePostDto> fileUrlList;
-        private Page<ResponseRepostDto> rePostList;
-        private LocalDateTime createdAt;
-        private String nickName;
+        private Page<ResponsePostListDto> postList;
         private Long hit;
-        private Long memberId;
-        private Boolean isLike;
-        private Boolean isReport;
-        private String thumbnail;
     }
 
 
