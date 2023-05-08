@@ -71,9 +71,12 @@ public class MemberController {
     }
 
 
-    @GetMapping("/check-nickname")
-    public ResponseEntity<Body> checkNickName(@RequestParam String nickName) {
-        return memberService.checkNickName(nickName);
+    @PostMapping("/check-nickname")
+    public ResponseEntity<Body> checkNickName(@RequestBody @Valid NickName nickName, Errors errors) throws Exception {
+        if (errors.hasErrors()) {
+            return memberService.validateHandling(errors);
+        }
+        return memberService.checkNickName(nickName.getNickName());
     }
 
     @GetMapping("/myKeyword")
