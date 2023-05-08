@@ -297,21 +297,26 @@ public class PostServiceImpl implements PostService {
 
             Page<ResponsePostDto.getPostDto> postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
 
-            List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
-            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-
-            for (Post post : postList) {
-                ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
-                postDtoList.add(postDto);
-            }
-            int start = (int) pageRequest.getOffset();
-            int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
-            Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end), pageRequest, postDtoList.size());
-
             return response.success(postDtoPage);
         } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    // post dto 페이지 로직
+    public Page<ResponsePostDto.getPostDto> getPostDtoPage(Double curX, Double curY, Pageable pageable, Page<Post> postList) {
+        List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
+
+        for (Post post : postList) {
+            ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
+            postDtoList.add(postDto);
+        }
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
+        Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end), pageRequest, postDtoList.size());
+
+        return postDtoPage;
     }
 
     // 거리 구하기 로직
