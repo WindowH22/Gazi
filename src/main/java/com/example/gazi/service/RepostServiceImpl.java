@@ -1,16 +1,10 @@
 package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
-import com.example.gazi.domain.FileRepost;
-import com.example.gazi.domain.Member;
-import com.example.gazi.domain.Post;
-import com.example.gazi.domain.Repost;
+import com.example.gazi.domain.*;
 import com.example.gazi.dto.RequestRepostDto;
 import com.example.gazi.dto.Response;
-import com.example.gazi.repository.FileRePostRepository;
-import com.example.gazi.repository.MemberRepository;
-import com.example.gazi.repository.PostRepository;
-import com.example.gazi.repository.RePostRepository;
+import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +25,9 @@ public class RepostServiceImpl implements RepostService {
     private final RePostRepository rePostRepository;
     private final FileService fileService;
     private final FileRePostRepository fileRePostRepository;
+    private final RepostCartRepository repostCartRepository;
+    private final KeywordRepository keywordRepository;
+    private final KeywordRepostRepository keywordRepostRepository;
     private final Response response;
 
     @Override
@@ -42,8 +39,27 @@ public class RepostServiceImpl implements RepostService {
 
         Post post = postRepository.getReferenceById(dto.getPostId());
 
-        Repost repost = dto.toEntity(post, dto.getContent(), member);
+        Repost repost = dto.toEntity(post, dto.getContent(), member,dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
         rePostRepository.save(repost);
+
+        // 키워드 카트 생성
+        RepostCart repostCart = repostCartRepository.findByRepost(repost);
+        if (repostCart == null) {
+            repostCart = RepostCart.addCart(repost);
+            repostCartRepository.save(repostCart);
+        }
+
+        // 키워드 추가
+        for(Long keywordId : dto.getKeywordIdList()){
+            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+            if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
+                return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
+            }
+
+            KeywordRepost keywordRepost = KeywordRepost.addKeywordRepost(repostCart, keyword);
+            keywordRepostRepository.save(keywordRepost);
+        }
 
         // 파일 추가
         if (fileList != null) {
