@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 public class Keyword {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     // 교통수단 or 이슈
     @Enumerated(EnumType.STRING)
