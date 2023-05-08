@@ -18,7 +18,7 @@ public interface PostService {
 
     ResponseEntity<Body> deletePost(Long postId);
 
-    ResponseEntity<Body> getTopPost(Long postId);
+    ResponseEntity<Body> getTopPost(Double curX, Double curY, Long postId, Pageable pageable);
 
     ResponseEntity<Body> getTopPost(Long postId, Pageable pageable);
 

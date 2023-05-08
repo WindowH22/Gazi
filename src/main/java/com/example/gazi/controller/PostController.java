@@ -26,8 +26,11 @@ public class PostController {
     }
 
     @GetMapping("/topPost")
-    public ResponseEntity<Body> getTopPost(@RequestParam Long postId, @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postService.getTopPost(postId,pageable);
+    public ResponseEntity<Body> getTopPost(
+            @RequestParam Double curX,
+            @RequestParam Double curY,
+            @RequestParam Long postId, @PageableDefault(page = 0, size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getTopPost(curX, curY, postId, pageable);
     }
 
     @PutMapping("/topPost")

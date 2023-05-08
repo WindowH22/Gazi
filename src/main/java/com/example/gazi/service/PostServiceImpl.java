@@ -189,58 +189,72 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public ResponseEntity<Response.Body> getTopPost(Long postId) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Response.Body> getTopPost(Long postId, Pageable pageable) {
+    //글 상세보기
+    public ResponseEntity<Response.Body> getTopPost(Double curX, Double curY, Long postId, Pageable pageable) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
-            Page<Repost> rePosts = rePostRepository.findAllByPost(post, pageable);
-            List<FilePost> filePosts = filePostRepository.findAllByPost(post);
-
-            List<ResponseRepostDto> rePostList = new ArrayList<>();
-            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-
-            for (Repost repost : rePosts) {
-                List<FileRepost> fileReposts = repost.getFileRePosts();
-                List<ResponseFileRepostDto> fileList = new ArrayList<>();
-
-                for (FileRepost fileRepost : fileReposts) {
-                    ResponseFileRepostDto dto = new ResponseFileRepostDto(fileRepost.getFileName(), fileRepost.getFileUrl());
-                    fileList.add(dto);
-                }
-                ResponseRepostDto rePostDto = new ResponseRepostDto(repost.getContent(), fileList, repost.getMember().getNickName(), getTime(repost.getCreatedAt()));
-                rePostList.add(rePostDto);
-            }
-            int start = (int) pageRequest.getOffset();
-            int end = Math.min((start + pageRequest.getPageSize()), rePostList.size());
-            Page<ResponseRepostDto> postDtoPage = new PageImpl<>(rePostList.subList(start, end), pageRequest, rePostList.size());
-
-
-            List<ResponseFilePostDto> fileList = new ArrayList<>();
-            for (FilePost filePost : filePosts) {
-                ResponseFilePostDto filePostDto = new ResponseFilePostDto(filePost.getFileName(), filePost.getFileUrl());
-                fileList.add(filePostDto);
-            }
 
             List<Long> keywordIdList = new ArrayList<>();
             for (KeywordPost keywordPost : post.getPostCart().getKeywordPosts()) {
                 keywordIdList.add(keywordPost.getKeyword().getId());
             }
 
+            // 도움돼요
             Like like = likeRepository.findByMemberId(member.getId()).orElseThrow(
                     () -> new EntityNotFoundException()
             );
+
+            Long likeCount = likePostRepository.countByPost(post);
+
             boolean isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(), post.getId());
 
+            // 신고하기
             Report report = reportRepository.findByMemberId(member.getId()).orElseThrow(
                     () -> new EntityNotFoundException("신고 테이블을 찾을 수 없습니다.")
             );
-
             boolean isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(), post.getId());
+
+            // 답글
+            Page<Repost> rePosts = rePostRepository.findAllByPost(post, pageable);
+            List<FilePost> filePosts = filePostRepository.findAllByPost(post);
+            List<ResponsePostListDto> postList = new ArrayList<>();
+
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
+
+            List<ResponseFileDto> fileList = new ArrayList<>();
+
+            for (FilePost filePost : filePosts) {
+                ResponseFileDto filePostDto = new ResponseFileDto(filePost.getFileName(), filePost.getFileUrl());
+                fileList.add(filePostDto);
+            }
+
+            for (Repost repost : rePosts) {
+                List<FileRepost> fileReposts = repost.getFileRePosts();
+                fileList.clear();
+                likeCount = likePostRepository.countByRepost(repost);
+                keywordIdList.clear();
+                for (KeywordRepost keywordRepost : repost.getRepostCart().getKeywordReposts()) {
+                    keywordIdList.add(keywordRepost.getKeyword().getId());
+                }
+
+                isLike = likePostRepository.existsByLikeIdAndRepostId(like.getId(), repost.getId());
+                // 신고하기
+                isReport = reportPostRepository.existsByReportIdAndRepostId(report.getId(), repost.getId());
+
+                for (FileRepost fileRepost : fileReposts) {
+                    ResponseFileDto dto = new ResponseFileDto(fileRepost.getFileName(), fileRepost.getFileUrl());
+                    fileList.add(dto);
+                }
+                ResponsePostListDto rePostDto = ResponsePostListDto.toDto(repost, getTime(repost.getCreatedAt()), getDistance(curX, curY, repost.getLatitude(), repost.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList);
+                postList.add(rePostDto);
+            }
+
+            postList.add(ResponsePostListDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList));
+
+            int start = (int) pageRequest.getOffset();
+            int end = Math.min((start + pageRequest.getPageSize()), postList.size());
+            Page<ResponsePostListDto> postDtoPage = new PageImpl<>(postList.subList(start, end), pageRequest, postList.size());
 
             // 조회수 증가
             if (post.getHit() == null) {
