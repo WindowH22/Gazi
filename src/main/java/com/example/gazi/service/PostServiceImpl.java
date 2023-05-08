@@ -383,10 +383,10 @@ public class PostServiceImpl implements PostService {
     }
 
     // 내용 축약
-    public String contentSummary(String content){
-        if(content.length() > 45){
-            return content.substring(0,46);
-        }else{
+    public String contentSummary(String content) {
+        if (content.length() > 45) {
+            return content.substring(0, 46);
+        } else {
             return content;
         }
     }
