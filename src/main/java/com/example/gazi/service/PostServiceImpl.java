@@ -272,21 +272,16 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<Response.Body> getPost(Pageable pageable) {
+    // 커뮤 전체글 리스트
+    public ResponseEntity<Response.Body> getPost(Double curX, Double curY, Pageable pageable) {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-            List<Post> postList = postRepository.findAll();
-            List<ResponsePostDto.getTopPostDto> postDtoList = new ArrayList<>();
+            Page<Post> postList = postRepository.findAll(pageable);
+            Page<ResponsePostDto.getPostDto> postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
 
-//            for (Post post: postList){
-//                ResponsePostDto.getTopPostDto responsePostDto = new ResponsePostDto.getTopPostDto(post.getTitle(), post.getPlaceName(), post.getContent(), post.getHeadKeyword().getId(), post.getMember().getCreatedAt(), post.getMember().getNickName(), post.getHit(),post.getMember().getId(),isLike,isReport);
-//            }
-
-            return response.success(postList);
-
+            return response.success(postDtoPage);
         } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }

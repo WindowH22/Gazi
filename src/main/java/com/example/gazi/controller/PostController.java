@@ -43,9 +43,12 @@ public class PostController {
         return postService.deletePost(postId);
     }
 
-    @GetMapping
-    public ResponseEntity<Body> getPost(@PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postService.getPost(pageable);
+    @GetMapping("/topPostList") // 커뮤 전체 게시글 조회
+    public ResponseEntity<Body> getPost(
+            @RequestParam("curLat") Double curLat,
+            @RequestParam("curLon") Double curLon,
+            @PageableDefault(page = 0, size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return postService.getPost(curLat, curLon, pageable);
     }
 
     @GetMapping("/locationPost")
