@@ -2,8 +2,11 @@ package com.example.gazi.dto;
 
 import com.example.gazi.domain.Keyword;
 import com.example.gazi.domain.Post;
+import com.example.gazi.domain.Repost;
 import lombok.*;
 import org.springframework.data.domain.Page;
+
+import java.time.LocalDateTime;
 
 public class ResponsePostDto {
 
@@ -53,6 +56,42 @@ public class ResponsePostDto {
                     .postId(post.getId())
                     .build();
 
+        }
+    }
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class getMyPostDto{
+        Long postCount;
+        Page<getPostDto> postDtoPage;
+    }
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class getMyRepostDto{
+        Long repostCount;
+        Page<myRepost> repostListPage;
+    }
+    @Getter
+    @Setter
+    @RequiredArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class myRepost {
+        String title;
+        String content; // 회원님이 "" 사건에 댓글을 남겼습니다.
+        LocalDateTime createTime;
+
+        public static myRepost toDto(Repost repost){
+            return  myRepost.builder()
+                    .title(repost.getContent())
+                    .content(repost.getPost().getTitle())
+                    .createTime(repost.getCreatedAt())
+                    .build();
         }
     }
 

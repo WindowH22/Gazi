@@ -64,5 +64,14 @@ public class PostController {
         return postService.getPostByLocation(minLat, minLon, maxLat, maxLon, curLat, curLon, pageable, isNearSearch);
     }
 
+    @GetMapping("/myPost")
+    public ResponseEntity<Body> getMyPost(
+            @RequestParam("curLat") Double curLat,
+            @RequestParam("curLon") Double curLon,
+            @RequestParam("isPost") Boolean isPost,
+            @PageableDefault(page = 0, size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable)
+    {
+        return postService.getMyPost(curLat,curLon,pageable,isPost);
+    }
 
 }

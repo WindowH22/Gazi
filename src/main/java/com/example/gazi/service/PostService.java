@@ -22,6 +22,9 @@ public interface PostService {
 
     ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable);
 
+    // 내가 작성한 글
+    ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost);
+
     @Transactional(readOnly = true)
     ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch);
 }

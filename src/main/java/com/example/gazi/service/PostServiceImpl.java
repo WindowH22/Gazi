@@ -282,6 +282,44 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    // 내가 작성한 글
+    @Override
+    public ResponseEntity<Response.Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost) {
+        try{
+            Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+            Page<ResponsePostDto.getPostDto> postDtoPage;
+            Long postCount;
+            if(isPost){
+                Page<Post> postList = postRepository.findAllByMember(member,pageable);
+                postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
+                postCount = postList.getTotalElements();
+                ResponsePostDto.getMyPostDto myPostDto = new ResponsePostDto.getMyPostDto(postCount,postDtoPage);
+                return response.success(myPostDto);
+            }else{
+                // 답글 단 글
+                Page<Repost> repostList = rePostRepository.findAllByMember(member,pageable);
+                PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
+                List<ResponsePostDto.myRepost> repostDtoList = new ArrayList<>();
+
+                for (Repost repost : repostList) {
+                    ResponsePostDto.myRepost myRepost = ResponsePostDto.myRepost.toDto(repost);
+                    repostDtoList.add(myRepost);
+                }
+                int start = (int) pageRequest.getOffset();
+                int end = Math.min((start + pageRequest.getPageSize()), repostDtoList.size());
+                Page<ResponsePostDto.myRepost> repostDtoPage = new PageImpl<>(repostDtoList.subList(start, end), pageRequest, repostDtoList.size());
+
+                postCount = repostList.getTotalElements();
+                ResponsePostDto.getMyRepostDto myRepostDtoList = new ResponsePostDto.getMyRepostDto(postCount,repostDtoPage);
+                return response.success(myRepostDtoList);
+            }
+
+
+        }catch (Exception e){
+            return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @Transactional(readOnly = true)
     @Override
     public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch) {
