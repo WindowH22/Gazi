@@ -1,5 +1,6 @@
 package com.example.gazi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,10 +17,19 @@ import java.util.List;
 public class Repost extends AuditingFields{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String content;
+
+    @Column
+    private Double latitude;
+    @Column
+    private Double longitude;
+
+    @OneToOne(mappedBy = "repost", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private RepostCart repostCart;
 
     @OneToMany(mappedBy = "repost", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"rePost"}) // 무한참조 방지
