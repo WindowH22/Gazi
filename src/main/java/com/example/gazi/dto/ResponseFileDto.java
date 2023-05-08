@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResponseFilePostDto {
+public class ResponseFileDto {
 
     private String fileName;
     private String fileUrl;
