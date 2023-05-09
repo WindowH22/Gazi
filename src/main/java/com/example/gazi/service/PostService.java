@@ -20,7 +20,10 @@ public interface PostService {
 
     ResponseEntity<Body> getTopPost(Double curX, Double curY, Long postId, Pageable pageable);
 
-    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable);
+//    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable);
+
+    // 커뮤 전체글 리스트
+    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId);
 
     // 내가 작성한 글
     ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost);

@@ -269,11 +269,37 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // 커뮤 전체글 리스트
-    public ResponseEntity<Response.Body> getPost(Double curX, Double curY, Pageable pageable) {
+    public ResponseEntity<Response.Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-            Page<Post> postList = postRepository.findAll(pageable);
+            Page<Post> postList;
+            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
+            //TODO: 지연시간에 따라 자동 업데이트 쳐줘야 함
+
+            // 전체글인지 키워드 글인지 확인
+            if(keywordId != null){
+                Page<KeywordPost>  keywordPostPage = keywordPostRepository.findAllByKeywordId(keywordId,pageable);
+                List<Post> keywordPostList = new ArrayList<>();
+
+                for(KeywordPost keywordPost : keywordPostPage.getContent()){
+                    keywordPostList.add(keywordPost.getPostCart().getPost());
+                }
+
+                List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
+
+                for (Post post : keywordPostList) {
+                    ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
+                    postDtoList.add(postDto);
+                }
+                int start = (int) pageRequest.getOffset();
+                int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
+                Page<ResponsePostDto.getPostDto> postDtoPage = new PageImpl<>(postDtoList.subList(start, end), pageRequest, postDtoList.size());
+
+                return response.success(postDtoPage);
+            }
+
+            postList = postRepository.findAll(pageable);
             Page<ResponsePostDto.getPostDto> postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
 
             return response.success(postDtoPage);
