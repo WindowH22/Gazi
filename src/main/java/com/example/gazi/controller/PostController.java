@@ -20,12 +20,12 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("/topPost")
+    @PostMapping("/top-post")
     public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail) {
         return postService.addPost(dto, files, thumbnail);
     }
 
-    @GetMapping("/topPost")
+    @GetMapping("/top-post")
     public ResponseEntity<Body> getTopPost(
             @RequestParam Double curX,
             @RequestParam Double curY,
@@ -33,12 +33,12 @@ public class PostController {
         return postService.getTopPost(curX, curY, postId, pageable);
     }
 
-    @PutMapping("/topPost")
+    @PutMapping("/top-post")
     public ResponseEntity<Body> updatePost(@RequestParam Long postId, @RequestPart RequestPostDto.updatePostDto dto, @RequestPart(required = false) List<MultipartFile> files) {
         return postService.updatePost(postId, dto, files);
     }
 
-    @DeleteMapping("/topPost")
+    @DeleteMapping("/top-post")
     public ResponseEntity<Body> deletePost(@RequestParam Long postId) {
         return postService.deletePost(postId);
     }

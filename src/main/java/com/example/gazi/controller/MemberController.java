@@ -79,7 +79,7 @@ public class MemberController {
         return memberService.checkNickName(nickName.getNickName());
     }
 
-    @GetMapping("/myKeyword")
+    @GetMapping("/my-keyword")
     public ResponseEntity<Body> myKeyword() {
         return keywordService.myKeywordList();
     }
