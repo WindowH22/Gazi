@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RequiredArgsConstructor
+@CrossOrigin
 @RequestMapping("/api/v1/post")
 @RestController
 public class PostController {
@@ -47,8 +48,9 @@ public class PostController {
     public ResponseEntity<Body> getPost(
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
+            @RequestParam("keywordId") Long keywordId,
             @PageableDefault(page = 0, size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        return postService.getPost(curLat, curLon, pageable);
+        return postService.getPost(curLat, curLon, pageable,keywordId);
     }
 
     @GetMapping("/locationPost")
