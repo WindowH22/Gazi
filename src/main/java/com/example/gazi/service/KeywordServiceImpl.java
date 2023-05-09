@@ -46,9 +46,11 @@ public class KeywordServiceImpl implements KeywordService{
 
                 if(keywordCartRepository.existsByCartAndKeyword(cart,keyword)) {
                     existErrors.add(keyword.getKeywordName());
+
+                }else{
+                    KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
+                    keywordCartRepository.save(keywordCart);
                 }
-                KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
-                keywordCartRepository.save(keywordCart);
             }
 
             if(existErrors.size() > 0 ){
