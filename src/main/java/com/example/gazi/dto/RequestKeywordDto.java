@@ -6,6 +6,8 @@ import com.example.gazi.domain.Vehicle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
 public class RequestKeywordDto {
@@ -40,5 +42,11 @@ public class RequestKeywordDto {
         this.keywordEnum = keywordEnum;
         this.vehicle = vehicle;
         this.keywordName = keywordName;
+    }
+
+    @Getter
+    public static class updateKeywordDto {
+        List<Long> addKeywordIdList;
+        List<Long> deleteKeywordIdList;
     }
 }

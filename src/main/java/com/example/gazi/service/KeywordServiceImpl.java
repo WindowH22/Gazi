@@ -93,6 +93,42 @@ public class KeywordServiceImpl implements KeywordService{
         return response.success(myKeyword());
     }
 
+    @Override
+    public ResponseEntity<Body> updateInterestKeyword(RequestKeywordDto.updateKeywordDto updateKeywordDto) {
+        try{
+            Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                    () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")
+            );
+            Cart cart = cartRepository.findByMemberId(member.getId());
+            List<Long> deleteKeywordIdList = updateKeywordDto.getDeleteKeywordIdList();
+            List<String> existErrors = new ArrayList<>();
+            // 삭제
+            for(Long keywordId : deleteKeywordIdList){
+                KeywordCart keyword = keywordCartRepository.findByCartIdAndKeywordId(cart.getId(),keywordId).orElseThrow(
+                        () -> new EntityNotFoundException("해당 하는 키워드가 존재하지 않습니다.")
+                );
+                keywordCartRepository.delete(keyword);
+            }
+
+            // 추가
+            List<Long> addKeywordIdList = updateKeywordDto.getAddKeywordIdList();
+            for(Long keywordId : addKeywordIdList){
+                Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(
+                        () -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다.")
+                );
+                if(keywordCartRepository.existsByCartAndKeyword(cart,keyword)) {
+                    existErrors.add(keyword.getKeywordName());
+                }
+                KeywordCart keywordCart = KeywordCart.addKeywordCart(cart,keyword);
+                keywordCartRepository.save(keywordCart);
+            }
+            return response.success("키워드 업데이트 완료");
+        }catch (Exception e){
+            return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     public List<RequestKeywordDto> myKeyword(){
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
                 () -> new EntityNotFoundException("해당 회원이 존재하지 않습니다.")

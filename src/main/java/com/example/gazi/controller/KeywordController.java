@@ -21,6 +21,12 @@ public class KeywordController {
        return keywordService.interestKeyword(dto.getMyKeywordList());
     }
 
+    // 관심 키워드 수정
+    @PostMapping("update-interest-keyword")
+    public ResponseEntity<Body> updateInterestKeyword(@RequestBody RequestKeywordDto.updateKeywordDto dto){
+        return keywordService.updateInterestKeyword(dto);
+    }
+
     //키워드 추가
     @PostMapping("/add-keyword")
     public ResponseEntity<Body> addKeyword(@RequestBody RequestKeywordDto dto){

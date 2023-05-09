@@ -11,5 +11,7 @@ public interface KeywordService {
     ResponseEntity<Body> addKeyword(RequestKeywordDto keywordDto);
     ResponseEntity<Body> myKeywordList();
 
+    ResponseEntity<Body> updateInterestKeyword(RequestKeywordDto.updateKeywordDto updateKeywordDto);
+
     ResponseEntity<Body> keywordList();
 }
