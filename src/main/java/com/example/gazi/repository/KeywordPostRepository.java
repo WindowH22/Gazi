@@ -14,4 +14,6 @@ public interface KeywordPostRepository extends JpaRepository<KeywordPost, Long> 
     boolean existsByKeywordAndPostCart(Keyword keyWord, PostCart postCart);
 
     Page<KeywordPost> findAllByKeywordId(Long keywordId, Pageable pageable);
+
+    Page<KeywordPost> findAllByKeyword(Keyword keyword, Pageable pageable);
 }

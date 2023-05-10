@@ -22,7 +22,7 @@ public class KeywordController {
     }
 
     // 관심 키워드 수정
-    @PostMapping("update-interest-keyword")
+    @PutMapping("update-interest-keyword")
     public ResponseEntity<Body> updateInterestKeyword(@RequestBody RequestKeywordDto.updateKeywordDto dto){
         return keywordService.updateInterestKeyword(dto);
     }
