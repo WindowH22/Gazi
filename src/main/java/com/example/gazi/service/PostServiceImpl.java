@@ -3,6 +3,7 @@ package com.example.gazi.service;
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
 import com.example.gazi.dto.*;
+import com.example.gazi.dto.Response.Body;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,19 @@ public class PostServiceImpl implements PostService {
             KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
             keywordPostRepository.save(keywordPost);
         }
+
+        return response.success(post.getId(),"글 작성을 완료했습니다.",HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, Long postId){
+        // 임시 방편 로직
+//        Long postId =  Long.valueOf(thumbnail.getResource().getFilename());
+
+        Post post = postRepository.getReferenceById(postId);
+        String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
+        post.setThumbNail(uploadThumbnailUrl);
 
         // 3. 파일추가
         if (fileList != null) {

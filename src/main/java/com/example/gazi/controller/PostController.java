@@ -21,9 +21,21 @@ public class PostController {
 
     private final PostService postService;
 
+    private Logger log = LoggerFactory.getLogger(getClass());
+
+//    @PostMapping("/top-post")
+//    public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail) {
+//        return postService.addPost(dto);
+//    }
+
     @PostMapping("/top-post")
-    public ResponseEntity<Body> addPost(@RequestPart RequestPostDto.addPostDto dto, @RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail) {
-        return postService.addPost(dto, files, thumbnail);
+    public ResponseEntity<Body> addPost(@RequestBody RequestPostDto.addPostDto dto) {
+        return postService.addPost(dto);
+    }
+
+    @PostMapping("/top-post-file")
+    public ResponseEntity<Body> addPostFile(@RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail, @RequestParam Long postId) {
+        return postService.fileUpload(files, thumbnail,postId);
     }
 
     @GetMapping("/top-post")

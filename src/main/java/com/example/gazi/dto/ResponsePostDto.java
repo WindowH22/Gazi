@@ -38,7 +38,7 @@ public class ResponsePostDto {
         private String content;
         private Double latitude;
         private Double longitude;
-        private Keyword headKeyword;
+        private Long headKeyword;
         private String thumbNail;
         private Long postId;
 
@@ -51,7 +51,7 @@ public class ResponsePostDto {
                     .content(content)
                     .latitude(post.getLatitude())
                     .longitude(post.getLongitude())
-                    .headKeyword(post.getHeadKeyword())
+                    .headKeyword(post.getHeadKeyword().getId())
                     .thumbNail(post.getThumbNail())
                     .postId(post.getId())
                     .build();
