@@ -4,6 +4,8 @@ import com.example.gazi.dto.RequestPostDto;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
