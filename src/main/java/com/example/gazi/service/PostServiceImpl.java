@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public ResponseEntity<Response.Body> addPost(RequestPostDto.addPostDto dto, List<MultipartFile> fileList, MultipartFile thumbnail) {
+    public ResponseEntity<Body> addPost(RequestPostDto.addPostDto dto, List<MultipartFile> fileList, MultipartFile thumbnail) {
         Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
 
         Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
@@ -54,9 +54,55 @@ public class PostServiceImpl implements PostService {
         if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
             return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
         }
-        String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
+//        String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
         // 1.포스트 추가
-        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadThumbnailUrl, member);
+//        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadThumbnailUrl, member);
+        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member);
+        postRepository.save(post);
+
+        // 포스트 생성과 동시에 포스트 키워드 카트 생성
+        PostCart postCart = postCartRepository.findByPost(post);
+        if (postCart == null) {
+            postCart = PostCart.addCart(post);
+            postCartRepository.save(postCart);
+        }
+
+        // 2.키워드 추가
+        for (Long keywordId : dto.getKeywordIdList()) {
+
+            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+            if (keywordPostRepository.existsByKeywordAndPostCart(keyword, postCart)) {
+                return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
+            }
+
+            KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
+            keywordPostRepository.save(keywordPost);
+        }
+
+        // 3. 파일추가
+//        if (fileList != null) {
+//            for (MultipartFile file : fileList) {
+//                String fileName = makeFileName("postFile");
+//                FilePost filePost = FilePost.toEntity(fileName, fileService.uploadFile(file, fileName), post);
+//                filePostRepository.save(filePost);
+//            }
+//        }
+
+        return response.success("글 작성을 완료했습니다.");
+    }
+    @Override
+    public ResponseEntity<Body> addPost(RequestPostDto.addPostDto dto) {
+        Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+        Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+
+
+        if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
+            return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
+        }
+        // 1.포스트 추가
+        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member);
         postRepository.save(post);
 
         // 포스트 생성과 동시에 포스트 키워드 카트 생성
