@@ -41,6 +41,8 @@ public class ResponsePostDto {
         private Long headKeyword;
         private String thumbNail;
         private Long postId;
+        private String backgroundMap;
+        private String placeName;
 
         public static getPostDto toDto(Post post, String time, String distance,String content) {
             return getPostDto.builder()
@@ -54,6 +56,8 @@ public class ResponsePostDto {
                     .headKeyword(post.getHeadKeyword().getId())
                     .thumbNail(post.getThumbNail())
                     .postId(post.getId())
+                    .backgroundMap(post.getBackgroundMap())
+                    .placeName(post.getPlaceName())
                     .build();
 
         }
