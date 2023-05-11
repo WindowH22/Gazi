@@ -62,8 +62,8 @@ public class PostController {
     public ResponseEntity<Body> getPost(
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
-            @RequestParam("keywordId") Long keywordId,
-            @PageableDefault(page = 0, size = 15, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @RequestParam(value = "keywordId",required = false) Long keywordId,
+            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return postService.getPost(curLat, curLon, pageable,keywordId);
     }
 
