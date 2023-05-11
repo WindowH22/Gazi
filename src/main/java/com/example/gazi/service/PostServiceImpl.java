@@ -130,6 +130,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, Long postId){
         // 임시 방편 로직
 //        Long postId =  Long.valueOf(thumbnail.getResource().getFilename());
@@ -147,12 +148,13 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        return response.success("글 작성을 완료했습니다.");
+        return response.success();
+
     }
 
     @Transactional
     @Override
-    public ResponseEntity<Response.Body> updatePost(Long postId, RequestPostDto.updatePostDto dto, List<MultipartFile> multipartFiles) {
+    public ResponseEntity<Body> updatePost(Long postId, RequestPostDto.updatePostDto dto, List<MultipartFile> multipartFiles) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
@@ -219,7 +221,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public ResponseEntity<Response.Body> deletePost(Long postId) {
+    public ResponseEntity<Body> deletePost(Long postId) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.getReferenceById(postId);
@@ -245,7 +247,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     //글 상세보기
-    public ResponseEntity<Response.Body> getTopPost(Double curX, Double curY, Long postId, Pageable pageable) {
+    public ResponseEntity<Body> getTopPost(Double curX, Double curY, Long postId, Pageable pageable) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
@@ -329,7 +331,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // 커뮤 전체글 리스트
-    public ResponseEntity<Response.Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) {
+    public ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
@@ -339,13 +341,13 @@ public class PostServiceImpl implements PostService {
 
             // 전체글인지 키워드 글인지 확인
             if(keywordId != null){
-                Page<KeywordPost>  keywordPostPage = keywordPostRepository.findAllByKeywordId(keywordId,pageable);
+                Keyword keyword = keywordRepository.getReferenceById(keywordId);
+                Page<KeywordPost>  keywordPostPage = keywordPostRepository.findAllByKeyword(keyword,pageable);
                 List<Post> keywordPostList = new ArrayList<>();
 
                 for(KeywordPost keywordPost : keywordPostPage.getContent()){
                     keywordPostList.add(keywordPost.getPostCart().getPost());
                 }
-
                 List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
 
                 for (Post post : keywordPostList) {
@@ -370,7 +372,7 @@ public class PostServiceImpl implements PostService {
 
     // 내가 작성한 글
     @Override
-    public ResponseEntity<Response.Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost) {
+    public ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost) {
         try{
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Page<ResponsePostDto.getPostDto> postDtoPage;
@@ -408,7 +410,7 @@ public class PostServiceImpl implements PostService {
 
     @Transactional(readOnly = true)
     @Override
-    public ResponseEntity<Response.Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch) {
+    public ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch) {
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             // 지도 내에 추출한 postData
