@@ -78,6 +78,57 @@ public class RepostServiceImpl implements RepostService {
     }
 
     @Override
+    public ResponseEntity<Response.Body> addRepost(RequestRepostDto.addDto dto) {
+        Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                () -> new EntityNotFoundException("회원이 존재하지 않습니다.")
+        );
+
+        Post post = postRepository.getReferenceById(dto.getPostId());
+
+        Repost repost = dto.toEntity(post, dto.getContent(), member,dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
+        rePostRepository.save(repost);
+
+        // 키워드 카트 생성
+        RepostCart repostCart = repostCartRepository.findByRepost(repost);
+        if (repostCart == null) {
+            repostCart = RepostCart.addCart(repost);
+            repostCartRepository.save(repostCart);
+        }
+
+        // 키워드 추가
+        for(Long keywordId : dto.getKeywordIdList()){
+            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+            if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
+                return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
+            }
+
+            KeywordRepost keywordRepost = KeywordRepost.addKeywordRepost(repostCart, keyword);
+            keywordRepostRepository.save(keywordRepost);
+        }
+
+        return response.success(repost.getId(),"하위 게시글 작성을 완료했습니다.",HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<Response.Body> fileUpload(List<MultipartFile> fileList, Long repostId){
+        // 파일 추가
+        Repost repost = rePostRepository.getReferenceById(repostId);
+        if (fileList != null) {
+            if (fileList.size() > 10) {
+                return response.fail("파일은 10개까지 업로드가능합니다.", HttpStatus.BAD_REQUEST);
+            }
+
+            for (MultipartFile file : fileList) {
+                String fileName = makeFileName("repostFile");
+                FileRepost fileRepost = FileRepost.toEntity(fileName, fileService.uploadFile(file, fileName), repost);
+                fileRePostRepository.save(fileRepost);
+            }
+        }
+        return response.success();
+    }
+
+    @Override
     public ResponseEntity<Response.Body> updateRepost(Long RepostId, RequestRepostDto.updateDto dto, List<MultipartFile> fileList) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));

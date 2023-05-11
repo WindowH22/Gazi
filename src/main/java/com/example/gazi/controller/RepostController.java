@@ -17,9 +17,19 @@ import java.util.List;
 public class RepostController {
     private final RepostService repostService;
 
+//    @PostMapping("/repost")
+//    public ResponseEntity<Response.Body> addRepost(@RequestPart RequestRepostDto.addDto dto, @RequestPart(required = false) List<MultipartFile> files) {
+//        return repostService.addRepost(dto, files);
+//    }
+
     @PostMapping("/repost")
-    public ResponseEntity<Response.Body> addRepost(@RequestPart RequestRepostDto.addDto dto, @RequestPart(required = false) List<MultipartFile> files) {
-        return repostService.addRepost(dto, files);
+    public ResponseEntity<Response.Body> addRepost(@RequestBody RequestRepostDto.addDto dto) {
+        return repostService.addRepost(dto);
+    }
+
+    @PostMapping("/repost-file")
+    public ResponseEntity<Response.Body> addRepost(@RequestPart(required = false) List<MultipartFile> files, @RequestParam Long repostId) {
+        return repostService.fileUpload(files,repostId);
     }
 
     @PutMapping("/repost")
