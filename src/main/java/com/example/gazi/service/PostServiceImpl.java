@@ -91,6 +91,7 @@ public class PostServiceImpl implements PostService {
 
         return response.success("글 작성을 완료했습니다.");
     }
+
     @Override
     public ResponseEntity<Body> addPost(RequestPostDto.addPostDto dto) {
         Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
@@ -125,7 +126,7 @@ public class PostServiceImpl implements PostService {
             keywordPostRepository.save(keywordPost);
         }
 
-        return response.success(post.getId(),"글 작성을 완료했습니다.",HttpStatus.OK);
+        return response.success(post.getId(), "글 작성을 완료했습니다.", HttpStatus.CREATED);
     }
 
 
@@ -343,19 +344,28 @@ public class PostServiceImpl implements PostService {
             //TODO: 지연시간에 따라 자동 업데이트 쳐줘야 함
 
             // 전체글인지 키워드 글인지 확인
-            if(keywordId != null){
+            if (keywordId != null) {
                 Keyword keyword = keywordRepository.getReferenceById(keywordId);
-                Page<KeywordPost>  keywordPostPage = keywordPostRepository.findAllByKeyword(keyword,pageable);
+                Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
                 List<Post> keywordPostList = new ArrayList<>();
 
-                for(KeywordPost keywordPost : keywordPostPage.getContent()){
+                for (KeywordPost keywordPost : keywordPostPage.getContent()) {
                     keywordPostList.add(keywordPost.getPostCart().getPost());
                 }
                 List<ResponsePostDto.getPostDto> postDtoList = new ArrayList<>();
 
                 for (Post post : keywordPostList) {
-                    ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
+                    LocalDateTime time;
+
+                    if(post.getRePosts().size() != 0){
+                        time = post.getRePosts().get(post.getRePosts().size()-1).getCreatedAt();
+                    } else{
+                        time = post.getCreatedAt();
+                    }
+
+                    ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(time), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
                     postDtoList.add(postDto);
+
                 }
                 int start = (int) pageRequest.getOffset();
                 int end = Math.min((start + pageRequest.getPageSize()), postDtoList.size());
@@ -376,19 +386,19 @@ public class PostServiceImpl implements PostService {
     // 내가 작성한 글
     @Override
     public ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost) {
-        try{
+        try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
             Page<ResponsePostDto.getPostDto> postDtoPage;
             Long postCount;
-            if(isPost){
-                Page<Post> postList = postRepository.findAllByMember(member,pageable);
+            if (isPost) {
+                Page<Post> postList = postRepository.findAllByMember(member, pageable);
                 postDtoPage = getPostDtoPage(curX, curY, pageable, postList);
                 postCount = postList.getTotalElements();
-                ResponsePostDto.getMyPostDto myPostDto = new ResponsePostDto.getMyPostDto(postCount,postDtoPage);
+                ResponsePostDto.getMyPostDto myPostDto = new ResponsePostDto.getMyPostDto(postCount, postDtoPage);
                 return response.success(myPostDto);
-            }else{
+            } else {
                 // 답글 단 글
-                Page<Repost> repostList = rePostRepository.findAllByMember(member,pageable);
+                Page<Repost> repostList = rePostRepository.findAllByMember(member, pageable);
                 PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
                 List<ResponsePostDto.myRepost> repostDtoList = new ArrayList<>();
 
@@ -401,12 +411,12 @@ public class PostServiceImpl implements PostService {
                 Page<ResponsePostDto.myRepost> repostDtoPage = new PageImpl<>(repostDtoList.subList(start, end), pageRequest, repostDtoList.size());
 
                 postCount = repostList.getTotalElements();
-                ResponsePostDto.getMyRepostDto myRepostDtoList = new ResponsePostDto.getMyRepostDto(postCount,repostDtoPage);
+                ResponsePostDto.getMyRepostDto myRepostDtoList = new ResponsePostDto.getMyRepostDto(postCount, repostDtoPage);
                 return response.success(myRepostDtoList);
             }
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
@@ -438,7 +448,17 @@ public class PostServiceImpl implements PostService {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
 
         for (Post post : postList) {
-            ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
+
+            LocalDateTime time;
+            if(post.getRePosts().size() != 0){
+                time = post.getRePosts().get(post.getRePosts().size()-1).getCreatedAt();
+                log.info("답글 존재");
+            } else{
+                time = post.getCreatedAt();
+                log.info("답글 없음");
+            }
+
+            ResponsePostDto.getPostDto postDto = ResponsePostDto.getPostDto.toDto(post, getTime(time), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), contentSummary(post.getContent()));
             postDtoList.add(postDto);
         }
         int start = (int) pageRequest.getOffset();
