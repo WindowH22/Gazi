@@ -17,20 +17,18 @@ public class LikeController {
 
     @PostMapping
     public ResponseEntity<Body> likePost(
-            @RequestPart(required = false) RequestLikeDto.likePostDto likePostDto,
-            @RequestPart(required = false) RequestLikeDto.likeRepostDto likeRepostDto
+            @RequestBody RequestLikeDto likePostDto
     ) {
-        if (likePostDto != null) return likeService.likePost(likePostDto);
-        else return likeService.likeRepost(likeRepostDto);
+        if (likePostDto.getPostId() != null) return likeService.likePost(likePostDto);
+        else return likeService.likeRepost(likePostDto);
     }
 
     @DeleteMapping
     public ResponseEntity<Body> deleteLikePost(
-            @RequestPart(required = false) RequestLikeDto.likePostDto likePostDto,
-            @RequestPart(required = false) RequestLikeDto.likeRepostDto likeRepostDto
+            @RequestBody(required = false) RequestLikeDto likePostDto
     ) {
-        if (likePostDto != null) return likeService.deleteLikePost(likePostDto);
-        else return likeService.deleteLikRePost(likeRepostDto);
+        if (likePostDto.getPostId() != null) return likeService.deleteLikePost(likePostDto);
+        else return likeService.deleteLikRePost(likePostDto);
     }
 
 }

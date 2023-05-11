@@ -25,7 +25,7 @@ public class LikeServiceImpl implements LikeService {
     private final Response response;
 
     @Override
-    public ResponseEntity<Body> likePost(RequestLikeDto.likePostDto dto) {
+    public ResponseEntity<Body> likePost(RequestLikeDto dto) {
 
         try {
             Post post = postRepository.findById(dto.getPostId()).orElseThrow(
@@ -55,7 +55,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public ResponseEntity<Body> likeRepost(RequestLikeDto.likeRepostDto dto) {
+    public ResponseEntity<Body> likeRepost(RequestLikeDto dto) {
 
         try {
             Repost repost = rePostRepository.findById(dto.getRepostId()).orElseThrow(
@@ -85,7 +85,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public ResponseEntity<Body> deleteLikePost(RequestLikeDto.likePostDto dto) {
+    public ResponseEntity<Body> deleteLikePost(RequestLikeDto dto) {
         try {
             Post post = postRepository.findById(dto.getPostId()).orElseThrow(
                     () -> new EntityNotFoundException("해당 게시물을 찾을수 없습니다.")
@@ -112,7 +112,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public ResponseEntity<Body> deleteLikRePost(RequestLikeDto.likeRepostDto dto) {
+    public ResponseEntity<Body> deleteLikRePost(RequestLikeDto dto) {
         try {
             Repost repost = rePostRepository.findById(dto.getRepostId()).orElseThrow(
                     () -> new EntityNotFoundException("해당 게시물을 찾을수 없습니다.")

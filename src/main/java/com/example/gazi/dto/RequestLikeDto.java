@@ -6,6 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestLikeDto {
+
+    Long postId;
+    Long repostId;
+
     @Getter
     @Setter
     public static class likePostDto{
