@@ -36,8 +36,8 @@ public class PostController {
     }
 
     @PostMapping("/top-post-file")
-    public ResponseEntity<Body> addPostFile(@RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail, @RequestParam Long postId) {
-        return postService.fileUpload(files, thumbnail,postId);
+    public ResponseEntity<Body> addPostFile(@RequestPart(required = false) List<MultipartFile> files, @RequestPart(required = false) MultipartFile thumbnail, @RequestPart(required = false) MultipartFile backgroundMap, @RequestParam Long postId) {
+        return postService.fileUpload(files, thumbnail,backgroundMap,postId);
     }
 
     @GetMapping("/top-post")

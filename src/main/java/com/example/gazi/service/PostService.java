@@ -16,7 +16,7 @@ public interface PostService {
 
     ResponseEntity<Body> addPost(addPostDto dto);
 
-    ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, Long postId);
+    ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, MultipartFile backgroundMap, Long postId);
 
     ResponseEntity<Body> updatePost(Long postId, RequestPostDto.updatePostDto dto, List<MultipartFile> multipartFiles);
 

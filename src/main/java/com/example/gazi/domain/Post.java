@@ -42,6 +42,9 @@ public class Post extends AuditingFields {
     @Column
     private String thumbNail; // 썸네일
 
+    @Column
+    private String backgroundMap; // 지도 크롭이미지
+
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"post"}) // 무한참조 방지
     @OrderBy("id desc") // 내림차순;

@@ -130,14 +130,17 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    @Transactional(readOnly = true)
-    public ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, Long postId){
+    @Transactional
+    public ResponseEntity<Body> fileUpload(List<MultipartFile> fileList, MultipartFile thumbnail, MultipartFile backgroundMap, Long postId) {
         // 임시 방편 로직
 //        Long postId =  Long.valueOf(thumbnail.getResource().getFilename());
 
         Post post = postRepository.getReferenceById(postId);
         String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
         post.setThumbNail(uploadThumbnailUrl);
+
+        String uploadBackgroundMapUrl = fileService.uploadFile(backgroundMap, makeFileName("backgroundMap"));
+        post.setBackgroundMap(uploadBackgroundMapUrl);
 
         // 3. 파일추가
         if (fileList != null) {

@@ -24,6 +24,7 @@ public class ResponsePostListDto {
     private Long likeCount;
     private boolean isReport;
     private List<Long> keywordIdList;
+    private String backgroundMapUrl;
 
     public static ResponsePostListDto toDto(Post post, String time, String distance, List<ResponseFileDto> fileList, Long likeCount,boolean isLike, boolean isReport,List<Long> keywordIdList){
         return ResponsePostListDto.builder()
@@ -31,6 +32,7 @@ public class ResponsePostListDto {
                 .distance(distance)
                 .fileList(fileList)
                 .nickName(post.getMember().getNickName())
+                .backgroundMapUrl(post.getBackgroundMap())
                 .time(time)
                 .isLike(isLike)
                 .likeCount(likeCount)
