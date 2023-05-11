@@ -58,7 +58,7 @@ public class PostController {
         return postService.deletePost(postId);
     }
 
-    @GetMapping("/topPostList") // 커뮤 전체 게시글 조회
+    @GetMapping("/top-post-list") // 커뮤 전체 게시글 조회
     public ResponseEntity<Body> getPost(
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
