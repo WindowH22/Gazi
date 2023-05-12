@@ -57,7 +57,10 @@ public class MemberController {
     }
 
     @PostMapping("/change-nickname")
-    public ResponseEntity<Body> changeNickName(@RequestBody NickName nickName) {
+    public ResponseEntity<Body> changeNickName(@RequestBody @Valid NickName nickName, Errors errors) throws Exception {
+        if (errors.hasErrors()) {
+            return memberService.validateHandling(errors);
+        }
         return memberService.changeNickName(nickName.getNickName());
     }
 
@@ -69,7 +72,6 @@ public class MemberController {
         }
         return emailService.sendSimpleMessage(email.getEmail());
     }
-
 
     @PostMapping("/check-nickname")
     public ResponseEntity<Body> checkNickName(@RequestBody @Valid NickName nickName, Errors errors) throws Exception {
