@@ -1,6 +1,5 @@
 package com.example.gazi.dto;
 
-import com.example.gazi.domain.Keyword;
 import com.example.gazi.domain.Post;
 import com.example.gazi.domain.Repost;
 import lombok.*;
@@ -14,14 +13,32 @@ public class ResponsePostDto {
     @Setter
     @RequiredArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class getTopPostDto {
         private Long userId;
         private String title;
+        private String distance;
+        private String time;
         private int rePostCount;
         private String placeName;
         private Long headKeywordId;
         private Page<ResponsePostListDto> postList;
         private Long hit;
+
+        public static getTopPostDto toDto(Post post,String distance,String time,Page<ResponsePostListDto> postList){
+            return getTopPostDto.builder()
+                    .userId(post.getMember().getId())
+                    .title(post.getTitle())
+                    .distance(distance)
+                    .time(time)
+                    .rePostCount(post.getRePosts().size())
+                    .placeName(post.getPlaceName())
+                    .headKeywordId(post.getHeadKeyword().getId())
+                    .postList(postList)
+                    .hit(post.getHit())
+                    .build();
+        }
+
     }
 
 
