@@ -8,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RePostRepository extends JpaRepository<Repost, Long> {
-    Page<Repost> findAllByPost(Post post, Pageable pageable);
+    List<Repost> findAllByPost(Post post);
 
     Page<Repost> findAllByMember(Member member, Pageable pageable);
 }
