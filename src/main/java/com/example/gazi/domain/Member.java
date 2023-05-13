@@ -6,6 +6,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -37,6 +39,10 @@ public class Member extends AuditingFields {
     private Like like;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Report report;
+
+    @ToString.Exclude // exclude를 통해 tostring을 끊는다.하지않으면 순환참조가 발생한다.
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private final List<Post> Post = new ArrayList<>();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
