@@ -274,7 +274,7 @@ public class PostServiceImpl implements PostService {
             Report report = reportRepository.findByMemberId(member.getId()).orElseThrow(
                     () -> new EntityNotFoundException("신고 테이블을 찾을 수 없습니다.")
             );
-            boolean isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(), post.getId());
+            boolean isReport;
 
             // 답글
             List<Repost> rePosts = rePostRepository.findAllByPost(post);
@@ -299,7 +299,7 @@ public class PostServiceImpl implements PostService {
                 isLike = likePostRepository.existsByLikeIdAndRepostId(like.getId(), repost.getId());
                 // 신고하기
                 isReport = reportPostRepository.existsByReportIdAndRepostId(report.getId(), repost.getId());
-
+                System.out.println("신고 여부: " + isReport);
                 fileList = new ArrayList<>();
                 for (FileRepost fileRepost : fileReposts) {
                     ResponseFileDto dto = new ResponseFileDto(fileRepost.getFileName(), fileRepost.getFileUrl());
@@ -320,6 +320,7 @@ public class PostServiceImpl implements PostService {
                 fileList.add(filePostDto);
             }
 
+            isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(), post.getId());
             postList.add(ResponsePostListDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList));
 
             int start = (int) pageRequest.getOffset();
