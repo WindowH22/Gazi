@@ -23,7 +23,7 @@ public class ReportServiceImpl implements ReportService {
     private final Response response;
 
     @Override
-    public ResponseEntity<Response.Body> ReportPost(RequestReportDto.reportPostDto dto) {
+    public ResponseEntity<Response.Body> ReportPost(RequestReportDto dto) {
         try {
             Post post = postRepository.getReferenceById(dto.getPostId());
             Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
@@ -57,7 +57,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public ResponseEntity<Response.Body> ReportRepost(RequestReportDto.reportRepostDto dto) {
+    public ResponseEntity<Response.Body> ReportRepost(RequestReportDto dto) {
         try {
             Repost repost = rePostRepository.getReferenceById(dto.getRepostId());
             Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(

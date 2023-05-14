@@ -15,13 +15,22 @@ public class ReportController {
 
     private final ReportService reportService;
 
+
+// @PostMapping
+//    public ResponseEntity<Body> reportPost(
+//            @RequestPart(required = false) RequestReportDto.reportPostDto reportPostDto,
+//            @RequestPart(required = false) RequestReportDto.reportRepostDto reportRepostDto
+//    ){
+//        if(reportPostDto != null) return reportService.ReportPost(reportPostDto);
+//        else return reportService.ReportRepost(reportRepostDto);
+//    }
+
     @PostMapping
     public ResponseEntity<Body> reportPost(
-            @RequestPart(required = false) RequestReportDto.reportPostDto reportPostDto,
-            @RequestPart(required = false) RequestReportDto.reportRepostDto reportRepostDto
+            @RequestBody(required = false) RequestReportDto reportPostDto
     ){
-        if(reportPostDto != null) return reportService.ReportPost(reportPostDto);
-        else return reportService.ReportRepost(reportRepostDto);
+        if(reportPostDto.getPostId() != null) return reportService.ReportPost(reportPostDto);
+        else return reportService.ReportRepost(reportPostDto);
     }
 
 }
