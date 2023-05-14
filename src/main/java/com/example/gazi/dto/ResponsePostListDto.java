@@ -15,7 +15,8 @@ import java.util.List;
 @AllArgsConstructor
 public class ResponsePostListDto {
 
-    private Long id;
+    private Long postId;
+    private Long userId;
     private String distance;
     private String content;
     private List<ResponseFileDto> fileList;
@@ -29,7 +30,8 @@ public class ResponsePostListDto {
 
     public static ResponsePostListDto toDto(Post post, String time, String distance, List<ResponseFileDto> fileList, Long likeCount,boolean isLike, boolean isReport,List<Long> keywordIdList){
         return ResponsePostListDto.builder()
-                .id(post.getId())
+                .userId(post.getMember().getId())
+                .postId(post.getId())
                 .content(post.getContent())
                 .distance(distance)
                 .fileList(fileList)
@@ -43,7 +45,8 @@ public class ResponsePostListDto {
     }
     public static ResponsePostListDto toDto(Repost repost, String time, String distance, List<ResponseFileDto> fileList, Long likeCount, boolean isLike, boolean isReport, List<Long> keywordIdList){
         return ResponsePostListDto.builder()
-                .id(repost.getId())
+                .userId(repost.getMember().getId())
+                .postId(repost.getId())
                 .content(repost.getContent())
                 .distance(distance)
                 .fileList(fileList)
