@@ -24,6 +24,7 @@ public class ResponsePostDto {
         private Long headKeywordId;
         private Page<ResponsePostListDto> postList;
         private Long hit;
+        private String backgroundMapUrl;
 
         public static getTopPostDto toDto(Post post,String distance,String time,Page<ResponsePostListDto> postList){
             return getTopPostDto.builder()
@@ -34,8 +35,9 @@ public class ResponsePostDto {
                     .rePostCount(post.getRePosts().size())
                     .placeName(post.getPlaceName())
                     .headKeywordId(post.getHeadKeyword().getId())
-                    .postList(postList)
                     .hit(post.getHit())
+                    .backgroundMapUrl(post.getBackgroundMap())
+                    .postList(postList)
                     .build();
         }
 
