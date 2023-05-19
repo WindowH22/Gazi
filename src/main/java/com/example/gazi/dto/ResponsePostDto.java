@@ -32,7 +32,7 @@ public class ResponsePostDto {
                     .title(post.getTitle())
                     .distance(distance)
                     .time(time)
-                    .rePostCount(post.getRePosts().size())
+                    .rePostCount(post.getRePosts().size() + 1) // 포스트 개수 =  답글 + 최초 게시글(1)
                     .placeName(post.getPlaceName())
                     .headKeywordId(post.getHeadKeyword().getId())
                     .hit(post.getHit())
