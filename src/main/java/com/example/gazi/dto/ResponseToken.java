@@ -13,6 +13,7 @@ public class ResponseToken {
     private String grantType;
     private Long memberId;
     private String nickName;
+    private String email;
     private String accessToken;
     private String refreshToken;
     private Long accessTokenExpirationTime;

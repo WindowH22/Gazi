@@ -110,6 +110,7 @@ public class MemberServiceImpl implements MemberService {
             ResponseToken responseToken = jwtTokenProvider.generateToken(authentication);
             responseToken.setMemberId(member.getId());
             responseToken.setNickName(member.getNickName());
+            responseToken.setEmail(member.getEmail());
             // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
             redisTemplate.opsForValue()
                     .set("RT:" + authentication.getName(),
