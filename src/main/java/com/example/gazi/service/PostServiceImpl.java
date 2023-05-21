@@ -268,7 +268,7 @@ public class PostServiceImpl implements PostService {
 
             Long likeCount = likePostRepository.countByPost(post);
 
-            boolean isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(), post.getId());
+            boolean isLike;
 
             // 신고하기
             Report report = reportRepository.findByMemberId(member.getId()).orElseThrow(
@@ -285,8 +285,6 @@ public class PostServiceImpl implements PostService {
 
             List<ResponseFileDto> fileList = new ArrayList<>();
 
-
-
             for (Repost repost : rePosts) {
 
                 List<FileRepost> fileReposts = repost.getFileRePosts();
@@ -299,7 +297,6 @@ public class PostServiceImpl implements PostService {
                 isLike = likePostRepository.existsByLikeIdAndRepostId(like.getId(), repost.getId());
                 // 신고하기
                 isReport = reportPostRepository.existsByReportIdAndRepostId(report.getId(), repost.getId());
-                System.out.println("신고 여부: " + isReport);
                 fileList = new ArrayList<>();
                 for (FileRepost fileRepost : fileReposts) {
                     ResponseFileDto dto = new ResponseFileDto(fileRepost.getFileName(), fileRepost.getFileUrl());
@@ -321,6 +318,8 @@ public class PostServiceImpl implements PostService {
             }
 
             isReport = reportPostRepository.existsByReportIdAndPostId(report.getId(), post.getId());
+            isLike = likePostRepository.existsByLikeIdAndPostId(like.getId(), post.getId());
+
             postList.add(ResponsePostListDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList));
 
             int start = (int) pageRequest.getOffset();
@@ -335,7 +334,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post,getDistance(curX,curY,post.getLatitude(),post.getLongitude()),getTime(post.getCreatedAt()),postDtoPage);
+            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post, getDistance(curX, curY, post.getLatitude(), post.getLongitude()), getTime(post.getCreatedAt()), postDtoPage);
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -359,15 +358,15 @@ public class PostServiceImpl implements PostService {
                 Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
 
                 Page<ResponsePostDto.getPostDto> postDtoPage = keywordPostPage.map(m -> m.getPostCart().getPost().getRePosts().size() == 0 ?
-                                ResponsePostDto.getPostDto.toDto(
-                                        m.getPostCart().getPost(),
-                                        getTime(m.getPostCart().getPost().getCreatedAt()),
-                                        getDistance(curX, curY, m.getPostCart().getPost().getLatitude(), m.getPostCart().getPost().getLongitude()), contentSummary(m.getPostCart().getPost().getContent()))
-                                :
-                                ResponsePostDto.getPostDto.toDto(
-                                        m.getPostCart().getPost(),
-                                        getTime(m.getPostCart().getPost().getRePosts().get(m.getPostCart().getPost().getRePosts().size() - 1).getCreatedAt()),
-                                        getDistance(curX, curY, m.getPostCart().getPost().getLatitude(), m.getPostCart().getPost().getLongitude()), contentSummary(m.getPostCart().getPost().getContent()))
+                        ResponsePostDto.getPostDto.toDto(
+                                m.getPostCart().getPost(),
+                                getTime(m.getPostCart().getPost().getCreatedAt()),
+                                getDistance(curX, curY, m.getPostCart().getPost().getLatitude(), m.getPostCart().getPost().getLongitude()), contentSummary(m.getPostCart().getPost().getContent()))
+                        :
+                        ResponsePostDto.getPostDto.toDto(
+                                m.getPostCart().getPost(),
+                                getTime(m.getPostCart().getPost().getRePosts().get(m.getPostCart().getPost().getRePosts().size() - 1).getCreatedAt()),
+                                getDistance(curX, curY, m.getPostCart().getPost().getLatitude(), m.getPostCart().getPost().getLongitude()), contentSummary(m.getPostCart().getPost().getContent()))
 
                 );
 

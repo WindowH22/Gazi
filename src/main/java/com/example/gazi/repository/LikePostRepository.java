@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface LikePostRepository extends JpaRepository<LikePost, Long> {
     Optional<LikePost> findByLikeIdAndPostId(Long likeId, Long postId);
 
-    boolean existsByLikeIdAndPostId(Long id, Long id1);
+    boolean existsByLikeIdAndPostId(Long likeId, Long postId);
 
-    boolean existsByLikeIdAndRepostId(Long id, Long id1);
+    boolean existsByLikeIdAndRepostId(Long likeId, Long postId);
 
     Optional<LikePost> findByLikeIdAndRepostId(Long likeId, Long repostId);
 
