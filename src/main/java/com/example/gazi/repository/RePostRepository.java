@@ -12,7 +12,6 @@ import java.util.List;
 
 @Repository
 public interface RePostRepository extends JpaRepository<Repost, Long> {
-    List<Repost> findAllByPost(Post post);
-
+    List<Repost> findAllByPostOrderByCreatedAtDesc(Post post);
     Page<Repost> findAllByMember(Member member, Pageable pageable);
 }

@@ -277,13 +277,11 @@ public class PostServiceImpl implements PostService {
             boolean isReport;
 
             // 답글
-            List<Repost> rePosts = rePostRepository.findAllByPost(post);
+            List<Repost> rePosts = rePostRepository.findAllByPostOrderByCreatedAtDesc(post);
 
             List<ResponsePostListDto> postList = new ArrayList<>();
 
-            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
-
-            List<ResponseFileDto> fileList = new ArrayList<>();
+            List<ResponseFileDto> fileList;
 
             for (Repost repost : rePosts) {
 
@@ -322,9 +320,9 @@ public class PostServiceImpl implements PostService {
 
             postList.add(ResponsePostListDto.toDto(post, getTime(post.getCreatedAt()), getDistance(curX, curY, post.getLatitude(), post.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList));
 
-            int start = (int) pageRequest.getOffset();
-            int end = Math.min((start + pageRequest.getPageSize()), postList.size());
-            Page<ResponsePostListDto> postDtoPage = new PageImpl<>(postList.subList(start, end), pageRequest, postList.size());
+            int start = (int) pageable.getOffset();
+            int end = Math.min((start + pageable.getPageSize()), postList.size());
+            Page<ResponsePostListDto> postDtoPage = new PageImpl<>(postList.subList(start, end), pageable, postList.size());
 
             // 조회수 증가
             if (post.getHit() == null) {
