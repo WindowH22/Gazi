@@ -98,7 +98,7 @@ public class LikeServiceImpl implements LikeService {
                     () -> new EntityNotFoundException("좋아요 테이블을 찾을 수 없습니다.")
             );
 
-            LikePost likePost = likePostRepository.findByLikeIdAndPostId(post.getId(), like.getId()).orElseThrow(
+            LikePost likePost = likePostRepository.findByLikeIdAndPostId(like.getId(),post.getId()).orElseThrow(
                     () -> new EntityNotFoundException("해당 게시물을 좋아요 테이블에서 찾을 수 없습니다.")
             );
 
