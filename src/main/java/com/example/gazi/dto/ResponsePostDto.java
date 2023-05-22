@@ -68,7 +68,7 @@ public class ResponsePostDto {
                     .title(post.getTitle())
                     .distance(distance)
                     .time(time)
-                    .rePostCount(post.getRePosts().stream().count())
+                    .rePostCount(post.getRePosts().stream().count() + 1)
                     .content(content)
                     .latitude(post.getLatitude())
                     .longitude(post.getLongitude())
