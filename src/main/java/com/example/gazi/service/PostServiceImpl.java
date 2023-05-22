@@ -403,7 +403,7 @@ public class PostServiceImpl implements PostService {
             }
 
 
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
