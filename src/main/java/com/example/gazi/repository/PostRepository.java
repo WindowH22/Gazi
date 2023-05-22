@@ -16,5 +16,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.latitude >= :minLat AND p.longitude >= :minLon AND p.latitude <= :maxLat AND p.longitude <= :maxLon")
     Page<Post> findAllByLocation(@Param("minLat") Double minLat, @Param("minLon") Double minLon, @Param("maxLat") Double maxLat, @Param("maxLon") Double maxLon, Pageable pageable);
 
+    @Transactional
     Page<Post> findAllByMember(Member member, Pageable pageable);
 }
