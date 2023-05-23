@@ -463,7 +463,7 @@ public class PostServiceImpl implements PostService {
                         .placeName(m.getPlaceName())
                         .build()
                 :
-                m.getReportPosts().size() == 0 ?
+                m.getRePosts().size() == 0 ?
                         ResponsePostDto.getPostDto.builder()
                                 .title(m.getTitle())
                                 .distance(getDistance(curX, curY, m.getLatitude(), m.getLongitude()))
