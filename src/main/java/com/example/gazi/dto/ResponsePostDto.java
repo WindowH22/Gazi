@@ -5,7 +5,7 @@ import com.example.gazi.domain.Repost;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
-import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class ResponsePostDto {
 
@@ -26,7 +26,7 @@ public class ResponsePostDto {
         private Long hit;
         private String backgroundMapUrl;
 
-        public static getTopPostDto toDto(Post post,String distance,String time,Page<ResponsePostListDto> postList){
+        public static getTopPostDto toDto(Post post, String distance, String time, Page<ResponsePostListDto> postList) {
             return getTopPostDto.builder()
                     .userId(post.getMember().getId())
                     .title(post.getTitle())
@@ -63,7 +63,7 @@ public class ResponsePostDto {
         private String backgroundMap;
         private String placeName;
 
-        public static getPostDto toDto(Post post, String time, String distance,String content) {
+        public static getPostDto toDto(Post post, String time, String distance, String content) {
             return getPostDto.builder()
                     .title(post.getTitle())
                     .distance(distance)
@@ -81,24 +81,27 @@ public class ResponsePostDto {
 
         }
     }
+
     @Getter
     @Setter
     @RequiredArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class getMyPostDto{
+    public static class getMyPostDto {
         Long postCount;
         Page<getPostDto> postDtoPage;
     }
+
     @Getter
     @Setter
     @RequiredArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class getMyRepostDto{
+    public static class getMyRepostDto {
         Long repostCount;
         Page<myRepost> repostListPage;
     }
+
     @Getter
     @Setter
     @RequiredArgsConstructor
@@ -107,13 +110,14 @@ public class ResponsePostDto {
     public static class myRepost {
         String title;
         String content; // 회원님이 "" 사건에 댓글을 남겼습니다.
-        LocalDateTime createTime;
+        String createTime;
 
-        public static myRepost toDto(Repost repost){
-            return  myRepost.builder()
+        public static myRepost toDto(Repost repost) {
+
+            return myRepost.builder()
                     .title(repost.getContent())
                     .content(repost.getPost().getTitle())
-                    .createTime(repost.getCreatedAt())
+                    .createTime(repost.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")))
                     .build();
         }
     }
