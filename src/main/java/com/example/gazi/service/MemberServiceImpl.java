@@ -155,6 +155,7 @@ public class MemberServiceImpl implements MemberService {
         // 새로운 토큰 생성
         ResponseToken tokenInfo = jwtTokenProvider.generateToken(authentication);
         tokenInfo.setMemberId(member.getId());
+        tokenInfo.setEmail(member.getEmail());
         tokenInfo.setNickName(member.getNickName());
 
         // RefreshToken Redis 업데이트
