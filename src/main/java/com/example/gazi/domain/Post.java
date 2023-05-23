@@ -20,6 +20,9 @@ public class Post extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; //  일련번호
 
+    @Column
+    private Long accId; // 자동업로드시 생성되는 번호
+
     @Column(nullable = false, length = 100)
     private String title; // 제목
 
