@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -63,7 +65,9 @@ public class PostController {
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
             @RequestParam(value = "keywordId",required = false) Long keywordId,
-            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws IOException, ParseException {
+
+        postService.autoAddPost();
         return postService.getPost(curLat, curLon, pageable,keywordId);
     }
 
@@ -76,7 +80,8 @@ public class PostController {
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
             @RequestParam("isNearSearch") Boolean isNearSearch,
-            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws IOException, ParseException {
+        postService.autoAddPost();
         return postService.getPostByLocation(minLat, minLon, maxLat, maxLon, curLat, curLon, pageable, isNearSearch);
     }
 

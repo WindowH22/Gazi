@@ -7,6 +7,9 @@ import com.example.gazi.dto.Response.Body;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
@@ -16,10 +19,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static com.example.gazi.service.FileServiceImpl.makeFileName;
 
@@ -342,16 +352,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // 커뮤 전체글 리스트
-    public ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) {
+    public ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) throws IOException, ParseException {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
+
             Page<Post> postList;
             PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
             //TODO: 지연시간에 따라 자동 업데이트 쳐줘야 함
 
+//            autoAddPost();
+//            System.out.println("자동 업로드는 완료");
+
             // 전체글인지 키워드 글인지 확인
             if (keywordId != null) {
+
                 Keyword keyword = keywordRepository.getReferenceById(keywordId);
                 Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
 
@@ -375,7 +390,7 @@ public class PostServiceImpl implements PostService {
             Page<ResponsePostDto.getPostDto> postDtoPage = getPostDtoPage(curX, curY, postList);
 
             return response.success(postDtoPage);
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             return response.fail(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
@@ -432,12 +447,12 @@ public class PostServiceImpl implements PostService {
     // post dto 페이지 로직
     public Page<ResponsePostDto.getPostDto> getPostDtoPage(Double curX, Double curY, Page<Post> postList) {
 
-        Page<ResponsePostDto.getPostDto> postDtoPage = postList.map(m -> m.getRePosts().size() == 0 ?
+        Page<ResponsePostDto.getPostDto> postDtoPage = postList.map(m -> m.getRePosts() == null ?
                 ResponsePostDto.getPostDto.builder()
                         .title(m.getTitle())
                         .distance(getDistance(curX, curY, m.getLatitude(), m.getLongitude()))
                         .time(getTime(m.getCreatedAt()))
-                        .rePostCount(m.getRePosts().stream().count())
+                        .rePostCount(1L)
                         .content(contentSummary(m.getContent()))
                         .latitude(m.getLatitude())
                         .longitude(m.getLongitude())
@@ -448,21 +463,36 @@ public class PostServiceImpl implements PostService {
                         .placeName(m.getPlaceName())
                         .build()
                 :
-                ResponsePostDto.getPostDto.builder()
-                        .title(m.getTitle())
-                        .distance(getDistance(curX, curY, m.getLatitude(), m.getLongitude()))
-                        .time(getTime(m.getRePosts().get(m.getRePosts().size() - 1).getCreatedAt()))
-                        .rePostCount(m.getRePosts().stream().count())
-                        .content(contentSummary(m.getContent()))
-                        .latitude(m.getLatitude())
-                        .longitude(m.getLongitude())
-                        .headKeyword(m.getHeadKeyword().getId())
-                        .thumbNail(m.getThumbNail())
-                        .postId(m.getId())
-                        .backgroundMap(m.getBackgroundMap())
-                        .placeName(m.getPlaceName())
-                        .build()
-
+                m.getReportPosts().size() == 0 ?
+                        ResponsePostDto.getPostDto.builder()
+                                .title(m.getTitle())
+                                .distance(getDistance(curX, curY, m.getLatitude(), m.getLongitude()))
+                                .time(getTime(m.getCreatedAt()))
+                                .rePostCount(1L)
+                                .content(contentSummary(m.getContent()))
+                                .latitude(m.getLatitude())
+                                .longitude(m.getLongitude())
+                                .headKeyword(m.getHeadKeyword().getId())
+                                .thumbNail(m.getThumbNail())
+                                .postId(m.getId())
+                                .backgroundMap(m.getBackgroundMap())
+                                .placeName(m.getPlaceName())
+                                .build()
+                        :
+                        ResponsePostDto.getPostDto.builder()
+                                .title(m.getTitle())
+                                .distance(getDistance(curX, curY, m.getLatitude(), m.getLongitude()))
+                                .time(getTime(m.getRePosts().get(m.getRePosts().size() - 1).getCreatedAt()))
+                                .rePostCount(m.getRePosts().size() + 1L)
+                                .content(contentSummary(m.getContent()))
+                                .latitude(m.getLatitude())
+                                .longitude(m.getLongitude())
+                                .headKeyword(m.getHeadKeyword().getId())
+                                .thumbNail(m.getThumbNail())
+                                .postId(m.getId())
+                                .backgroundMap(m.getBackgroundMap())
+                                .placeName(m.getPlaceName())
+                                .build()
         );
 
         return postDtoPage;
@@ -470,6 +500,10 @@ public class PostServiceImpl implements PostService {
 
     // 거리 구하기 로직
     public String getDistance(double lat1, double lon1, double lat2, double lon2) {
+        if (lat2 == 0.0 && lon2 == 0.0) {
+            return "거리를 측정할 수 없습니다.";
+        }
+
         final Long EARTH_RADIUS = 6371L;
 
         double dLat = Math.toRadians(lat2 - lat1);
@@ -540,4 +574,242 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+
+    @Override
+    public void autoAddPost() throws IOException, ParseException {
+        StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088"); /*URL*/
+        urlBuilder.append("/" + URLEncoder.encode("796b737374646c6334387461504273", "UTF-8")); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
+        urlBuilder.append("/" + URLEncoder.encode("xml", "UTF-8")); /*요청파일타입 (xml,xmlf,xls,json) */
+        urlBuilder.append("/" + URLEncoder.encode("AccInfo", "UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
+        urlBuilder.append("/" + URLEncoder.encode("1", "UTF-8")); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/
+        urlBuilder.append("/" + URLEncoder.encode("5", "UTF-8")); /*요청종료위치(sample인증키 사용시 5이상 숫자 선택 안 됨)*/
+        // 상위 5개는 필수적으로 순서바꾸지 않고 호출해야 합니다.
+
+
+        URL url = new URL(urlBuilder.toString());
+        System.out.println(url);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.setRequestProperty("Content-type", "application/xml");
+        System.out.println("Response code: " + conn.getResponseCode()); /* 연결 자체에 대한 확인이 필요하므로 추가합니다.*/
+        BufferedReader rd;
+
+        // 서비스코드가 정상이면 200~300사이의 숫자가 나옵니다.
+        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        } else {
+            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+        }
+        StringBuilder sb = new StringBuilder();
+        String line;
+        while ((line = rd.readLine()) != null) {
+            sb.append(line);
+        }
+        rd.close();
+        conn.disconnect();
+
+        String xml = sb.toString();
+        JSONObject json = XML.toJSONObject(xml);
+
+        JSONObject accInfo = json.getJSONObject("AccInfo");
+        JSONArray row = accInfo.getJSONArray("row");
+
+
+        Map<String, String> accCode = new HashMap<>();
+        accCode.put("A01", "교통사고");
+        accCode.put("A02", "차량고장");
+        accCode.put("A03", "보행사고");
+        accCode.put("A04", "공사");
+        accCode.put("A05", "낙하물");
+        accCode.put("A06", "버스사고");
+        accCode.put("A07", "지하철사고");
+        accCode.put("A08", "화재");
+        accCode.put("A09", "기상/재난");
+        accCode.put("A10", "집회및행사");
+        accCode.put("A11", "기타");
+        accCode.put("A12", "제보");
+        accCode.put("A13", "단순정보");
+
+
+        Map<String, String> accDCode = new HashMap<>();
+        accDCode.put("01B01", "추돌사고");
+        accDCode.put("01B03", "전복사고");
+        accDCode.put("01B04", "차량화재");
+        accDCode.put("01B05", "차량고장");
+        accDCode.put("02B01", "차량고장");
+        accDCode.put("03B01", "보행사고");
+        accDCode.put("04B01", "시설물보수");
+        accDCode.put("04B02", "청소작업");
+        accDCode.put("04B03", "차선도색");
+        accDCode.put("04B04", "도로보수");
+        accDCode.put("04B05", "제설작업");
+        accDCode.put("04B06", "포장공사");
+        accDCode.put("04B07", "가로수정비");
+        accDCode.put("05B01", "소형낙하물");
+        accDCode.put("05B02", "대형낙하물");
+        accDCode.put("06B01", "버스사고");
+        accDCode.put("07B01", "지하철사고");
+        accDCode.put("08B01", "화재");
+        accDCode.put("09B01", "폭우");
+        accDCode.put("09B02", "호우주의보");
+        accDCode.put("09B03", "호우경보");
+        accDCode.put("09B04", "태풍주의보");
+        accDCode.put("09B05", "태풍경보");
+        accDCode.put("09B06", "폭설");
+        accDCode.put("09B07", "대설주의보");
+        accDCode.put("09B08", "대설경보");
+        accDCode.put("09B09", "폭염");
+        accDCode.put("09B10", "폭염주의보");
+        accDCode.put("09B11", "한파");
+        accDCode.put("09B12", "한파주의보");
+        accDCode.put("09B13", "우박");
+        accDCode.put("09B14", "노면미끄러움");
+        accDCode.put("09B15", "도로침하");
+        accDCode.put("09B16", "도로침수");
+        accDCode.put("09B17", "도로결빙");
+        accDCode.put("09B18", "노면패임");
+        accDCode.put("09B19", "강우통제");
+        accDCode.put("10B01", "훈련");
+        accDCode.put("10B02", "집회/시위");
+        accDCode.put("10B03", "행사");
+        accDCode.put("11B01", "기타");
+        accDCode.put("12B01", "제보");
+        accDCode.put("13B01", "단순정보");
+
+        for (int i = 0; i < row.length(); i++) {
+            Long accId = Long.parseLong(row.getJSONObject(i).get("acc_id").toString());
+            if (!postRepository.existsByAccId(accId)) {
+                String title; // 제목
+                String placeName = ""; //장소명
+                StringBuilder content = new StringBuilder();
+                String thumbNail = "";
+                Double latitude = 0.0;
+                Double longitude = 0.0;
+                List<Long> keywordIdList = null;
+                Long headKeywordId = null;
+                LocalDateTime createdAt;
+
+                String accType = accCode.get(row.getJSONObject(i).get("acc_type").toString());
+                String accDType = accDCode.get(row.getJSONObject(i).get("acc_dtype"));
+
+                //제목
+                title =  accType + " (으)로 인한 " + parseRodeCode(row.getJSONObject(i).get("acc_road_code").toString());
+
+                // 장소명
+
+                // 위도 경도,
+
+                // 키워드 리스트
+
+                // 대표키워드
+                switch (row.getJSONObject(i).get("acc_type").toString()) {
+                    case "A01", "A03", "A06", "A07", "A08":
+                        headKeywordId = 1L;
+                        break;
+                    case "A02", "A11", "A12", "A13", "A05":
+                        headKeywordId = 9L;
+                        break;
+                    case "A04":
+                        headKeywordId = 4L;
+                        break;
+                    case "A09":
+                        headKeywordId = 3L;
+                        break;
+                    case "A10":
+                        headKeywordId = 8L;
+                        break;
+
+
+                }
+                if (row.getJSONObject(i).get("acc_type").toString().equals("A01") || row.getJSONObject(i).get("acc_type").toString().equals("A03") || row.getJSONObject(i).get("acc_type").toString().equals("A06") || row.getJSONObject(i).get("acc_type").toString().equals("A07") || row.getJSONObject(i).get("acc_type").toString().equals("A08")) {
+                    headKeywordId = 1L; // 사고
+                } else if (row.getJSONObject(i).get("acc_type").toString().equals("A02") || row.getJSONObject(i).get("acc_type").toString().equals("A05") || row.getJSONObject(i).get("acc_type").toString().equals("A11") || row.getJSONObject(i).get("acc_type").toString().equals("A12") || row.getJSONObject(i).get("acc_type").toString().equals("A13")) {
+                    headKeywordId = 9L; // 기타
+                } else if (row.getJSONObject(i).get("acc_type").toString().equals("A06"))
+
+                // content 입력
+                content.append("안녕하세요, \"가늘길 지금\" 팀 입니다.\n");
+                content.append(accType + " (으)로 인한 " + parseRodeCode(row.getJSONObject(i).get("acc_road_code").toString()) + "가 있을 예정입니다.\n");
+                content.append("하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.\n");
+                content.append("\n");
+
+                content.append("- 기간: " + "발생날짜: " + parseDate(row.getJSONObject(i).get("occr_date").toString()) + " " + parseWeek(row.getJSONObject(i).get("occr_time").toString())
+                        + " - 종료날짜: " + parseDate(row.getJSONObject(i).get("exp_clr_date").toString()) + " " + parseWeek(row.getJSONObject(i).get("exp_clr_time").toString()) + "\n");
+
+//                content.append("- 위치: {위치}\n");
+                content.append("- 사유: " + accType + " / " + accDType + "\n");
+                String info = row.getJSONObject(i).get("acc_info").toString().replaceAll("\r", " ");
+                content.append(info);
+
+                // 게시글
+
+
+                RequestPostDto.addPostDto dto = new RequestPostDto.addPostDto();
+
+                dto.setTitle(title);
+                dto.setContent(content.toString());
+                dto.setHeadKeywordId(headKeywordId);
+                dto.setAccId(accId);
+                dto.setLatitude(latitude);
+                dto.setLongitude(longitude);
+
+                System.out.println(dto.getHeadKeywordId());
+                Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+                Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
+
+                // 1.포스트 추가
+                Post post = dto.autoToEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member, accId);
+                postRepository.save(post);
+                System.out.println(post.getContent());
+
+                System.out.println("size : " + post.getRePosts());
+                // 포스트 생성과 동시에 포스트 키워드 카트 생성
+                PostCart postCart = postCartRepository.findByPost(post);
+                if (postCart == null) {
+                    postCart = PostCart.addCart(post);
+                    postCartRepository.save(postCart);
+                }
+
+                System.out.println(dto.getKeywordIdList());
+
+                // 2.키워드 추가
+                if (dto.getKeywordIdList() != null) {
+                    for (Long keywordId : dto.getKeywordIdList()) {
+
+                        Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+                        KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
+                        keywordPostRepository.save(keywordPost);
+                    }
+                }
+
+            }
+
+        }
+    }
+
+    public static String parseDate(String date) throws ParseException {
+        SimpleDateFormat input = new SimpleDateFormat("yyyyMMdd");  //dt와 형식을 맞추어 준다.
+        SimpleDateFormat output = new SimpleDateFormat("yyyy년 MM월 dd일"); //변환할 형식
+        Date newDate = input.parse(date);        //date 자료형으로 변환
+        return output.format(newDate);    //date 타입을 string 으로 변환
+    }
+
+    public static String parseWeek(String time) throws ParseException {
+        SimpleDateFormat input = new SimpleDateFormat("HHMM");  //dt와 형식을 맞추어 준다.
+        SimpleDateFormat output = new SimpleDateFormat("HH시 MM분"); //변환할 형식
+        Date newTime = input.parse(time);        //date 자료형으로 변환
+        return output.format(newTime);    //date 타입을 string 으로 변환
+    }
+
+    public static String parseRodeCode(String code) {
+        if (code.equals("010")) {
+            return "부분 통제";
+        } else if (code.equals("009")) {
+            return "전면 통제";
+        } else {
+            return "알수없음";
+        }
+    }
 }

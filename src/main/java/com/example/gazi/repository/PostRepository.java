@@ -18,4 +18,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Transactional
     Page<Post> findAllByMember(Member member, Pageable pageable);
+
+    boolean existsByAccId(Long accId);
 }

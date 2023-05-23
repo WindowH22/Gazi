@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 public interface PostService {
@@ -27,11 +29,13 @@ public interface PostService {
 //    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable);
 
     // 커뮤 전체글 리스트
-    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId);
+    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) throws IOException, ParseException;
 
     // 내가 작성한 글
     ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost);
 
     @Transactional(readOnly = true)
     ResponseEntity<Body> getPostByLocation(Double minLat, Double minLon, Double maxLat, Double maxLon, Double curX, Double curY, Pageable pageable, Boolean isNearSearch);
+
+    void autoAddPost() throws IOException, ParseException;
 }
