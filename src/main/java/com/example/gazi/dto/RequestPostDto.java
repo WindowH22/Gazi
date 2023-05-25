@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class RequestPostDto {
@@ -25,6 +26,8 @@ public class RequestPostDto {
         private Long headKeywordId;
         private Long accId;
 
+        private LocalDateTime expireDate;
+
 
         public Post toEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword,String thumbNail, Member member){
             return Post.builder()
@@ -39,7 +42,7 @@ public class RequestPostDto {
                     .build();
         }
 
-        public Post autoToEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword,String thumbNail, Member member,Long accId){
+        public Post autoToEntity(String placeName,String title, String content, Double latitude, Double longitude, Keyword headKeyword,String thumbNail, Member member,Long accId, LocalDateTime expireDate){
 
             return Post.builder()
                     .placeName(placeName)
@@ -51,6 +54,7 @@ public class RequestPostDto {
                     .thumbNail(thumbNail)
                     .member(member)
                     .accId(accId)
+                    .expireDate(expireDate)
                     .build();
         }
     }

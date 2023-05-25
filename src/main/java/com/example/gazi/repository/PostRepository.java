@@ -20,4 +20,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByMember(Member member, Pageable pageable);
 
     boolean existsByAccId(Long accId);
+
+    Post getReferenceByAccId(Long accId);
 }

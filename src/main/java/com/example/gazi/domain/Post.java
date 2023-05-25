@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -47,6 +48,9 @@ public class Post extends AuditingFields {
 
     @Column
     private String backgroundMap; // 지도 크롭이미지
+
+    @Column
+    private LocalDateTime expireDate;
 
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"post"}) // 무한참조 방지

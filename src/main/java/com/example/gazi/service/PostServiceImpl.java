@@ -12,7 +12,9 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.example.gazi.service.FileServiceImpl.makeFileName;
@@ -64,9 +67,8 @@ public class PostServiceImpl implements PostService {
         if (!dto.getKeywordIdList().contains(dto.getHeadKeywordId())) {
             return response.fail("대표 키워드는 키워드로 선택한 값중에서 지정해야 합니다.", HttpStatus.NOT_FOUND);
         }
-//        String uploadThumbnailUrl = fileService.uploadFile(thumbnail, makeFileName("thumbnail"));
+
         // 1.포스트 추가
-//        Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, uploadThumbnailUrl, member);
         Post post = dto.toEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member);
         postRepository.save(post);
 
@@ -688,12 +690,13 @@ public class PostServiceImpl implements PostService {
                 List<Long> keywordIdList = null;
                 Long headKeywordId = null;
                 LocalDateTime createdAt;
+                LocalDateTime expireDate;
 
                 String accType = accCode.get(row.getJSONObject(i).get("acc_type").toString());
                 String accDType = accDCode.get(row.getJSONObject(i).get("acc_dtype"));
 
                 //제목
-                title =  accType + " (으)로 인한 " + parseRodeCode(row.getJSONObject(i).get("acc_road_code").toString());
+                title = accType + " (으)로 인한 " + parseRodeCode(row.getJSONObject(i).get("acc_road_code").toString());
 
                 // 장소명
 
@@ -741,8 +744,10 @@ public class PostServiceImpl implements PostService {
                 String info = row.getJSONObject(i).get("acc_info").toString().replaceAll("\r", " ");
                 content.append(info);
 
-                // 게시글
-
+                //만료일
+                String expireDateStr = parseDate(row.getJSONObject(i).get("exp_clr_date").toString()) + " " + parseWeek(row.getJSONObject(i).get("exp_clr_time").toString());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
+                expireDate = LocalDateTime.parse(expireDateStr, formatter);
 
                 RequestPostDto.addPostDto dto = new RequestPostDto.addPostDto();
 
@@ -752,6 +757,7 @@ public class PostServiceImpl implements PostService {
                 dto.setAccId(accId);
                 dto.setLatitude(latitude);
                 dto.setLongitude(longitude);
+                dto.setExpireDate(expireDate);
 
                 System.out.println(dto.getHeadKeywordId());
                 Keyword headKeyword = keywordRepository.findById(dto.getHeadKeywordId()).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
@@ -759,7 +765,7 @@ public class PostServiceImpl implements PostService {
                 Member member = memberRepository.findById(2L).orElseThrow(() -> new EntityNotFoundException("해당 회원이 존재하지 않습니다."));
 
                 // 1.포스트 추가
-                Post post = dto.autoToEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member, accId);
+                Post post = dto.autoToEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member, accId, expireDate);
                 postRepository.save(post);
                 System.out.println(post.getContent());
 
@@ -784,6 +790,13 @@ public class PostServiceImpl implements PostService {
                     }
                 }
 
+            } else {
+                // 사건종료 되었는지 여부 파악
+                Post post = postRepository.getReferenceByAccId(accId);
+                LocalDateTime now = LocalDateTime.now();
+                if (post.getExpireDate() != null && now.isAfter(post.getExpireDate())) {
+                    post.setTitle("[종료] " + post.getTitle());
+                }
             }
 
         }
