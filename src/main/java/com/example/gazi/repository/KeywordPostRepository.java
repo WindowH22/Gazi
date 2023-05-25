@@ -7,6 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface KeywordPostRepository extends JpaRepository<KeywordPost, Long> {
 
     void deleteAllByPostCart(PostCart postCart);
@@ -16,4 +18,6 @@ public interface KeywordPostRepository extends JpaRepository<KeywordPost, Long> 
     Page<KeywordPost> findAllByKeywordId(Long keywordId, Pageable pageable);
 
     Page<KeywordPost> findAllByKeyword(Keyword keyword, Pageable pageable);
+    Page<KeywordPost> findAllByKeywordIn(List<Keyword> keywordList, Pageable pageable);
+
 }

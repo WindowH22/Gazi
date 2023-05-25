@@ -64,7 +64,7 @@ public class PostController {
     public ResponseEntity<Body> getPost(
             @RequestParam("curLat") Double curLat,
             @RequestParam("curLon") Double curLon,
-            @RequestParam(value = "keywordId",required = false) Long keywordId,
+            @RequestParam(value = "keywordId",required = false) List<Long> keywordId,
             @PageableDefault(page = 0, size = 15, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) throws IOException, ParseException {
 
         postService.autoAddPost();

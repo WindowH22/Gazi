@@ -352,23 +352,24 @@ public class PostServiceImpl implements PostService {
 
     @Override
     // 커뮤 전체글 리스트
-    public ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) throws IOException, ParseException {
+    public ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, List<Long> keywordIdList) throws IOException, ParseException {
         // 회원인지확인
         try {
             memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
             Page<Post> postList;
-            PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by("time"));
-            //TODO: 지연시간에 따라 자동 업데이트 쳐줘야 함
 
-//            autoAddPost();
-//            System.out.println("자동 업로드는 완료");
 
             // 전체글인지 키워드 글인지 확인
-            if (keywordId != null) {
+            if (keywordIdList != null) {
+                List<Keyword> keywordList = new ArrayList<>();
+                for (Long keywordId : keywordIdList) {
+                    Keyword keyword = keywordRepository.getReferenceById(keywordId);
+                    keywordList.add(keyword);
+                }
 
-                Keyword keyword = keywordRepository.getReferenceById(keywordId);
-                Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
+//                Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
+                Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeywordIn(keywordList, pageable);
 
                 Page<ResponsePostDto.getPostDto> postDtoPage = keywordPostPage.map(m -> m.getPostCart().getPost().getRePosts().size() == 0 ?
                         ResponsePostDto.getPostDto.toDto(
@@ -380,7 +381,6 @@ public class PostServiceImpl implements PostService {
                                 m.getPostCart().getPost(),
                                 getTime(m.getPostCart().getPost().getRePosts().get(m.getPostCart().getPost().getRePosts().size() - 1).getCreatedAt()),
                                 getDistance(curX, curY, m.getPostCart().getPost().getLatitude(), m.getPostCart().getPost().getLongitude()), contentSummary(m.getPostCart().getPost().getContent()))
-
                 );
 
                 return response.success(postDtoPage);
