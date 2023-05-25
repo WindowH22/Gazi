@@ -17,6 +17,7 @@ import com.example.gazi.repository.MemberRepository;
 import com.example.gazi.repository.ReportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -51,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
     private final Response response;
+
 
 
     @Transactional
@@ -133,16 +136,20 @@ public class MemberServiceImpl implements MemberService {
         if (!jwtTokenProvider.validateToken(reissue.getRefreshToken())) {
             return response.fail("Refresh Token 정보가 유효하지 않습니다.",HttpStatus.BAD_REQUEST);
         }
+        log.info("accessToken: %d", reissue.getAccessToken());
+        log.info("refreshToken: %d", reissue.getRefreshToken());
 
         // Access Token 에서 Member email 가져옴.
         Authentication authentication = jwtTokenProvider.getAuthentication(reissue.getAccessToken());
+
+        log.info("유저 email: %d", authentication.getName() );
 
         // Redis 에서 Member email 을 기반으로 저장된 Refresh Token 을 가져옴.
         String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + authentication.getName());
 
         // 로그아웃되어 Redis 에 RefreshToken 이 존재하지 않는 경우 처리
         if(ObjectUtils.isEmpty(refreshToken)) {
-            return response.fail("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
+            return response.fail("잘못된 요청입니다. 엑세스토큰으로 찾은 유저 이메일 : " + authentication.getName() , HttpStatus.BAD_REQUEST);
         }
         if(!refreshToken.equals(reissue.getRefreshToken())) {
             return response.fail("Refresh Token 정보가 일치하지 않습니다.", HttpStatus.NOT_FOUND);
