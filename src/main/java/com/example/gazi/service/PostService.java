@@ -29,7 +29,7 @@ public interface PostService {
 //    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable);
 
     // 커뮤 전체글 리스트
-    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, Long keywordId) throws IOException, ParseException;
+    ResponseEntity<Body> getPost(Double curX, Double curY, Pageable pageable, List<Long> keywordIdList) throws IOException, ParseException;
 
     // 내가 작성한 글
     ResponseEntity<Body> getMyPost(Double curX, Double curY, Pageable pageable, Boolean isPost);
