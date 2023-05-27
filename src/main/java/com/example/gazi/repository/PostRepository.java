@@ -21,5 +21,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     boolean existsByAccId(Long accId);
 
+    @Transactional
     Post getReferenceByAccId(Long accId);
 }

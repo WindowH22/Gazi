@@ -6,6 +6,7 @@ import com.example.gazi.domain.PostCart;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public interface KeywordPostRepository extends JpaRepository<KeywordPost, Long> 
     Page<KeywordPost> findAllByKeywordId(Long keywordId, Pageable pageable);
 
     Page<KeywordPost> findAllByKeyword(Keyword keyword, Pageable pageable);
+    @Transactional
     Page<KeywordPost> findAllByKeywordIn(List<Keyword> keywordList, Pageable pageable);
 
 }
