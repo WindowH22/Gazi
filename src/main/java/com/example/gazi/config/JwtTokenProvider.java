@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -25,8 +27,8 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 90 * 60 * 1000L;              // 90분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L;    // 7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = Duration.ofMinutes(90).toMillis(); // 만료시간 90분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = Duration.ofDays(30).toMillis(); // 만료시간 한달(30일)
 
     private final Key key;
 
@@ -42,10 +44,13 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        long now = (new Date()).getTime();
+        Date now = new Date();
 
         // AccessToken 생성
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        Date accessTokenExpiresIn = new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String formattedDate = formatter.format(accessTokenExpiresIn);
+
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
@@ -55,12 +60,14 @@ public class JwtTokenProvider {
                 .compact();
 
         // RefreshToken 생성
-        Date refreshTokenExpiresIn = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
+        Date refreshTokenExpiresIn = new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME);
+//        formattedDate = formatter.format(refreshTokenExpiresIn);
 
         String refreshToken = Jwts.builder()
                 .setExpiration(refreshTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
 
         return ResponseToken.builder()
                 .grantType(BEARER_TYPE)
@@ -117,9 +124,16 @@ public class JwtTokenProvider {
 
     public Long getExpiration(String accessToken) {
         // accessToken 남은 유효시간
-        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        try{
+            Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+            long now = new Date().getTime();
+            return (expiration.getTime() - now);
+        }
+        catch (ExpiredJwtException e){
+            e.printStackTrace();
+            log.info("토큰만료됨");
+            return null;
+        }
 
-        long now = new Date().getTime();
-        return (expiration.getTime() - now);
     }
 }

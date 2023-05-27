@@ -32,6 +32,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -114,12 +116,18 @@ public class MemberServiceImpl implements MemberService {
             responseToken.setMemberId(member.getId());
             responseToken.setNickName(member.getNickName());
             responseToken.setEmail(member.getEmail());
+
+            log.info("리프레쉬 토큰 만료시간: "+jwtTokenProvider.getExpiration(responseToken.getRefreshToken()));
+
             // RefreshToken Redis 저장 (expirationTime 으로 자동 삭제 처리)
             redisTemplate.opsForValue()
-                    .set("RT:" + authentication.getName(),
-                            responseToken.getRefreshToken(),
+                    .set("RT:" + authentication.getName(),responseToken.getRefreshToken(),
                             responseToken.getRefreshTokenExpirationTime(),
-                            TimeUnit.MILLISECONDS);
+                            TimeUnit.MILLISECONDS
+                            );
+
+
+
 
             return response.success(responseToken,"로그인에 성공했습니다.",HttpStatus.OK);
         }
@@ -136,19 +144,27 @@ public class MemberServiceImpl implements MemberService {
         if (!jwtTokenProvider.validateToken(reissue.getRefreshToken())) {
             return response.fail("Refresh Token 정보가 유효하지 않습니다.",HttpStatus.BAD_REQUEST);
         }
-        log.info("accessToken: %d", reissue.getAccessToken());
-        log.info("refreshToken: %d", reissue.getRefreshToken());
+
 
         // Access Token 에서 Member email 가져옴.
         Authentication authentication = jwtTokenProvider.getAuthentication(reissue.getAccessToken());
 
-        log.info("유저 email: %d", authentication.getName() );
+        log.info("유저 email: " + authentication.getName() );
+
+        log.info("엑세스 토큰 만료까지 남은시간(ms) : " + jwtTokenProvider.getExpiration(reissue.getAccessToken()));
+        log.info("리프레쉬 토큰 만료까지 남은시간(ms): " +jwtTokenProvider.getExpiration(reissue.getRefreshToken()));
 
         // Redis 에서 Member email 을 기반으로 저장된 Refresh Token 을 가져옴.
         String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + authentication.getName());
+        log.info("Redis에서 찾은 refreshToken :" +refreshToken);
+        log.info("리프레쉬 토큰이 존재하는지:"+ redisTemplate.hasKey("RT:" + authentication.getName()));
 
         // 로그아웃되어 Redis 에 RefreshToken 이 존재하지 않는 경우 처리
         if(ObjectUtils.isEmpty(refreshToken)) {
+            log.info("Redis 에 RefreshToken 이 존재하지 않는 경우 처리");
+            log.info("accessToken: " +  reissue.getAccessToken());
+            log.info("refreshToken: " + reissue.getRefreshToken());
+            jwtTokenProvider.validateToken(refreshToken);
             return response.fail("잘못된 요청입니다. 엑세스토큰으로 찾은 유저 이메일 : " + authentication.getName() , HttpStatus.BAD_REQUEST);
         }
         if(!refreshToken.equals(reissue.getRefreshToken())) {
@@ -164,6 +180,10 @@ public class MemberServiceImpl implements MemberService {
         tokenInfo.setMemberId(member.getId());
         tokenInfo.setEmail(member.getEmail());
         tokenInfo.setNickName(member.getNickName());
+
+        Date date = new Date(tokenInfo.getRefreshTokenExpirationTime());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        log.info("재발급으로 발급된 토큰에 만료날짜:" + formatter.format(date));
 
         // RefreshToken Redis 업데이트
         redisTemplate.opsForValue()
