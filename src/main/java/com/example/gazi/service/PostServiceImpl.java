@@ -370,7 +370,6 @@ public class PostServiceImpl implements PostService {
                     keywordList.add(keyword);
                 }
 
-//                Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeyword(keyword, pageable);
                 Page<KeywordPost> keywordPostPage = keywordPostRepository.findAllByKeywordIn(keywordList, pageable);
 
                 Page<ResponsePostDto.getPostDto> postDtoPage = keywordPostPage.map(m -> m.getPostCart().getPost().getRePosts().size() == 0 ?
