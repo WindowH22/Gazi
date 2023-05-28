@@ -20,7 +20,7 @@ public class KeywordPost {
     @JoinColumn(name = "keyword_id")
     @JsonIgnore
     private Keyword keyword;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_cart_id")
     private PostCart postCart;
 
