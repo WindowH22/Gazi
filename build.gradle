@@ -24,6 +24,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
 
+    //proj4
+    implementation 'org.osgeo:proj4j:0.1.0'
+
     //json
     implementation group: 'org.json', name: 'json', version: '20230227'
 
