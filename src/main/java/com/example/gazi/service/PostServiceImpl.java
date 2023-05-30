@@ -8,8 +8,7 @@ import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.XML;
+import org.osgeo.proj4j.ProjCoordinate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -21,12 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
@@ -54,6 +48,8 @@ public class PostServiceImpl implements PostService {
     private final RePostRepository rePostRepository;
     private final Response response;
     private final FileService fileService;
+    private final GeoCoordinateConverterService geoCoordinateConverterService;
+    private final OpenApiService openApiService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
 
@@ -665,6 +661,13 @@ public class PostServiceImpl implements PostService {
                 // 장소명
 
                 // 위도 경도,
+                // Define GRS80TM coordinates
+                double x = Double.parseDouble(data.getJSONObject(i).get("grs80tm_x").toString());
+                double y = Double.parseDouble(data.getJSONObject(i).get("grs80tm_y").toString());
+                ProjCoordinate googleMapcsCoord = geoCoordinateConverterService.grs80ToWgs84(x,y);
+
+                latitude = googleMapcsCoord.x;
+                longitude = googleMapcsCoord.y;
 
                 // 키워드 리스트
 
