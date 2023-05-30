@@ -751,10 +751,12 @@ public class PostServiceImpl implements PostService {
 
             } else {
                 // 사건종료 되었는지 여부 파악
-                Post post = postRepository.getReferenceByAccId(accId);
+                Post post = postRepository.getReferenceByAccIdAndIsExpireFalse(accId).orElse(null);
                 LocalDateTime now = LocalDateTime.now();
-                if (post.getExpireDate() != null && now.isAfter(post.getExpireDate())) {
+                if (post != null && now.isAfter(post.getExpireDate())) {
                     post.setTitle("[종료] " + post.getTitle());
+                    post.setIsExpire(true);
+                    postRepository.save(post);
                 }
             }
 

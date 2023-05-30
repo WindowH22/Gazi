@@ -10,6 +10,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -22,5 +24,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     boolean existsByAccId(Long accId);
 
     @Transactional
-    Post getReferenceByAccId(Long accId);
+    Optional<Post> getReferenceByAccIdAndIsExpireFalse(Long accId);
+
 }

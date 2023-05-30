@@ -55,6 +55,7 @@ public class RequestPostDto {
                     .member(member)
                     .accId(accId)
                     .expireDate(expireDate)
+                    .isExpire(false)
                     .build();
         }
     }

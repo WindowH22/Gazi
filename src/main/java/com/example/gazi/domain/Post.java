@@ -52,6 +52,9 @@ public class Post extends AuditingFields {
     @Column
     private LocalDateTime expireDate;
 
+    @Column
+    private Boolean isExpire;
+
     @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties({"post"}) // 무한참조 방지
     @OrderBy("id desc") // 내림차순;
