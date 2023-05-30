@@ -511,11 +511,13 @@ public class PostServiceImpl implements PostService {
         double d = EARTH_RADIUS * c * 1000;    // Distance in m
         String distance;
 
-        if (d > 1000L) {
+        if (d > 1000L && d < 100000L) {
             d = d / 1000;
             distance = (int) d + "Km";
-        } else {
+        } else if(d < 1000L){
             distance = (int) d + "m";
+        } else {
+            distance = "100Km 이상의 거리입니다.";
         }
         return distance;
     }
