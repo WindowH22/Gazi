@@ -578,6 +578,14 @@ public class PostServiceImpl implements PostService {
     @Override
     public void autoAddPost() throws IOException, ParseException {
 
+        // 상황 종료된 게시글 수정
+        List<Post> expirePost = postRepository.findByExpireDateBeforeAndIsExpireFalse(LocalDateTime.now());
+        for (Post post : expirePost) {
+            post.setTitle("[종료] " + post.getTitle());
+            post.setIsExpire(true);
+            postRepository.save(post);
+        }
+
         JSONArray data = openApiService.getJsonArray();
 
         Map<String, String> accCode = new HashMap<>();
