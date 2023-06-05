@@ -497,8 +497,9 @@ public class PostServiceImpl implements PostService {
 
     // 거리 구하기 로직
     public String getDistance(double lat1, double lon1, double lat2, double lon2) {
-        if (lat2 == 0.0 && lon2 == 0.0) {
-            return "거리를 측정할 수 없습니다.";
+        // 위치 값을 허용하지 않아서 0으로 보내는 경우
+        if (lat1 == 0.0 && lon1 == 0.0) {
+            return null;
         }
 
         final Long EARTH_RADIUS = 6371L;
@@ -514,7 +515,7 @@ public class PostServiceImpl implements PostService {
         if (d > 1000L && d < 100000L) {
             d = d / 1000;
             distance = (int) d + "Km";
-        } else if(d < 1000L){
+        } else if (d < 1000L) {
             distance = (int) d + "m";
         } else {
             distance = "100Km 이상의 거리입니다.";
