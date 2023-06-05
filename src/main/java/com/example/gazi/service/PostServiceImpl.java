@@ -588,6 +588,12 @@ public class PostServiceImpl implements PostService {
 
         JSONArray data = openApiService.getJsonArray();
 
+        //최신일 경우 로직 돌리지 않고 스탑
+        Long recentAccId = Long.parseLong(data.getJSONObject(data.length() - 1).get("acc_id").toString());
+        if (postRepository.existsByAccId(recentAccId)) {
+            return;
+        }
+
         Map<String, String> accCode = new HashMap<>();
         accCode.put("A01", "교통사고");
         accCode.put("A02", "차량고장");
@@ -649,7 +655,7 @@ public class PostServiceImpl implements PostService {
         accDCode.put("12B01", "제보");
         accDCode.put("13B01", "단순정보");
 
-        for (int i = 0; i < data.length(); i++) {
+        for (int i = data.length()-1; i >= 0; i--) {
             Long accId = Long.parseLong(data.getJSONObject(i).get("acc_id").toString());
             if (!postRepository.existsByAccId(accId)) {
                 String title; // 제목
@@ -675,7 +681,7 @@ public class PostServiceImpl implements PostService {
                 // Define GRS80TM coordinates
                 double x = Double.parseDouble(data.getJSONObject(i).get("grs80tm_x").toString());
                 double y = Double.parseDouble(data.getJSONObject(i).get("grs80tm_y").toString());
-                ProjCoordinate googleMapcsCoord = geoCoordinateConverterService.grs80ToWgs84(x,y);
+                ProjCoordinate googleMapcsCoord = geoCoordinateConverterService.grs80ToWgs84(x, y);
 
                 latitude = googleMapcsCoord.x;
                 longitude = googleMapcsCoord.y;
@@ -757,18 +763,7 @@ public class PostServiceImpl implements PostService {
                         keywordPostRepository.save(keywordPost);
                     }
                 }
-
-            } else {
-                // 사건종료 되었는지 여부 파악
-                Post post = postRepository.getReferenceByAccIdAndIsExpireFalse(accId).orElse(null);
-                LocalDateTime now = LocalDateTime.now();
-                if (post != null && now.isAfter(post.getExpireDate())) {
-                    post.setTitle("[종료] " + post.getTitle());
-                    post.setIsExpire(true);
-                    postRepository.save(post);
-                }
             }
-
         }
     }
 
