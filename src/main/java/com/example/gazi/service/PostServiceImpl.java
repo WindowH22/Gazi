@@ -518,7 +518,7 @@ public class PostServiceImpl implements PostService {
         } else if (d < 1000L) {
             distance = (int) d + "m";
         } else {
-            distance = "100Km 이상의 거리입니다.";
+            distance = "100Km 이상.";
         }
         return distance;
     }
@@ -710,7 +710,7 @@ public class PostServiceImpl implements PostService {
 
 
                 // content 입력
-                content.append("안녕하세요, \"가늘길 지금\" 팀 입니다.\n");
+                content.append("안녕하세요, \"가는길 지금\" 팀 입니다.\n");
                 content.append(accType + "(으)로 인한 " + parseRodeCode(data.getJSONObject(i).get("acc_road_code").toString()) + "가 있을 예정입니다.\n");
                 content.append("하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.\n");
                 content.append("\n");
