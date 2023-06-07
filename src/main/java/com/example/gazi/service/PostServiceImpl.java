@@ -600,7 +600,6 @@ public class PostServiceImpl implements PostService {
         accCode.put("A02", "차량고장");
         accCode.put("A03", "보행사고");
         accCode.put("A04", "공사");
-        accCode.put("A05", "낙하물");
         accCode.put("A06", "버스사고");
         accCode.put("A07", "지하철사고");
         accCode.put("A08", "화재");
@@ -625,8 +624,6 @@ public class PostServiceImpl implements PostService {
         accDCode.put("04B05", "제설작업");
         accDCode.put("04B06", "포장공사");
         accDCode.put("04B07", "가로수정비");
-        accDCode.put("05B01", "소형낙하물");
-        accDCode.put("05B02", "대형낙하물");
         accDCode.put("06B01", "버스사고");
         accDCode.put("07B01", "지하철사고");
         accDCode.put("08B01", "화재");
@@ -658,6 +655,12 @@ public class PostServiceImpl implements PostService {
 
         for (int i = data.length()-1; i >= 0; i--) {
             Long accId = Long.parseLong(data.getJSONObject(i).get("acc_id").toString());
+
+            if(data.getJSONObject(i).get("acc_type").toString().equals("A05")){
+                log.info("낙하물 관련된 게시물이라 업로드 하지 않습니다.");
+                break;
+            }
+
             if (!postRepository.existsByAccId(accId)) {
                 String title; // 제목
                 String placeName = ""; //장소명
@@ -687,14 +690,12 @@ public class PostServiceImpl implements PostService {
                 longitude = googleMapcsCoord.x;
                 latitude = googleMapcsCoord.y;
 
-                // 키워드 리스트
-
                 // 대표키워드
                 switch (data.getJSONObject(i).get("acc_type").toString()) {
                     case "A01", "A03", "A06", "A07", "A08":
                         headKeywordId = 1L;
                         break;
-                    case "A02", "A11", "A12", "A13", "A05":
+                    case "A02", "A11", "A12", "A13":
                         headKeywordId = 9L;
                         break;
                     case "A04":
