@@ -716,8 +716,8 @@ public class PostServiceImpl implements PostService {
                 content.append("하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.\n");
                 content.append("\n");
 
-                content.append("- 기간: " + "발생날짜: " + parseDate(data.getJSONObject(i).get("occr_date").toString()) + " " + parseWeek(data.getJSONObject(i).get("occr_time").toString())
-                        + " - 종료날짜: " + parseDate(data.getJSONObject(i).get("exp_clr_date").toString()) + " " + parseWeek(data.getJSONObject(i).get("exp_clr_time").toString()) + "\n");
+                content.append("- 발생일: " + parseDate(data.getJSONObject(i).get("occr_date").toString()) + " " + parseWeek(data.getJSONObject(i).get("occr_time").toString() + "\n")
+                        + "- 종료일: " + parseDate(data.getJSONObject(i).get("exp_clr_date").toString()) + " " + parseWeek(data.getJSONObject(i).get("exp_clr_time").toString()) + "\n");
 
 //                content.append("- 위치: {위치}\n");
                 content.append("- 사유: " + accType + " / " + accDType + "\n");
