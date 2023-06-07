@@ -567,8 +567,9 @@ public class PostServiceImpl implements PostService {
 
     // 내용 축약
     public String contentSummary(String content) {
-        if (content.length() > 45) {
-            return content.substring(0, 46);
+        content = content.replace(System.getProperty("line.separator").toString(), "");
+        if (content.length() > 100) {
+            return content.substring(0, 101);
         } else {
             return content;
         }
