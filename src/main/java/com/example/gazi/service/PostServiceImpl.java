@@ -683,8 +683,8 @@ public class PostServiceImpl implements PostService {
                 double y = Double.parseDouble(data.getJSONObject(i).get("grs80tm_y").toString());
                 ProjCoordinate googleMapcsCoord = geoCoordinateConverterService.grs80ToWgs84(x, y);
 
-                latitude = googleMapcsCoord.x;
-                longitude = googleMapcsCoord.y;
+                longitude = googleMapcsCoord.x;
+                latitude = googleMapcsCoord.y;
 
                 // 키워드 리스트
 
