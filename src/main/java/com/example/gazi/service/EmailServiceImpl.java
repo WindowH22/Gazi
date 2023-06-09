@@ -30,24 +30,30 @@ public class EmailServiceImpl implements EmailService{
         MimeMessage  message = emailSender.createMimeMessage();
 
         message.addRecipients(Message.RecipientType.TO, to);//보내는 대상
-        message.setSubject("이메일 인증 테스트");//제목
+        message.setSubject("가는길 지금 이메일 인증");//제목
 
         String msgg="";
-        msgg+= "<div style='margin:20px;'>";
-        msgg+= "<h1> 안녕하세요 가지입니다. </h1>";
+        msgg+= "<div style='margin:20px; color=#000000'>";
+        msgg+= "<h1> 이메일 인증 </h1>";
+        msgg+= "<p> 안녕하세요 가는길지금 Gazi 입니다.";
         msgg+= "<br>";
-        msgg+= "<p>아래 코드를 복사해 입력해주세요<p>";
+        msgg+= "아래 번호를 인증번호 입력란에 입력 후 회원가입을 완료해주세요.</p>";
         msgg+= "<br>";
         msgg+= "<p>감사합니다.<p>";
         msgg+= "<br>";
-        msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-        msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
-        msgg+= "<div style='font-size:130%'>";
-        msgg+= "CODE : <strong>";
-        msgg+= keyValue+"</strong><div><br/> ";
+        msgg+= "<div align='center' style='border:1px solid white; font-family:verdana; background-color: #F2EBFF';>";
+        msgg+= "<div style='font-size:300%; color: #8446E7'>";
+        msgg+= keyValue;
+        msgg+= "</div>";
+        msgg+= "</div>";
+        msgg+= "<div style='height: 0; border:1px solid #000000'></div>";
+        msgg+= "<p><span style='color:#323232; font-weight:bold'>가는길지금에 가입하신 적이 없다면, 이 메일을 무시하세요.</span> <br> ";
+        msgg+= "<span style='color:#9D9D9D'>본 메일은 발신 전용으로 문의에 대한 회신이 되지 않습니다. 궁금한 사항은 gazinowcs@gmail.com로 문의 부탁드립니다.</span></p>";
+
+
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("changheeckdgml@gmail.com","leechanghee"));//보내는 사람
+        message.setFrom(new InternetAddress("gazinowcs@gmail.com","gazi"));//보내는 사람
 
         return message;
     }
