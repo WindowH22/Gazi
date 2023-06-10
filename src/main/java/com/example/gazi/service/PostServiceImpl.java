@@ -39,7 +39,6 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
     private final KeywordPostRepository keywordPostRepository;
     private final FilePostRepository filePostRepository;
-    private final FileRePostRepository fileRePostRepository;
     private final LikePostRepository likePostRepository;
     private final LikeRepository likeRepository;
     private final PostCartRepository postCartRepository;
@@ -50,6 +49,7 @@ public class PostServiceImpl implements PostService {
     private final FileService fileService;
     private final GeoCoordinateConverterService geoCoordinateConverterService;
     private final OpenApiService openApiService;
+    private final MapService mapService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
 
@@ -592,6 +592,7 @@ public class PostServiceImpl implements PostService {
         //최신일 경우 로직 돌리지 않고 스탑
         Long recentAccId = Long.parseLong(data.getJSONObject(data.length() - 1).get("acc_id").toString());
         if (postRepository.existsByAccId(recentAccId)) {
+            log.info("추가된 데이터가 없습니다.");
             return;
         }
 
@@ -729,6 +730,11 @@ public class PostServiceImpl implements PostService {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
                 expireDate = LocalDateTime.parse(expireDateStr, formatter);
 
+                // 게시글 썸네일
+                Map<String, Object> mapSnapshot = mapService.mapSnapshot(latitude,longitude);
+
+                String backgroundMapUrl = fileService.uploadFile((byte[])mapSnapshot.get("imageData"),makeFileName("backgroundMap"));
+
                 RequestPostDto.addPostDto dto = new RequestPostDto.addPostDto();
 
                 dto.setTitle(title);
@@ -745,6 +751,7 @@ public class PostServiceImpl implements PostService {
 
                 // 1.포스트 추가
                 Post post = dto.autoToEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member, accId, expireDate);
+                post.setBackgroundMap(backgroundMapUrl);
                 postRepository.save(post);
 
                 // 포스트 생성과 동시에 포스트 키워드 카트 생성
