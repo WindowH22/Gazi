@@ -5,6 +5,7 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -64,6 +67,26 @@ public class FileServiceImpl implements FileService {
         } catch (IOException e) {
             e.printStackTrace();
             return "IOExeption 발생";
+        }
+    }
+
+    @Override
+    public String uploadFile(byte[] file, String fileName) {
+
+        try {
+            String fileUrl = "https://" + bucket + ".s3." + clientRegion + ".amazonaws.com/" + fileName;
+
+            InputStream inputStream = new ByteArrayInputStream(file);
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentLength(file.length);
+
+            PutObjectRequest request = new PutObjectRequest(bucket, fileName, inputStream, metadata);
+            amazonS3Client.putObject(request);
+            log.info("s3업로드 완료");
+            return fileUrl;
+        } catch (Exception e){
+            e.printStackTrace();
+            return "에외 발생";
         }
     }
 
