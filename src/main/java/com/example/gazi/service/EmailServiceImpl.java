@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService{
         msgg+= keyValue;
         msgg+= "</div>";
         msgg+= "</div>";
-        msgg+= "<div style='height: 0; border:1px solid #000000'></div>";
+        msgg+= "<hr>";
         msgg+= "<p><span style='color:#323232; font-weight:bold'>가는길지금에 가입하신 적이 없다면, 이 메일을 무시하세요.</span> <br> ";
         msgg+= "<span style='color:#9D9D9D'>본 메일은 발신 전용으로 문의에 대한 회신이 되지 않습니다. 궁금한 사항은 gazinowcs@gmail.com로 문의 부탁드립니다.</span></p>";
 
