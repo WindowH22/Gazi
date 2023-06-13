@@ -16,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -577,6 +578,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
+    @Scheduled(fixedDelay = 50000) // 5분마다 자동업로드 수행
     public void autoAddPost() throws IOException, ParseException {
 
         // 상황 종료된 게시글 수정
@@ -773,6 +775,7 @@ public class PostServiceImpl implements PostService {
                 }
             }
         }
+        log.info("자동 업로드 동작 완료");
     }
 
     public static String parseDate(String date) throws ParseException {
