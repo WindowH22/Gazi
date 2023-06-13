@@ -733,9 +733,9 @@ public class PostServiceImpl implements PostService {
                 expireDate = LocalDateTime.parse(expireDateStr, formatter);
 
                 // 게시글 썸네일
-                Map<String, Object> mapSnapshot = mapService.mapSnapshot(latitude,longitude);
+                Map<String, Object> mapSnapshot = mapService.mapSnapshot(latitude, longitude, headKeywordId);
 
-                String backgroundMapUrl = fileService.uploadFile((byte[])mapSnapshot.get("imageData"),makeFileName("backgroundMap"));
+                String backgroundMapUrl = fileService.uploadFile((byte[]) mapSnapshot.get("imageData"), makeFileName("backgroundMap"));
 
                 RequestPostDto.addPostDto dto = new RequestPostDto.addPostDto();
 
