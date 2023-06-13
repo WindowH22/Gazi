@@ -578,7 +578,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    @Scheduled(fixedDelay = 50000) // 5분마다 자동업로드 수행
+    @Scheduled(fixedDelay = 300000) // 5분마다 자동업로드 수행
     public void autoAddPost() throws IOException, ParseException {
 
         // 상황 종료된 게시글 수정
@@ -656,10 +656,10 @@ public class PostServiceImpl implements PostService {
         accDCode.put("12B01", "제보");
         accDCode.put("13B01", "단순정보");
 
-        for (int i = data.length()-1; i >= 0; i--) {
+        for (int i = data.length() - 1; i >= 0; i--) {
             Long accId = Long.parseLong(data.getJSONObject(i).get("acc_id").toString());
 
-            if(data.getJSONObject(i).get("acc_type").toString().equals("A05")){
+            if (data.getJSONObject(i).get("acc_type").toString().equals("A05")) {
                 log.info("낙하물 관련된 게시물이라 업로드 하지 않습니다.");
                 break;
             }
@@ -680,7 +680,7 @@ public class PostServiceImpl implements PostService {
                 String accDType = accDCode.get(data.getJSONObject(i).get("acc_dtype"));
 
                 //제목
-                title = accType + determinePostposition(accType)+ " 인한 " + parseRodeCode(data.getJSONObject(i).get("acc_road_code").toString());
+                title = accType + determinePostposition(accType) + " 인한 " + parseRodeCode(data.getJSONObject(i).get("acc_road_code").toString());
 
                 // 장소명
 
@@ -715,7 +715,7 @@ public class PostServiceImpl implements PostService {
 
                 // content 입력
                 content.append("안녕하세요, \"가는길 지금\" 팀 입니다.\n");
-                content.append(accType + determinePostposition(accType)+" 인한 " + parseRodeCode(data.getJSONObject(i).get("acc_road_code").toString()) + "가 있을 예정입니다.\n");
+                content.append(accType + determinePostposition(accType) + " 인한 " + parseRodeCode(data.getJSONObject(i).get("acc_road_code").toString()) + "가 있을 예정입니다.\n");
                 content.append("하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.\n");
                 content.append("\n");
 
@@ -803,11 +803,11 @@ public class PostServiceImpl implements PostService {
     }
 
     //조사 결정
-    public static String determinePostposition(String accType){
-        if(accType.equals("차량고장") || accType.equals("기상/재난")){
-            return  "으로";
-        }else{
-            return  "로";
+    public static String determinePostposition(String accType) {
+        if (accType.equals("차량고장") || accType.equals("기상/재난")) {
+            return "으로";
+        } else {
+            return "로";
         }
     }
 
