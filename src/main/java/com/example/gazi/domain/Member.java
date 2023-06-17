@@ -33,6 +33,7 @@ public class Member extends AuditingFields {
     private Role role;
     @Column(nullable = false)
     private Boolean isAgree;
+    private String fireBaseToken;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Cart cart;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)

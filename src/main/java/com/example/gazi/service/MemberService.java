@@ -22,9 +22,11 @@ public interface MemberService {
 
     ResponseEntity<Body> getInfo();
 
-    ResponseEntity<Body> DeleteMember();
+    ResponseEntity<Body> deleteMember();
 
     ResponseEntity<Body> changeNickName(String nickName);
 
     ResponseEntity<Body> validateHandling(Errors errors);
+
+    ResponseEntity<Body> getFirebaseAccessToken(RequestMember.FirebaseToken firebaseToken);
 }

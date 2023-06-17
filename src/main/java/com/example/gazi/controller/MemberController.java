@@ -1,5 +1,6 @@
 package com.example.gazi.controller;
 
+import com.example.gazi.dto.RequestMember;
 import com.example.gazi.service.EmailService;
 import com.example.gazi.service.KeywordService;
 import com.example.gazi.service.MemberService;
@@ -88,6 +89,11 @@ public class MemberController {
 
     @PostMapping("/delete-member")
     public ResponseEntity<Body> deleteMember() {
-        return memberService.DeleteMember();
+        return memberService.deleteMember();
+    }
+
+    @PostMapping("/get-firebase-access-key")
+    public ResponseEntity<Body> getFirebaseAccessToken(RequestMember.FirebaseToken firebaseToken) {
+        return memberService.getFirebaseAccessToken(firebaseToken);
     }
 }
