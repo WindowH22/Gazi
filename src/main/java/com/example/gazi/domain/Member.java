@@ -24,10 +24,12 @@ public class Member extends AuditingFields {
     private Long id;
     @Column(nullable = false, unique = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
     @Column(nullable = false, unique = true)
     private String nickName;
+    @Column
+    private String provider;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
@@ -49,5 +51,11 @@ public class Member extends AuditingFields {
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt; // 생성일시
+
+    public Member update(String nickName, String provider) {
+        this.nickName = nickName;
+        this.provider = provider;
+        return this;
+    }
 
 }
