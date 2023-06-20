@@ -47,6 +47,12 @@ dependencies {
     //mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    // OAuth2
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // fcm
+    implementation 'com.google.firebase:firebase-admin:9.1.1'
+
     //Test용 DB
     runtimeOnly 'com.h2database:h2:1.4.200'
 
