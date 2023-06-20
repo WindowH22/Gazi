@@ -93,7 +93,7 @@ public class MemberController {
     }
 
     @PostMapping("/get-firebase-access-key")
-    public ResponseEntity<Body> getFirebaseAccessToken(RequestMember.FirebaseToken firebaseToken) {
+    public ResponseEntity<Body> getFirebaseAccessToken(@RequestBody RequestMember.FirebaseToken firebaseToken) {
         return memberService.getFirebaseAccessToken(firebaseToken);
     }
 }
