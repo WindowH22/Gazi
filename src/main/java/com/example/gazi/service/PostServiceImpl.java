@@ -732,10 +732,10 @@ public class PostServiceImpl implements PostService {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분");
                 expireDate = LocalDateTime.parse(expireDateStr, formatter);
 
+                // s3 요청이 월 기준 2000개로  1일기준 12 * 24  = 288개 30일 기준 8640개로 과하게 초과 방법 모색해야함
                 // 게시글 썸네일
-                Map<String, Object> mapSnapshot = mapService.mapSnapshot(latitude, longitude, headKeywordId);
-
-                String backgroundMapUrl = fileService.uploadFile((byte[]) mapSnapshot.get("imageData"), makeFileName("backgroundMap"));
+                // Map<String, Object> mapSnapshot = mapService.mapSnapshot(latitude, longitude, headKeywordId);
+                // String backgroundMapUrl = fileService.uploadFile((byte[]) mapSnapshot.get("imageData"), makeFileName("backgroundMap"));
 
                 RequestPostDto.addPostDto dto = new RequestPostDto.addPostDto();
 
@@ -753,7 +753,7 @@ public class PostServiceImpl implements PostService {
 
                 // 1.포스트 추가
                 Post post = dto.autoToEntity(dto.getPlaceName(), dto.getTitle(), dto.getContent(), dto.getLatitude(), dto.getLongitude(), headKeyword, null, member, accId, expireDate);
-                post.setBackgroundMap(backgroundMapUrl);
+                //post.setBackgroundMap(backgroundMapUrl);
                 postRepository.save(post);
 
                 // 포스트 생성과 동시에 포스트 키워드 카트 생성
