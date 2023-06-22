@@ -114,7 +114,13 @@ public class MemberServiceImpl implements MemberService {
             responseToken.setMemberId(member.getId());
             responseToken.setNickName(member.getNickName());
             responseToken.setEmail(member.getEmail());
-            responseToken.setFirebaseToken(!member.getFireBaseToken().isEmpty()); // firebaseToken이 등록되어있는지 여부 판단
+
+            // firebaseToken이 등록되어있는지 여부 판단
+            if(member.getFireBaseToken() == null){
+                responseToken.setFirebaseToken(false);
+            }else{
+                responseToken.setFirebaseToken(true);
+            }
 
             log.info("리프레쉬 토큰 만료시간: " + jwtTokenProvider.getExpiration(responseToken.getRefreshToken()));
 
@@ -176,7 +182,12 @@ public class MemberServiceImpl implements MemberService {
         tokenInfo.setMemberId(member.getId());
         tokenInfo.setEmail(member.getEmail());
         tokenInfo.setNickName(member.getNickName());
-        tokenInfo.setFirebaseToken(!member.getFireBaseToken().isEmpty()); // firebaseToken이 등록되어있는지 여부 판단
+        // firebaseToken이 등록되어있는지 여부 판단
+        if(member.getFireBaseToken() == null){
+            tokenInfo.setFirebaseToken(false);
+        }else {
+            tokenInfo.setFirebaseToken(true);
+        }
 
         Date date = new Date(tokenInfo.getRefreshTokenExpirationTime());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -216,6 +227,18 @@ public class MemberServiceImpl implements MemberService {
         Long expiration = jwtTokenProvider.getExpiration(logoutDto.getAccessToken());
         redisTemplate.opsForValue()
                 .set(logoutDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
+        );
+        System.out.println(member.getFireBaseToken());
+        member.setFireBaseToken(null);
+        System.out.println(member.getFireBaseToken());
+
+        memberRepository.save(member);
+        System.out.println(memberRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
+        ).getFireBaseToken());
 
         return response.success("로그아웃 되었습니다.");
     }
