@@ -200,7 +200,7 @@ public class MemberServiceImpl implements MemberService {
         return response.success(tokenInfo, "Token 정보가 갱신되었습니다.", HttpStatus.OK);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     @Override
     public ResponseEntity<Body> logout(RequestMember.Logout logoutDto) {
         // Access Token 검증
@@ -228,17 +228,12 @@ public class MemberServiceImpl implements MemberService {
         redisTemplate.opsForValue()
                 .set(logoutDto.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
 
+        // firebaseToken 삭제
         Member member = memberRepository.findByEmail(authentication.getName()).orElseThrow(
                 () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
         );
-        System.out.println(member.getFireBaseToken());
         member.setFireBaseToken(null);
-        System.out.println(member.getFireBaseToken());
-
         memberRepository.save(member);
-        System.out.println(memberRepository.findByEmail(authentication.getName()).orElseThrow(
-                () -> new EntityNotFoundException("회원을 찾을 수 없습니다.")
-        ).getFireBaseToken());
 
         return response.success("로그아웃 되었습니다.");
     }
