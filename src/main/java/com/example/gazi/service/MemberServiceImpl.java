@@ -114,6 +114,7 @@ public class MemberServiceImpl implements MemberService {
             responseToken.setMemberId(member.getId());
             responseToken.setNickName(member.getNickName());
             responseToken.setEmail(member.getEmail());
+            responseToken.setFirebaseToken(!member.getFireBaseToken().isEmpty()); // firebaseToken이 등록되어있는지 여부 판단
 
             log.info("리프레쉬 토큰 만료시간: " + jwtTokenProvider.getExpiration(responseToken.getRefreshToken()));
 
@@ -175,6 +176,7 @@ public class MemberServiceImpl implements MemberService {
         tokenInfo.setMemberId(member.getId());
         tokenInfo.setEmail(member.getEmail());
         tokenInfo.setNickName(member.getNickName());
+        tokenInfo.setFirebaseToken(!member.getFireBaseToken().isEmpty()); // firebaseToken이 등록되어있는지 여부 판단
 
         Date date = new Date(tokenInfo.getRefreshTokenExpirationTime());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
