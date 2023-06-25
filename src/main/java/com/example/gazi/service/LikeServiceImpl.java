@@ -2,6 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
+import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.RequestLikeDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
@@ -21,6 +22,7 @@ public class LikeServiceImpl implements LikeService {
     private final LikePostRepository likePostRepository;
     private final MemberRepository memberRepository;
     private final RePostRepository rePostRepository;
+    private final FCMNotificationService fcmNotificationService;
 
     private final Response response;
 
@@ -46,6 +48,15 @@ public class LikeServiceImpl implements LikeService {
             LikePost likePost = LikePost.addLikePost(like, post);
 
             likePostRepository.save(likePost);
+
+            //알림
+            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                    .targetUserId(post.getMember().getId())
+                    .title("")
+                    .body("")
+                    .build();
+            fcmNotificationService.sendNotificationByToken(request);
+
             return response.success(post.getId() + "번 게시글 도움돼요 등록 완료");
 
         } catch (Exception e) {
@@ -76,6 +87,15 @@ public class LikeServiceImpl implements LikeService {
             LikePost likePost = LikePost.addLikePost(like, repost);
 
             likePostRepository.save(likePost);
+
+            // 알림
+            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                    .targetUserId(repost.getMember().getId())
+                    .title("")
+                    .body("")
+                    .build();
+            fcmNotificationService.sendNotificationByToken(request);
+
             return response.success(repost.getId() + "번 게시글 도움돼요 등록 완료");
 
         } catch (Exception e) {
