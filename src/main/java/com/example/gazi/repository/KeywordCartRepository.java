@@ -16,4 +16,6 @@ public interface KeywordCartRepository extends JpaRepository<KeywordCart, Long> 
     Boolean existsByCartAndKeyword(Cart cart, Keyword keyword);
 
     Optional<KeywordCart> findByCartIdAndKeywordId(Long id, Long keywordid);
+
+    List<KeywordCart> findAllByKeywordIdIn(List<Long> keywordIds);
 }
