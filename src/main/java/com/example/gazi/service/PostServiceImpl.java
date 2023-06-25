@@ -50,7 +50,7 @@ public class PostServiceImpl implements PostService {
     private final FileService fileService;
     private final GeoCoordinateConverterService geoCoordinateConverterService;
     private final OpenApiService openApiService;
-    private final MapService mapService;
+    private final FCMNotificationService fcmNotificationService;
     private Logger log = LoggerFactory.getLogger(getClass());
 
 
@@ -134,6 +134,9 @@ public class PostServiceImpl implements PostService {
             KeywordPost keywordPost = KeywordPost.addKeywordPost(postCart, keyword);
             keywordPostRepository.save(keywordPost);
         }
+
+        // 관심 키워드 설정한 유저들에게 알림 보내기
+        fcmNotificationService.sendMessageByKeyword(member, dto.getKeywordIdList(), dto.getTitle());
 
         return response.success(post.getId(), "글 작성을 완료했습니다.", HttpStatus.CREATED);
     }
