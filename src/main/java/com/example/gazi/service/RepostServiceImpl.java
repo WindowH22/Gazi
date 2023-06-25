@@ -2,6 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
+import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.RequestRepostDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.repository.*;
@@ -28,6 +29,7 @@ public class RepostServiceImpl implements RepostService {
     private final RepostCartRepository repostCartRepository;
     private final KeywordRepository keywordRepository;
     private final KeywordRepostRepository keywordRepostRepository;
+    private final FCMNotificationService fcmNotificationService;
     private final Response response;
 
     @Override
@@ -106,6 +108,14 @@ public class RepostServiceImpl implements RepostService {
             KeywordRepost keywordRepost = KeywordRepost.addKeywordRepost(repostCart, keyword);
             keywordRepostRepository.save(keywordRepost);
         }
+
+        // 최초게시글 작성자에게 알림
+        RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                .targetUserId(post.getMember().getId())
+                .title("")
+                .body("답글이 달렸어요.")
+                .build();
+        fcmNotificationService.sendNotificationByToken(request);
 
         return response.success(repost.getId(),"하위 게시글 작성을 완료했습니다.",HttpStatus.CREATED);
     }
