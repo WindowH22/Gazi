@@ -14,7 +14,7 @@ Java, Spring Boot, InteliJ, gradle, Redis, PostgeSql, JPA, s3, EC2, RDS,
 - 어플 런칭후 운영까지 해보는 경험 습득
 
 ## 아키텍쳐
-CI/ CD구현후 업데이트
+![architecture.png](architecture.png)
 
 ## ERD
 ![erd.png](erd.png)
