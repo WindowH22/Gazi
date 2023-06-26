@@ -30,6 +30,7 @@ public class RepostServiceImpl implements RepostService {
     private final KeywordRepository keywordRepository;
     private final KeywordRepostRepository keywordRepostRepository;
     private final FCMNotificationService fcmNotificationService;
+    private final NotificationRepository notificationRepository;
     private final Response response;
 
     @Override
