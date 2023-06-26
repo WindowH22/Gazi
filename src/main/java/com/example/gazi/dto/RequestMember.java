@@ -28,6 +28,9 @@ public class RequestMember {
                     .nickName(nickName)
                     .isAgree(true)
                     .role(Role.ROLE_USER)
+                    .notificationByKeyword(true)
+                    .notificationByRepost(true)
+                    .notificationByLike(true)
                     .build();
         }
 

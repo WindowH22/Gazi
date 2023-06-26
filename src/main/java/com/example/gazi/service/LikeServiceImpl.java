@@ -22,6 +22,7 @@ public class LikeServiceImpl implements LikeService {
     private final LikePostRepository likePostRepository;
     private final MemberRepository memberRepository;
     private final RePostRepository rePostRepository;
+    private final NotificationRepository notificationRepository;
     private final FCMNotificationService fcmNotificationService;
 
     private final Response response;
@@ -50,13 +51,15 @@ public class LikeServiceImpl implements LikeService {
             likePostRepository.save(likePost);
 
             //알림
-            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
-                    .targetUserId(post.getMember().getId())
-                    .title("")
-                    .body("")
-                    .build();
-            fcmNotificationService.sendNotificationByToken(request);
-
+            if(post.getMember().getNotificationByLike()){
+                RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                        .targetUserId(post.getMember().getId())
+                        .title("")
+                        .body("")
+                        .build();
+                fcmNotificationService.sendNotificationByToken(request);
+                notificationRepository.save(Notification.toEntity(request,post.getMember(),NotificationEnum.LIKE));
+            }
             return response.success(post.getId() + "번 게시글 도움돼요 등록 완료");
 
         } catch (Exception e) {
@@ -89,12 +92,16 @@ public class LikeServiceImpl implements LikeService {
             likePostRepository.save(likePost);
 
             // 알림
-            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
-                    .targetUserId(repost.getMember().getId())
-                    .title("")
-                    .body("")
-                    .build();
-            fcmNotificationService.sendNotificationByToken(request);
+            if(repost.getMember().getNotificationByLike()){
+                RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                        .targetUserId(repost.getMember().getId())
+                        .title("")
+                        .body("")
+                        .build();
+                fcmNotificationService.sendNotificationByToken(request);
+                notificationRepository.save(Notification.toEntity(request,repost.getMember(),NotificationEnum.LIKE));
+            }
+
 
             return response.success(repost.getId() + "번 게시글 도움돼요 등록 완료");
 

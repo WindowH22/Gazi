@@ -1,8 +1,10 @@
 package com.example.gazi.service;
 
 import com.example.gazi.domain.Member;
+import com.example.gazi.domain.NotificationEnum;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response.Body;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 
@@ -29,4 +31,12 @@ public interface MemberService {
     ResponseEntity<Body> validateHandling(Errors errors);
 
     ResponseEntity<Body> getFirebaseAccessToken(RequestMember.FirebaseToken firebaseToken);
+
+    ResponseEntity<Body> changeNotificationByKeyword();
+
+    ResponseEntity<Body> changeNotificationByRepost();
+
+    ResponseEntity<Body> changeNotificationByLike();
+
+    ResponseEntity<Body> getNotificationList(NotificationEnum notificationEnum, Pageable pageable);
 }

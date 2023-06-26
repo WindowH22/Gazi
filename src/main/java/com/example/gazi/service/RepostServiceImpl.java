@@ -110,12 +110,15 @@ public class RepostServiceImpl implements RepostService {
         }
 
         // 최초게시글 작성자에게 알림
-        RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
-                .targetUserId(post.getMember().getId())
-                .title("")
-                .body("답글이 달렸어요.")
-                .build();
-        fcmNotificationService.sendNotificationByToken(request);
+        if(post.getMember().getNotificationByRepost()){
+            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                    .targetUserId(post.getMember().getId())
+                    .title("")
+                    .body("답글이 달렸어요.")
+                    .build();
+            fcmNotificationService.sendNotificationByToken(request);
+            notificationRepository.save(Notification.toEntity(request,post.getMember(),NotificationEnum.REPOST));
+        }
 
         return response.success(repost.getId(),"하위 게시글 작성을 완료했습니다.",HttpStatus.CREATED);
     }

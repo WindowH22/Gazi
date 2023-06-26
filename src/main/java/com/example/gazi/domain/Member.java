@@ -36,6 +36,9 @@ public class Member extends AuditingFields {
     @Column(nullable = false)
     private Boolean isAgree;
     private String fireBaseToken;
+    private Boolean notificationByKeyword;
+    private Boolean notificationByRepost;
+    private Boolean notificationByLike;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
     private Cart cart;
     @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)

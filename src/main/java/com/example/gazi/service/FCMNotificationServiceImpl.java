@@ -2,11 +2,13 @@ package com.example.gazi.service;
 
 import com.example.gazi.domain.KeywordCart;
 import com.example.gazi.domain.Member;
+import com.example.gazi.domain.NotificationEnum;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.repository.KeywordCartRepository;
 import com.example.gazi.repository.MemberRepository;
+import com.example.gazi.repository.NotificationRepository;
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -24,6 +26,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
     private final FirebaseMessaging firebaseMessaging;
     private final MemberRepository memberRepository;
     private final KeywordCartRepository keywordCartRepository;
+    private final NotificationRepository notificationRepository;
     private final Response response;
 
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -117,7 +120,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
         Set<Member> memberIdByKeyword = new HashSet<>();
         for (KeywordCart keywordCart : keywordCarts) {
             Member memberByKeyword = keywordCart.getCart().getMember();
-            if (!memberByKeyword.getId().equals(member.getId())) {
+            if (!memberByKeyword.getId().equals(member.getId()) && memberByKeyword.getNotificationByKeyword()) {
                 memberIdByKeyword.add(memberByKeyword);
             }
         }
@@ -129,6 +132,11 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                 .build();
         try {
             sendGroupNotification(requestDto);
+
+            for(Member memberKeyword : memberIdByKeyword){
+                notificationRepository.save(com.example.gazi.domain.Notification.toEntity(requestDto,memberKeyword, NotificationEnum.KEYWORD));
+            }
+
             log.info("알림 보내기 성공");
 
         } catch (FirebaseMessagingException e) {

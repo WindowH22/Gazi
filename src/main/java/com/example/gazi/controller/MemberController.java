@@ -1,11 +1,13 @@
 package com.example.gazi.controller;
 
+import com.example.gazi.domain.NotificationEnum;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.service.EmailService;
 import com.example.gazi.service.KeywordService;
 import com.example.gazi.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -95,5 +97,26 @@ public class MemberController {
     @PostMapping("/get-firebase-access-key")
     public ResponseEntity<Body> getFirebaseAccessToken(@RequestBody RequestMember.FirebaseToken firebaseToken) {
         return memberService.getFirebaseAccessToken(firebaseToken);
+    }
+
+    @PostMapping("/change_notification_keyword")
+    public ResponseEntity<Body> changeNotificationByKeyword(){
+        return memberService.changeNotificationByKeyword();
+    }
+
+    @PostMapping("/change_notification_repost")
+    public ResponseEntity<Body> changeNotificationByRepost(){
+        return memberService.changeNotificationByRepost();
+    }
+
+    @PostMapping("/change_notification_like")
+    public ResponseEntity<Body> changeNotificationByLike(){
+        return memberService.changeNotificationByLike();
+    }
+
+    @GetMapping("/get_notification_list")
+    public ResponseEntity<Body> getNotificationList(@RequestParam NotificationEnum notificationEnum, Pageable pageable){
+
+        return memberService.getNotificationList(notificationEnum,pageable);
     }
 }

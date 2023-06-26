@@ -49,6 +49,7 @@ public class MemberServiceImpl implements MemberService {
     private final CartRepository cartRepository;
     private final LikeRepository likeRepository;
     private final ReportRepository reportRepository;
+    private final NotificationRepository notificationRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
     private final AuthenticationManagerBuilder managerBuilder;
@@ -297,6 +298,78 @@ public class MemberServiceImpl implements MemberService {
             member.setFireBaseToken(firebaseAccessToken.getFireBaseToken());
             memberRepository.save(member);
             return response.success();
+        } else {
+            return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Body> changeNotificationByKeyword() {
+        Optional<Member> member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
+        if (member.isPresent()) {
+
+            if (member.get().getNotificationByKeyword() != null) {
+                boolean notification = member.get().getNotificationByKeyword();
+                member.get().setNotificationByKeyword(!notification);
+                memberRepository.save(member.get());
+                return response.success("관심키워드 알림설정 변경 " + notification + "->" + !notification);
+            } else {
+                member.get().setNotificationByKeyword(true);
+                memberRepository.save(member.get());
+                return response.success("관심키워드 알림설정 변경 null -> true");
+            }
+
+        } else {
+            return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Body> changeNotificationByRepost() {
+        Optional<Member> member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
+        if (member.isPresent()) {
+            if (member.get().getNotificationByKeyword() != null) {
+                boolean notification = member.get().getNotificationByRepost();
+                member.get().setNotificationByRepost(!notification);
+                memberRepository.save(member.get());
+                return response.success("새스레드 알림설정 변경 " + notification + "->" + !notification);
+            } else {
+                member.get().setNotificationByRepost(true);
+                memberRepository.save(member.get());
+                return response.success("새스레드 알림설정 변경 null -> true");
+            }
+
+        } else {
+            return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Body> changeNotificationByLike() {
+        Optional<Member> member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
+        if (member.isPresent()) {
+            if (member.get().getNotificationByLike() != null) {
+                boolean notification = member.get().getNotificationByLike();
+                member.get().setNotificationByLike(!notification);
+                memberRepository.save(member.get());
+                return response.success("도움돼요 알림설정 변경 " + notification + "->" + !notification);
+            } else {
+                member.get().setNotificationByRepost(true);
+                memberRepository.save(member.get());
+                return response.success("새 스레드 알림설정 변경 null -> true");
+            }
+        } else {
+            return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @Override
+    public ResponseEntity<Body> getNotificationList(NotificationEnum notificationEnum, Pageable pageable){
+        Optional<Member> memberRes = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
+        if(memberRes.isPresent()){
+            Member member = memberRes.get();
+            Page<Notification> notificationPage = notificationRepository.findAllByMemberAndNotificationEnum(member,notificationEnum,pageable);
+            return response.success(notificationPage,"알림리스트 조회 성공",HttpStatus.OK );
         } else {
             return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
