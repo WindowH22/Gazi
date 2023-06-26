@@ -2,22 +2,18 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.JwtTokenProvider;
 import com.example.gazi.config.SecurityUtil;
-import com.example.gazi.domain.Cart;
-import com.example.gazi.domain.Like;
-import com.example.gazi.domain.Member;
-import com.example.gazi.domain.Report;
+import com.example.gazi.domain.*;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
 import com.example.gazi.dto.ResponseMember.MemberInfo;
 import com.example.gazi.dto.ResponseToken;
-import com.example.gazi.repository.CartRepository;
-import com.example.gazi.repository.LikeRepository;
-import com.example.gazi.repository.MemberRepository;
-import com.example.gazi.repository.ReportRepository;
+import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,10 +29,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 
@@ -117,9 +110,9 @@ public class MemberServiceImpl implements MemberService {
             responseToken.setEmail(member.getEmail());
 
             // firebaseToken이 등록되어있는지 여부 판단
-            if(member.getFireBaseToken() == null){
+            if (member.getFireBaseToken() == null) {
                 responseToken.setFirebaseToken(false);
-            }else{
+            } else {
                 responseToken.setFirebaseToken(true);
             }
 
@@ -184,9 +177,9 @@ public class MemberServiceImpl implements MemberService {
         tokenInfo.setEmail(member.getEmail());
         tokenInfo.setNickName(member.getNickName());
         // firebaseToken이 등록되어있는지 여부 판단
-        if(member.getFireBaseToken() == null){
+        if (member.getFireBaseToken() == null) {
             tokenInfo.setFirebaseToken(false);
-        }else {
+        } else {
             tokenInfo.setFirebaseToken(true);
         }
 
