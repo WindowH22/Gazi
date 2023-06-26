@@ -48,7 +48,11 @@ public class Member extends AuditingFields {
 
     @ToString.Exclude // exclude를 통해 tostring을 끊는다.하지않으면 순환참조가 발생한다.
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private final List<Post> Post = new ArrayList<>();
+    private final List<Post> posts = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private final List<Notification> notifications = new ArrayList<>();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @CreatedDate
