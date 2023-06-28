@@ -19,4 +19,8 @@ public class ResponseToken {
     private String refreshToken;
     private Long accessTokenExpirationTime;
     private Long refreshTokenExpirationTime;
+    private boolean notificationByKeyword;
+    private boolean notificationByRepost;
+    private boolean notificationByLike;
+
 }

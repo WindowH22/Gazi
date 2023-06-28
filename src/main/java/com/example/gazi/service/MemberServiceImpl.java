@@ -108,6 +108,9 @@ public class MemberServiceImpl implements MemberService {
             responseToken.setMemberId(member.getId());
             responseToken.setNickName(member.getNickName());
             responseToken.setEmail(member.getEmail());
+            responseToken.setNotificationByKeyword(member.getNotificationByKeyword());
+            responseToken.setNotificationByRepost(member.getNotificationByRepost());
+            responseToken.setNotificationByLike(member.getNotificationByLike());
 
             // firebaseToken이 등록되어있는지 여부 판단
             if (member.getFireBaseToken() == null) {
