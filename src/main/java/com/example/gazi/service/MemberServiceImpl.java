@@ -357,12 +357,12 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public ResponseEntity<Body> getNotificationList(NotificationEnum notificationEnum, Pageable pageable){
+    public ResponseEntity<Body> getNotificationList(List<NotificationEnum> notificationEnums, Pageable pageable) {
         Optional<Member> memberRes = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
-        if(memberRes.isPresent()){
+        if (memberRes.isPresent()) {
             Member member = memberRes.get();
-            Page<Notification> notificationPage = notificationRepository.findAllByMemberAndNotificationEnum(member,notificationEnum,pageable);
-            return response.success(notificationPage,"알림리스트 조회 성공",HttpStatus.OK );
+            Page<Notification> notificationPage = notificationRepository.findAllByMemberAndNotificationEnumIn(member, notificationEnums, pageable);
+            return response.success(notificationPage, "알림리스트 조회 성공", HttpStatus.OK);
         } else {
             return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }

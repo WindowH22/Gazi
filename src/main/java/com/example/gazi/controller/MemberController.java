@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.example.gazi.dto.RequestMember.*;
 import static com.example.gazi.dto.Response.Body;
 
@@ -100,23 +102,22 @@ public class MemberController {
     }
 
     @PostMapping("/change_notification_keyword")
-    public ResponseEntity<Body> changeNotificationByKeyword(){
+    public ResponseEntity<Body> changeNotificationByKeyword() {
         return memberService.changeNotificationByKeyword();
     }
 
     @PostMapping("/change_notification_repost")
-    public ResponseEntity<Body> changeNotificationByRepost(){
+    public ResponseEntity<Body> changeNotificationByRepost() {
         return memberService.changeNotificationByRepost();
     }
 
     @PostMapping("/change_notification_like")
-    public ResponseEntity<Body> changeNotificationByLike(){
+    public ResponseEntity<Body> changeNotificationByLike() {
         return memberService.changeNotificationByLike();
     }
 
     @GetMapping("/get_notification_list")
-    public ResponseEntity<Body> getNotificationList(@RequestParam NotificationEnum notificationEnum, Pageable pageable){
-
-        return memberService.getNotificationList(notificationEnum,pageable);
+    public ResponseEntity<Body> getNotificationList(@RequestParam List<NotificationEnum> notificationEnums, Pageable pageable) {
+        return memberService.getNotificationList(notificationEnums, pageable);
     }
 }

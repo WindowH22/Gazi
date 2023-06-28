@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 
+import java.util.List;
+
 
 public interface MemberService {
     Member signUp(RequestMember.SignUp signUpDto);
@@ -38,5 +40,5 @@ public interface MemberService {
 
     ResponseEntity<Body> changeNotificationByLike();
 
-    ResponseEntity<Body> getNotificationList(NotificationEnum notificationEnum, Pageable pageable);
+    ResponseEntity<Body> getNotificationList(List<NotificationEnum> notificationEnums, Pageable pageable);
 }
