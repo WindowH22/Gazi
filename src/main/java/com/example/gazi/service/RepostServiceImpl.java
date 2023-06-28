@@ -86,7 +86,7 @@ public class RepostServiceImpl implements RepostService {
                 () -> new EntityNotFoundException("회원이 존재하지 않습니다.")
         );
 
-        Post post = postRepository.getReferenceById(dto.getPostId());
+        Post post = postRepository.findById(dto.getPostId()).orElseThrow();
 
         Repost repost = dto.toEntity(post, dto.getContent(), member, dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
         rePostRepository.save(repost);
