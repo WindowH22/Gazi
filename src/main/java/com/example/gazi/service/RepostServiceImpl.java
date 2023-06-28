@@ -42,7 +42,7 @@ public class RepostServiceImpl implements RepostService {
 
         Post post = postRepository.getReferenceById(dto.getPostId());
 
-        Repost repost = dto.toEntity(post, dto.getContent(), member,dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
+        Repost repost = dto.toEntity(post, dto.getContent(), member, dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
         rePostRepository.save(repost);
 
         // 키워드 카트 생성
@@ -53,7 +53,7 @@ public class RepostServiceImpl implements RepostService {
         }
 
         // 키워드 추가
-        for(Long keywordId : dto.getKeywordIdList()){
+        for (Long keywordId : dto.getKeywordIdList()) {
             Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
 
             if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
@@ -88,7 +88,7 @@ public class RepostServiceImpl implements RepostService {
 
         Post post = postRepository.getReferenceById(dto.getPostId());
 
-        Repost repost = dto.toEntity(post, dto.getContent(), member,dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
+        Repost repost = dto.toEntity(post, dto.getContent(), member, dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
         rePostRepository.save(repost);
 
         // 키워드 카트 생성
@@ -99,7 +99,7 @@ public class RepostServiceImpl implements RepostService {
         }
 
         // 키워드 추가
-        for(Long keywordId : dto.getKeywordIdList()){
+        for (Long keywordId : dto.getKeywordIdList()) {
             Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
 
             if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
@@ -110,22 +110,25 @@ public class RepostServiceImpl implements RepostService {
             keywordRepostRepository.save(keywordRepost);
         }
 
+        Member memberByPost = post.getMember();
+
         // 최초게시글 작성자에게 알림
-        if(post.getMember().getNotificationByRepost()){
+        if (memberByPost.getNotificationByRepost()) {
             RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
-                    .targetUserId(post.getMember().getId())
-                    .title("")
+                    .targetUserId(memberByPost.getId())
+                    .title(post.getTitle() + "에 답글이 달렸어요")
+                    .data(RequestFCMNotificationDto.makeMapByPost(post))
                     .body("답글이 달렸어요.")
                     .build();
             fcmNotificationService.sendNotificationByToken(request);
-            notificationRepository.save(Notification.toEntity(request,post.getMember(),NotificationEnum.REPOST));
+            notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.REPOST));
         }
 
-        return response.success(repost.getId(),"하위 게시글 작성을 완료했습니다.",HttpStatus.CREATED);
+        return response.success(repost.getId(), "하위 게시글 작성을 완료했습니다.", HttpStatus.CREATED);
     }
 
     @Override
-    public ResponseEntity<Response.Body> fileUpload(List<MultipartFile> fileList, Long repostId){
+    public ResponseEntity<Response.Body> fileUpload(List<MultipartFile> fileList, Long repostId) {
         // 파일 추가
         Repost repost = rePostRepository.getReferenceById(repostId);
         if (fileList != null) {

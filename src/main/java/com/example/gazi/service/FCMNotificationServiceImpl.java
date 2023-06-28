@@ -3,6 +3,7 @@ package com.example.gazi.service;
 import com.example.gazi.domain.KeywordCart;
 import com.example.gazi.domain.Member;
 import com.example.gazi.domain.NotificationEnum;
+import com.example.gazi.domain.Post;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.repository.KeywordCartRepository;
@@ -43,6 +44,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                 Message message = Message.builder()
                         .setToken(member.get().getFireBaseToken())
                         .setNotification(notification)
+                        .putAllData(requestDto.getData())
                         .build();
 
                 try {
@@ -81,6 +83,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
         MulticastMessage message = MulticastMessage.builder()
                 .addAllTokens(fireBaseTokenList)
                 .setNotification(notification)
+                .putAllData(requestDto.getData())
                 .build();
         BatchResponse batchResponse = FirebaseMessaging.getInstance().sendMulticast(message);
 
@@ -116,8 +119,9 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
         RequestFCMNotificationDto requestDto = RequestFCMNotificationDto.builder().
                 title("{교통수단}에서 {교통이슈}가 발생했어요.").
-                body(postTitle).
-                memberList(memberIdByKeyword)
+                body(post.getTitle()).
+                memberList(memberIdByKeyword).
+                data(RequestFCMNotificationDto.makeMapByPost(post))
                 .build();
 
         try {
