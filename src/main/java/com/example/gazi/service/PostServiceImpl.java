@@ -136,7 +136,7 @@ public class PostServiceImpl implements PostService {
         }
 
         // 관심 키워드 설정한 유저들에게 알림 보내기
-        fcmNotificationService.sendMessageByKeyword(member, dto.getKeywordIdList(), dto.getTitle());
+        fcmNotificationService.sendMessageByKeyword(member,post,dto.getKeywordIdList());
 
         return response.success(post.getId(), "글 작성을 완료했습니다.", HttpStatus.CREATED);
     }

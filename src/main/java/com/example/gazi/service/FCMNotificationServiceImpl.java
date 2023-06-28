@@ -5,7 +5,6 @@ import com.example.gazi.domain.Member;
 import com.example.gazi.domain.NotificationEnum;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.Response;
-import com.example.gazi.dto.Response.Body;
 import com.example.gazi.repository.KeywordCartRepository;
 import com.example.gazi.repository.MemberRepository;
 import com.example.gazi.repository.NotificationRepository;
@@ -13,8 +12,6 @@ import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,7 +29,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override // 타겟 지정
-    public ResponseEntity<Body> sendNotificationByToken(RequestFCMNotificationDto requestDto) {
+    public void sendNotificationByToken(RequestFCMNotificationDto requestDto) {
 
         Optional<Member> member = memberRepository.findById(requestDto.getTargetUserId());
 
@@ -65,13 +62,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
     }
 
     // 단체 메시지 보낼시
-    public ResponseEntity<Body> sendGroupNotification(RequestFCMNotificationDto requestDto) throws FirebaseMessagingException {
-
-        /*
-         * 1. member List
-         * 2. memberID로 member token값 으로된 리스트 만들기
-         * 3. 메시지 보내기
-         * */
+    public void sendGroupNotification(RequestFCMNotificationDto requestDto) throws FirebaseMessagingException {
 
         List<String> fireBaseTokenList = new ArrayList<>();
 
@@ -109,7 +100,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
         return response.success(batchResponse.getSuccessCount() + "messages were sent successfully");
     }
 
-    public void sendMessageByKeyword(Member member, List<Long> keywordIdList, String postTitle) {
+    public void sendMessageByKeyword(Member member, Post post, List<Long> keywordIdList) {
         // 관심 키워드 설정한 유저들에게 알림 보내기
         List<KeywordCart> keywordCarts = keywordCartRepository.findAllByKeywordIdIn(keywordIdList);
 
