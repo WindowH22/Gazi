@@ -47,20 +47,20 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
 
                 try {
                     firebaseMessaging.send(message);
-                    return response.success("알림을 성공적으로 전송했습니다.");
+                    log.info("알림을 성공적으로 전송했습니다.");
                 } catch (FirebaseMessagingException e) {
-                    e.printStackTrace();
-                    return response.fail("알림 보내기를  실패했습니다.", HttpStatus.BAD_REQUEST);
+                    log.error(e.getMessage());
+                    log.info("알림 보내기를  실패했습니다.");
                 }
             } else {
-                return response.fail("서버에 저장된 해당 유저의 FirebaseToken이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+                log.error("서버에 저장된 해당 유저의 FirebaseToken이 존재하지 않습니다.");
             }
         } else {
-            return response.fail("해당 유저가 존재하지 않습니다.", HttpStatus.NOT_FOUND);
+            log.error("해당 유저가 존재하지 않습니다.");
         }
-
     }
 
+    @Override
     // 단체 메시지 보낼시
     public void sendGroupNotification(RequestFCMNotificationDto requestDto) throws FirebaseMessagingException {
 
@@ -70,7 +70,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
             if (member.getFireBaseToken() != null) {
                 fireBaseTokenList.add(member.getFireBaseToken());
             } else {
-                return response.fail("서버에 저장된 " + member.getNickName() + "FirebaseToken이 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+                log.info(member.getNickName() + "는 FireBaseToken이 존재하지 않습니다.");
             }
 
         }
@@ -78,7 +78,6 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                 .setTitle(requestDto.getTitle())
                 .setBody(requestDto.getBody())
                 .build();
-
         MulticastMessage message = MulticastMessage.builder()
                 .addAllTokens(fireBaseTokenList)
                 .setNotification(notification)
@@ -94,10 +93,9 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                     failedTokens.add(fireBaseTokenList.get(i));
                 }
             }
-            return response.fail("List of tokens that caused failures: " + failedTokens, HttpStatus.BAD_REQUEST);
+            log.info("List of tokens that caused failures: " + failedTokens);
         }
-
-        return response.success(batchResponse.getSuccessCount() + "messages were sent successfully");
+        log.info(batchResponse.getSuccessCount() + " messages were sent successfully");
     }
 
     public void sendMessageByKeyword(Member member, Post post, List<Long> keywordIdList) {
@@ -121,11 +119,11 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                 body(postTitle).
                 memberList(memberIdByKeyword)
                 .build();
+
         try {
             sendGroupNotification(requestDto);
-
-            for(Member memberKeyword : memberIdByKeyword){
-                notificationRepository.save(com.example.gazi.domain.Notification.toEntity(requestDto,memberKeyword, NotificationEnum.KEYWORD));
+            for (Member memberKeyword : memberIdByKeyword) {
+                notificationRepository.save(com.example.gazi.domain.Notification.toEntity(requestDto, memberKeyword, NotificationEnum.KEYWORD));
             }
 
             log.info("알림 보내기 성공");
