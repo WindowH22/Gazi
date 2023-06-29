@@ -82,67 +82,79 @@ public class RepostServiceImpl implements RepostService {
 
     @Override
     public ResponseEntity<Response.Body> addRepost(RequestRepostDto.addDto dto) {
-        Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
-                () -> new EntityNotFoundException("회원이 존재하지 않습니다.")
-        );
+        try {
+            Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
+                    () -> new EntityNotFoundException("회원이 존재하지 않습니다.")
+            );
 
-        Post post = postRepository.findById(dto.getPostId()).orElseThrow();
+            Post post = postRepository.findById(dto.getPostId()).orElseThrow(
+                    () -> new EntityNotFoundException("게시글이 존재하지 않습니다.")
+            );
 
-        Repost repost = dto.toEntity(post, dto.getContent(), member, dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
-        rePostRepository.save(repost);
+            Repost repost = dto.toEntity(post, dto.getContent(), member, dto.getLatitude(), dto.getLongitude(), dto.getKeywordIdList());
+            rePostRepository.save(repost);
 
-        // 키워드 카트 생성
-        RepostCart repostCart = repostCartRepository.findByRepost(repost);
-        if (repostCart == null) {
-            repostCart = RepostCart.addCart(repost);
-            repostCartRepository.save(repostCart);
-        }
-
-        // 키워드 추가
-        for (Long keywordId : dto.getKeywordIdList()) {
-            Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
-
-            if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
-                return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
+            // 키워드 카트 생성
+            RepostCart repostCart = repostCartRepository.findByRepost(repost);
+            if (repostCart == null) {
+                repostCart = RepostCart.addCart(repost);
+                repostCartRepository.save(repostCart);
             }
 
-            KeywordRepost keywordRepost = KeywordRepost.addKeywordRepost(repostCart, keyword);
-            keywordRepostRepository.save(keywordRepost);
+            // 키워드 추가
+            for (Long keywordId : dto.getKeywordIdList()) {
+                Keyword keyword = keywordRepository.findById(keywordId).orElseThrow(() -> new EntityNotFoundException("해당 키워드는 존재하지 않습니다."));
+
+                if (keywordRepostRepository.existsByKeywordAndRepostCart(keyword, repostCart)) {
+                    return response.fail("키워드가 이미 존재합니다.", HttpStatus.CONFLICT);
+                }
+
+                KeywordRepost keywordRepost = KeywordRepost.addKeywordRepost(repostCart, keyword);
+                keywordRepostRepository.save(keywordRepost);
+            }
+
+            Member memberByPost = post.getMember();
+
+            // 최초게시글 작성자에게 알림
+            if (memberByPost.getNotificationByRepost()) {
+                RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
+                        .targetUserId(memberByPost.getId())
+                        .title(post.getTitle() + "에 답글이 달렸어요")
+                        .data(RequestFCMNotificationDto.makeMapByPost(post))
+                        .body("답글이 달렸어요.")
+                        .build();
+                fcmNotificationService.sendNotificationByToken(request);
+                notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.REPOST));
+            }
+            return response.success(repost.getId(), "하위 게시글 작성을 완료했습니다.", HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-
-        Member memberByPost = post.getMember();
-
-        // 최초게시글 작성자에게 알림
-        if (memberByPost.getNotificationByRepost()) {
-            RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
-                    .targetUserId(memberByPost.getId())
-                    .title(post.getTitle() + "에 답글이 달렸어요")
-                    .data(RequestFCMNotificationDto.makeMapByPost(post))
-                    .body("답글이 달렸어요.")
-                    .build();
-            fcmNotificationService.sendNotificationByToken(request);
-            notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.REPOST));
-        }
-
-        return response.success(repost.getId(), "하위 게시글 작성을 완료했습니다.", HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<Response.Body> fileUpload(List<MultipartFile> fileList, Long repostId) {
         // 파일 추가
-        Repost repost = rePostRepository.getReferenceById(repostId);
-        if (fileList != null) {
-            if (fileList.size() > 10) {
-                return response.fail("파일은 10개까지 업로드가능합니다.", HttpStatus.BAD_REQUEST);
-            }
+        try {
+            Repost repost = rePostRepository.findById(repostId).orElseThrow(
+                    () -> new EntityNotFoundException("게시글을 찾을수 없습니다.")
+            );
+            if (fileList != null) {
+                if (fileList.size() > 10) {
+                    return response.fail("파일은 10개까지 업로드가능합니다.", HttpStatus.BAD_REQUEST);
+                }
 
-            for (MultipartFile file : fileList) {
-                String fileName = makeFileName("repostFile");
-                FileRepost fileRepost = FileRepost.toEntity(fileName, fileService.uploadFile(file, fileName), repost);
-                fileRePostRepository.save(fileRepost);
+                for (MultipartFile file : fileList) {
+                    String fileName = makeFileName("repostFile");
+                    FileRepost fileRepost = FileRepost.toEntity(fileName, fileService.uploadFile(file, fileName), repost);
+                    fileRePostRepository.save(fileRepost);
+                }
             }
+            return response.success();
+        } catch (EntityNotFoundException e) {
+            return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
-        return response.success();
+
     }
 
     @Override
@@ -184,7 +196,7 @@ public class RepostServiceImpl implements RepostService {
     public ResponseEntity<Response.Body> deleteRepost(Long repostId) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-            Repost repost = rePostRepository.getReferenceById(repostId);
+            Repost repost = rePostRepository.findById(repostId).orElseThrow(() -> new EntityNotFoundException("해당 게시글은 존재하지 않습니다."));
 
             if (repost.getMember().getId().equals(member.getId())) {
                 List<FileRepost> fileReposts = fileRePostRepository.findAllByRepost(repost);
