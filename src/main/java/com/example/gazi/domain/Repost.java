@@ -14,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = " REPOST")
 @Entity
-public class Repost extends AuditingFields{
+public class Repost extends AuditingFields {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -37,8 +38,13 @@ public class Repost extends AuditingFields{
     private List<FileRepost> fileRePosts;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="POST_ID")
+    @JoinColumn(name = "POST_ID")
     private Post post;
+
+    @OneToMany(mappedBy = "repost", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties({"rePost"}) // 무한참조 방지
+    @OrderBy("id desc") // 내림차순;
+    private List<LikePost> likePosts;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
