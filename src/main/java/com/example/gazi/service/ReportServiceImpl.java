@@ -25,7 +25,9 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public ResponseEntity<Response.Body> ReportPost(RequestReportDto dto) {
         try {
-            Post post = postRepository.getReferenceById(dto.getPostId());
+            Post post = postRepository.findById(dto.getPostId()).orElseThrow(
+                    () -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")
+            );
             Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
                     () -> new EntityNotFoundException("회원을 찾을수 없습니다.")
             );
@@ -51,15 +53,18 @@ public class ReportServiceImpl implements ReportService {
                 return response.success(post.getId() + "번 게시글 신고 완료");
             }
 
-        } catch (Exception e) {
-            return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (EntityNotFoundException e) {
+            e.printStackTrace();
+            return response.fail("해당 게시글은 찾을 수 없습니다", HttpStatus.NOT_FOUND);
         }
     }
 
     @Override
     public ResponseEntity<Response.Body> ReportRepost(RequestReportDto dto) {
         try {
-            Repost repost = rePostRepository.getReferenceById(dto.getRepostId());
+            Repost repost = rePostRepository.findById(dto.getRepostId()).orElseThrow(
+                    () -> new EntityNotFoundException("게시글을 찾을 수 없습니다.")
+            );
             Member member = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(
                     () -> new EntityNotFoundException("회원을 찾을수 없습니다.")
             );
@@ -84,7 +89,7 @@ public class ReportServiceImpl implements ReportService {
                 return response.success(repost.getId() + "번 게시글 신고 완료");
             }
 
-        } catch (Exception e) {
+        } catch (EntityNotFoundException e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
