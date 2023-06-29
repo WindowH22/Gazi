@@ -174,7 +174,9 @@ public class PostServiceImpl implements PostService {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
 
-            Post post = postRepository.getReferenceById(postId);
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new EntityNotFoundException("해당 게시글은 존재하지 않습니다.")
+            );
             PostCart postCart = postCartRepository.findByPost(post);
 
 
@@ -240,7 +242,9 @@ public class PostServiceImpl implements PostService {
     public ResponseEntity<Body> deletePost(Long postId) {
         try {
             Member member = memberRepository.getReferenceByEmail(SecurityUtil.getCurrentUserEmail()).orElseThrow(() -> new EntityNotFoundException("회원이 존재하지 않습니다."));
-            Post post = postRepository.getReferenceById(postId);
+            Post post = postRepository.findById(postId).orElseThrow(
+                    () -> new EntityNotFoundException("해당 게시글은 존재하지 않습니다.")
+            );
 
             if (post.getMember().getId().equals(member.getId())) {
                 List<FilePost> filePosts = filePostRepository.findAllByPostId(post.getId());
@@ -254,9 +258,8 @@ public class PostServiceImpl implements PostService {
             } else {
                 return response.fail("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
-
-        } catch (EntityNotFoundException e) {
-            return response.fail(e.getLocalizedMessage(), HttpStatus.UNAUTHORIZED);
+        } catch(EntityNotFoundException e) {
+            return response.fail("해당 게시글은 존재하지 않습니다.", HttpStatus.NOT_FOUND);
         }
 
     }
