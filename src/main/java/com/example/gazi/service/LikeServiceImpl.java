@@ -9,6 +9,8 @@ import com.example.gazi.dto.Response.Body;
 import com.example.gazi.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ public class LikeServiceImpl implements LikeService {
     private final FCMNotificationService fcmNotificationService;
 
     private final Response response;
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
     public ResponseEntity<Body> likePost(RequestLikeDto dto) {
@@ -92,6 +95,9 @@ public class LikeServiceImpl implements LikeService {
 
             likePostRepository.save(likePost);
 
+            log.info("좋아요 동작완료");
+            log.info("알림 동작시작");
+
             // 알림
             if(repost.getMember().getNotificationByLike()){
                 RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
@@ -102,6 +108,7 @@ public class LikeServiceImpl implements LikeService {
                 fcmNotificationService.sendNotificationByToken(request);
                 notificationRepository.save(Notification.toEntity(request,repost.getMember(),NotificationEnum.LIKE));
             }
+            log.info("알림 동작완료");
 
 
             return response.success(repost.getId() + "번 게시글 도움돼요 등록 완료");
