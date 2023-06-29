@@ -264,9 +264,14 @@ public class MemberServiceImpl implements MemberService {
     public ResponseEntity<Body> changeNickName(String nickName) {
         Optional<Member> memberRes = memberRepository.findByEmail(SecurityUtil.getCurrentUserEmail());
         if (memberRes.isPresent()) {
-            memberRes.get().setNickName(nickName);
-            memberRepository.save(memberRes.get());
-            return response.success("닉네임이" + memberRes.get().getNickName() + "으로 변경 되었습니다.");
+            ResponseEntity<Body> checkNickName = checkNickName(nickName);
+            if (checkNickName.getStatusCode().is2xxSuccessful()) {
+                memberRes.get().setNickName(nickName);
+                memberRepository.save(memberRes.get());
+                return response.success("닉네임이" + memberRes.get().getNickName() + "으로 변경 되었습니다.");
+            } else {
+                return checkNickName;
+            }
         } else {
             return response.fail("토큰이 유효하지 않습니다.", HttpStatus.UNAUTHORIZED);
         }
