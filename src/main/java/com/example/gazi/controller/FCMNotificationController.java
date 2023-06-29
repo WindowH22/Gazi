@@ -18,7 +18,8 @@ public class FCMNotificationController {
     private final FCMNotificationService fcmNotificationService;
 
     @PostMapping
-    public ResponseEntity<Body> sendNotificationByToken(@RequestBody RequestFCMNotificationDto requestDto) {
-        return fcmNotificationService.sendNotificationByToken(requestDto);
+    public String sendNotificationByToken(@RequestBody RequestFCMNotificationDto requestDto) {
+        fcmNotificationService.sendNotificationByToken(requestDto);
+        return "알림 보내기 완료";
     }
 }
