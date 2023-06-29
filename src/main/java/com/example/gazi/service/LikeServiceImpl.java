@@ -54,7 +54,7 @@ public class LikeServiceImpl implements LikeService {
             likePostRepository.save(likePost);
 
             //알림
-            if(post.getMember().getNotificationByLike()){
+            if (post.getMember().getNotificationByLike()) {
                 RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
                         .targetUserId(post.getMember().getId())
                         .title("도움돼요 테스트")
@@ -62,9 +62,9 @@ public class LikeServiceImpl implements LikeService {
                         .data(RequestFCMNotificationDto.makeMapByPost(post))
                         .build();
                 fcmNotificationService.sendNotificationByToken(request);
-                notificationRepository.save(Notification.toEntity(request,post.getMember(),NotificationEnum.LIKE));
+                notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.LIKE));
             }
-            return response.success(post.getId() + "번 게시글 도움돼요 등록 완료");
+            return response.success(post.getId() + "번 상위 게시글 도움돼요 등록 완료");
 
         } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -92,28 +92,27 @@ public class LikeServiceImpl implements LikeService {
             }
 
             LikePost likePost = LikePost.addLikePost(like, repost);
-
             likePostRepository.save(likePost);
 
             log.info("좋아요 동작완료");
             log.info("알림 동작시작");
 
             // 알림
-            if(repost.getMember().getNotificationByLike()){
+            if (repost.getMember().getNotificationByLike()) {
                 RequestFCMNotificationDto request = RequestFCMNotificationDto.builder()
                         .targetUserId(repost.getMember().getId())
                         .title("")
                         .body("")
                         .build();
                 fcmNotificationService.sendNotificationByToken(request);
-                notificationRepository.save(Notification.toEntity(request,repost.getMember(),NotificationEnum.LIKE));
+                notificationRepository.save(Notification.toEntity(request, repost.getMember(), NotificationEnum.LIKE));
             }
             log.info("알림 동작완료");
 
-
-            return response.success(repost.getId() + "번 게시글 도움돼요 등록 완료");
+            return response.success(repost.getId() + "번 하위 게시글 도움돼요 등록 완료");
 
         } catch (Exception e) {
+            e.printStackTrace();
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
         }
 
@@ -133,13 +132,13 @@ public class LikeServiceImpl implements LikeService {
                     () -> new EntityNotFoundException("좋아요 테이블을 찾을 수 없습니다.")
             );
 
-            LikePost likePost = likePostRepository.findByLikeIdAndPostId(like.getId(),post.getId()).orElseThrow(
+            LikePost likePost = likePostRepository.findByLikeIdAndPostId(like.getId(), post.getId()).orElseThrow(
                     () -> new EntityNotFoundException("해당 게시물을 좋아요 테이블에서 찾을 수 없습니다.")
             );
 
 
             likePostRepository.delete(likePost);
-            return response.success(post.getId() + "번 게시글 도움돼요 삭제 완료");
+            return response.success(post.getId() + "번 상위 게시글 도움돼요 삭제 완료");
 
         } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -164,9 +163,8 @@ public class LikeServiceImpl implements LikeService {
                     () -> new EntityNotFoundException("해당 게시물을 좋아요 테이블에서 찾을 수 없습니다.")
             );
 
-
             likePostRepository.delete(likePost);
-            return response.success(repost.getId() + "번 게시글 도움돼요 삭제 완료");
+            return response.success(repost.getId() + "번 하위 게시글 도움돼요 삭제 완료");
 
         } catch (Exception e) {
             return response.fail(e.getMessage(), HttpStatus.NOT_FOUND);
