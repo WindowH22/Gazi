@@ -2,6 +2,7 @@ package com.example.gazi.dto;
 
 import com.example.gazi.domain.Member;
 import com.example.gazi.domain.Post;
+import com.example.gazi.domain.Repost;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,5 +37,14 @@ public class RequestFCMNotificationDto {
         postMap.put("postId","" + post.getId());
 
         return postMap;
+    }
+
+    public static Map<String,String> makeMapByRepost(Repost repost){
+        Map<String,String> repostMap = new HashMap<>();
+        repostMap.put("content",repost.getContent());
+        repostMap.put("time",""+repost.getCreatedAt());
+        repostMap.put("repostId","" + repost.getId());
+
+        return repostMap;
     }
 }
