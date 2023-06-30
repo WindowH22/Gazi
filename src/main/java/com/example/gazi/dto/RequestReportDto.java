@@ -1,5 +1,6 @@
 package com.example.gazi.dto;
 
+import com.example.gazi.domain.enums.ReportEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +10,6 @@ public class RequestReportDto {
 
     private Long postId;
     private Long repostId;
-    @Getter
-    @Setter
-    public static class reportPostDto{
-        private Long postId;
-    }
-    @Getter
-    @Setter
-    public static class reportRepostDto{
-        private Long repostId;
-    }
+    private ReportEnum reportEnum;
+    private String reason;
 }
