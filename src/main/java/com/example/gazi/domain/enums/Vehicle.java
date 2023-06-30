@@ -1,4 +1,4 @@
-package com.example.gazi.domain;
+package com.example.gazi.domain.enums;
 
 public enum Vehicle {
     BUS("BUS"),

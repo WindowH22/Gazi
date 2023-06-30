@@ -2,6 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
+import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.RequestRepostDto;
 import com.example.gazi.dto.Response;

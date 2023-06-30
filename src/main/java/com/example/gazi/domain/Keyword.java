@@ -1,5 +1,7 @@
 package com.example.gazi.domain;
 
+import com.example.gazi.domain.enums.KeywordEnum;
+import com.example.gazi.domain.enums.Vehicle;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;

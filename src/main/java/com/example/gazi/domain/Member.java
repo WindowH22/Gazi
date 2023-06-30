@@ -1,5 +1,6 @@
 package com.example.gazi.domain;
 
+import com.example.gazi.domain.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

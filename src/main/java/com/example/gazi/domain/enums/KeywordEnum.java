@@ -1,4 +1,4 @@
-package com.example.gazi.domain;
+package com.example.gazi.domain.enums;
 
 import lombok.Getter;
 

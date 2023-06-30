@@ -2,6 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
+import com.example.gazi.domain.enums.KeywordEnum;
 import com.example.gazi.dto.RequestKeywordDto;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;

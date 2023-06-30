@@ -1,8 +1,8 @@
 package com.example.gazi.dto;
 
 import com.example.gazi.domain.Keyword;
-import com.example.gazi.domain.KeywordEnum;
-import com.example.gazi.domain.Vehicle;
+import com.example.gazi.domain.enums.KeywordEnum;
+import com.example.gazi.domain.enums.Vehicle;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

@@ -1,7 +1,7 @@
 package com.example.gazi.service;
 
 import com.example.gazi.domain.Member;
-import com.example.gazi.domain.NotificationEnum;
+import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response.Body;
 import org.springframework.data.domain.Pageable;

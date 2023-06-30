@@ -1,5 +1,6 @@
 package com.example.gazi.domain;
 
+import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

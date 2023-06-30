@@ -3,6 +3,7 @@ package com.example.gazi.service;
 import com.example.gazi.config.JwtTokenProvider;
 import com.example.gazi.config.SecurityUtil;
 import com.example.gazi.domain.*;
+import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
