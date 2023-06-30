@@ -2,7 +2,7 @@ package com.example.gazi.service;
 
 import com.example.gazi.domain.KeywordCart;
 import com.example.gazi.domain.Member;
-import com.example.gazi.domain.NotificationEnum;
+import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.domain.Post;
 import com.example.gazi.dto.RequestFCMNotificationDto;
 import com.example.gazi.dto.Response;
@@ -41,9 +41,14 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                         .setBody(requestDto.getBody())
                         .build();
 
+                AndroidNotification androidNotification = AndroidNotification.builder()
+                        .setChannelId("channel_general")
+                        .build();
+
                 Message message = Message.builder()
                         .setToken(member.get().getFireBaseToken())
                         .setNotification(notification)
+                        .setAndroidConfig(AndroidConfig.builder().setNotification(androidNotification).build())
                         .putAllData(requestDto.getData())
                         .build();
 
@@ -80,11 +85,18 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
                 .setTitle(requestDto.getTitle())
                 .setBody(requestDto.getBody())
                 .build();
+
+        AndroidNotification androidNotification = AndroidNotification.builder()
+                .setChannelId("channel_general")
+                .build();
+
         MulticastMessage message = MulticastMessage.builder()
                 .addAllTokens(fireBaseTokenList)
                 .setNotification(notification)
+                .setAndroidConfig(AndroidConfig.builder().setNotification(androidNotification).build())
                 .putAllData(requestDto.getData())
                 .build();
+
         BatchResponse batchResponse = FirebaseMessaging.getInstance().sendMulticast(message);
 
         if (batchResponse.getFailureCount() > 0) {
