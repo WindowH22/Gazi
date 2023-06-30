@@ -21,7 +21,7 @@ public class RequestFCMNotificationDto {
     private Set<Member> memberList;
 
     @Builder
-    public RequestFCMNotificationDto(Long targetUserId, String title, String body, Set<Member> memberList,Post post,Map<String, String> data ) {
+    public RequestFCMNotificationDto(Long targetUserId, String title, String body, Set<Member> memberList, Post post, Map<String, String> data) {
         this.targetUserId = targetUserId;
         this.title = title;
         this.body = body;
@@ -29,22 +29,17 @@ public class RequestFCMNotificationDto {
         this.data = data;
     }
 
-    public static Map<String,String> makeMapByPost(Post post){
-        Map<String,String> postMap = new HashMap<>();
-        postMap.put("title",post.getTitle());
-        postMap.put("repostCount",""+post.getRePosts().size()+1);
-        postMap.put("time",""+post.getCreatedAt());
-        postMap.put("postId","" + post.getId());
-
+    public static Map<String, String> makeMapByPost(Post post) {
+        Map<String, String> postMap = new HashMap<>();
+        postMap.put("postId", "" + post.getId());
+        postMap.put("screen", "ThreadItem");
         return postMap;
     }
 
-    public static Map<String,String> makeMapByRepost(Repost repost){
-        Map<String,String> repostMap = new HashMap<>();
-        repostMap.put("content",repost.getContent());
-        repostMap.put("time",""+repost.getCreatedAt());
-        repostMap.put("repostId","" + repost.getId());
-
+    public static Map<String, String> makeMapByRepost(Repost repost) {
+        Map<String, String> repostMap = new HashMap<>();
+        repostMap.put("repostId", "" + repost.getId());
+        repostMap.put("screen", "ThreadItem");
         return repostMap;
     }
 }
