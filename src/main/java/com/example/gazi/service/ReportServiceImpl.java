@@ -40,15 +40,15 @@ public class ReportServiceImpl implements ReportService {
                 return response.fail("이미 신고한 게시물입니다.",HttpStatus.UNAUTHORIZED);
             }
 
-            ReportPost reportPost = ReportPost.addReportPost(report, post);
+            ReportPost reportPost = ReportPost.addReportPost(report, post,dto.getReportEnum(),dto.getReason());
 
             reportPostRepository.save(reportPost);
 
             Long reportCount = reportPostRepository.countByPostId(post.getId());
-            if (reportCount > 5) {
+            if (reportCount >= 3) {
                 //게시글 삭제
                 postRepository.delete(post);
-                return response.success("신고 횟수가 5회를 초과하여 해당게시글은 삭제되었습니다.");
+                return response.success("신고 횟수가 누적 3회이상으로 해당게시글은 삭제되었습니다.");
             } else {
                 return response.success(post.getId() + "번 게시글 신고 완료");
             }
@@ -77,14 +77,14 @@ public class ReportServiceImpl implements ReportService {
                 return response.fail("이미 신고한 게시물입니다.",HttpStatus.UNAUTHORIZED);
             }
 
-            ReportPost reportPost = ReportPost.addReportRepost(report, repost);
+            ReportPost reportPost = ReportPost.addReportRepost(report, repost,dto.getReportEnum(),dto.getReason());
             reportPostRepository.save(reportPost);
 
             Long reportCount = reportPostRepository.countByPostId(repost.getId());
-            if (reportCount > 5) {
+            if (reportCount >= 3) {
                 //게시글 삭제
                 rePostRepository.delete(repost);
-                return response.success("신고 횟수가 5회를 초과하여 해당게시글은 삭제되었습니다.");
+                return response.success("신고 횟수가 누적 3회이상으로 해당게시글은 삭제되었습니다.");
             } else {
                 return response.success(repost.getId() + "번 게시글 신고 완료");
             }
