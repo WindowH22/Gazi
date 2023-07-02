@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "0d3c6f29-4e6a-4b5d-a7ce-5f0ea126f808",
+		"_postman_id": "648ff3f3-4069-4956-9370-ca0902b21ab0",
 		"name": "Gazi",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "17635071-648ff3f3-4069-4956-9370-ca0902b21ab0"
 	},
 	"item": [
 		{
@@ -10,7 +11,7 @@
 			"item": [
 				{
 					"name": "회원가입",
-					"id": "61cb41f2-546d-405d-9be3-d0a4414c3402",
+					"id": "4b02ab23-15b5-4ad2-b9f1-3f9ac9840b64",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -43,7 +44,7 @@
 					},
 					"response": [
 						{
-							"id": "ecb98f97-f14d-47e5-ae09-1fd97b34cd26",
+							"id": "7e42c191-5da9-4ff5-82ff-45f54d7c273f",
 							"name": "정상동작",
 							"originalRequest": {
 								"method": "POST",
@@ -75,14 +76,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"로그인에 성공했습니다.\",\n    \"data\": {\n        \"grantType\": \"Bearer\",\n        \"memberId\": 1,\n        \"nickName\": \"kakadoi\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhYWFAZ21haWwu\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODI5NTUyMzJ9.\",\n        \"accessTokenExpirationTime\": 1682355832657,\n        \"refreshTokenExpirationTime\": 1682955232657\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "로그인",
-					"id": "7c70ad85-82bd-4b40-a9be-c2cdb0099f6a",
+					"id": "525e2835-324e-4acf-90b6-3a9767c1a519",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -113,7 +113,7 @@
 					},
 					"response": [
 						{
-							"id": "8478fa6e-464b-4d52-8820-23318d09f06d",
+							"id": "89beca4b-859e-47ff-a9eb-0b0d740fa971",
 							"name": "domain",
 							"originalRequest": {
 								"method": "POST",
@@ -142,14 +142,13 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": null
 						},
 						{
-							"id": "480a66e8-718c-4d3a-af7a-9cb80ed9c2f8",
+							"id": "fd3db4ac-ff33-47a8-aed5-650d50c169b9",
 							"name": "로그인",
 							"originalRequest": {
 								"method": "POST",
@@ -178,14 +177,13 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": null
 						},
 						{
-							"id": "11099c35-52f2-4975-a4db-f4c7046dd9ab",
+							"id": "307079c8-b585-425d-95e0-20196d9c5659",
 							"name": "ID가 틀릴경우",
 							"originalRequest": {
 								"method": "POST",
@@ -217,11 +215,10 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"등록되지 않은 이메일입니다..\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "b19fa61c-ca51-45c4-b84c-ed958df07073",
+							"id": "fd176e90-1f11-47bf-adc9-9792d510fb22",
 							"name": "PW가 틀릴경우",
 							"originalRequest": {
 								"method": "POST",
@@ -306,14 +303,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"로그인에 성공했습니다.\",\n    \"data\": {\n        \"grantType\": \"Bearer\",\n        \"memberId\": 1,\n        \"nickName\": \"kamzi\",\n        \"email\": \"ggg@gmail.com\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4NzQwMzc4N30.v1rClq9vpy5QdVnEbTMJ29wyuHIcVXYD9yhGGoIEbG0\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2ODk5OTAzODd9.g4ytFLTqPVreJleK7K-c_ZH2VElx19H_H3Ytzaf2esQ\",\n        \"accessTokenExpirationTime\": 1687403787984,\n        \"refreshTokenExpirationTime\": 1689990387984,\n        \"firebaseToken\": true\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "\b로그아웃",
-					"id": "6072b0d1-306e-4887-8072-8448fb211e5b",
+					"id": "a946bd58-39ec-4e96-a24e-6c2e606f581f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -356,7 +352,7 @@
 					},
 					"response": [
 						{
-							"id": "27b6ef59-ff6c-40ff-90c9-512059247e55",
+							"id": "c1f5056c-4e37-4e13-ba9d-91653aae555f",
 							"name": "\b로그아웃",
 							"originalRequest": {
 								"method": "POST",
@@ -390,11 +386,10 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"로그아웃 되었습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "a3e108d6-78fd-4c73-9d9a-c95ad94b283e",
+							"id": "b4547a85-8520-43c5-8dca-2a860ab90dd8",
 							"name": "잘못된 토큰을 보낼경우",
 							"originalRequest": {
 								"method": "POST",
@@ -426,14 +421,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 400,\n    \"result\": \"fail\",\n    \"message\": \"잘못된 요청입니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "닉네임 수정",
-					"id": "b6b416b0-3aff-4203-973a-c574ae7dca47",
+					"id": "bda6cc28-abf1-4f57-b1c3-8055775cf76e",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -475,7 +469,7 @@
 					},
 					"response": [
 						{
-							"id": "2c94323d-e32a-430e-afa0-5a2a1170c778",
+							"id": "b8702c70-423d-42c4-a8ca-a2c8fb023b36",
 							"name": "닉네임 수정",
 							"originalRequest": {
 								"method": "POST",
@@ -490,10 +484,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/change-nickname",
+									"raw": "http://localhost:8001/api/v1/member/change-nickname",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -560,11 +556,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"닉네임이가지운영팀으로 변경 되었습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "85734db6-6b70-423b-8984-3c77487c49f4",
+							"id": "662d2148-781c-44b2-af7c-0418134d3674",
 							"name": "유효성 검사",
 							"originalRequest": {
 								"method": "POST",
@@ -596,14 +591,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 400,\n    \"result\": \"fail\",\n    \"message\": \"유효성 검증 실패\",\n    \"data\": {\n        \"valid_nickName\": \"7글자 까지만 허용됩니다. (ㄱ,ㄴ,ㄷ 같은형식 입력 불가능)\"\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "닉네임 중복검사",
-					"id": "5b6cb360-bba7-45fd-8927-309cc82e5d51",
+					"id": "415e7d46-4abe-4ae2-93d5-6054807a62c8",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -641,7 +635,7 @@
 					},
 					"response": [
 						{
-							"id": "7533a0d8-7607-4154-82b6-de072864cf6c",
+							"id": "0892699d-dc03-47fe-be7e-442f60d14eb9",
 							"name": "사용가능",
 							"originalRequest": {
 								"method": "POST",
@@ -656,10 +650,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/check-nickname",
+									"raw": "http://localhost:8001/api/v1/member/check-nickname",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -733,11 +729,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"사용가능한 닉네임입니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "7bb3c45d-d3e2-4e7d-b1ee-7fea518509ae",
+							"id": "9ff6157f-90c4-410e-a636-ec66d6059f55",
 							"name": "중복될경우",
 							"originalRequest": {
 								"method": "GET",
@@ -750,16 +745,18 @@
 											"language": "json"
 										}
 									}
+								},
+								"url": {
+									"raw": ""
 								}
 							},
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": null
 						},
 						{
-							"id": "81ad31f9-1387-437a-9e03-bfea1294fab5",
+							"id": "92461462-57df-4a2b-ac9b-1f39add9abb3",
 							"name": "유효성 검사 실패",
 							"originalRequest": {
 								"method": "GET",
@@ -789,14 +786,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 400,\n    \"result\": \"fail\",\n    \"message\": \"유효성 검증 실패\",\n    \"data\": {\n        \"valid_nickName\": \"7글자 까지만 허용됩니다. (ㄱ,ㄴ,ㄷ 같은형식 입력 불가능)\"\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "내정보",
-					"id": "e5f21593-005a-49f2-bda6-9fa72bd95e32",
+					"id": "dae8a28b-9ef2-4ae0-8296-e871e10037f0",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -834,7 +830,7 @@
 					},
 					"response": [
 						{
-							"id": "018c5145-5afd-485d-8715-3dc51572d5ce",
+							"id": "70102060-05fe-48d4-9272-971f3a3d9e65",
 							"name": "내정보",
 							"originalRequest": {
 								"method": "GET",
@@ -847,10 +843,12 @@
 									}
 								],
 								"url": {
-									"raw": "{{localhost}}/api/v1/member",
+									"raw": "http://localhost:8001/api/v1/member",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -916,14 +914,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"유저 정보를 불러왔습니다.\",\n    \"data\": {\n        \"email\": \"ggg@gmail.com\",\n        \"nickName\": \"가지운영팀\"\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "이메일 인증",
-					"id": "0287d1bb-49e0-4a3b-bb85-f451b63efc35",
+					"id": "a1b61b80-0ec8-4ca3-abfa-f338ca3a73bb",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -961,7 +958,7 @@
 					},
 					"response": [
 						{
-							"id": "09265802-12b8-4ea8-b061-28a54bc87eea",
+							"id": "eb3752cd-98a8-4883-afab-ee9137e7ff53",
 							"name": "이메일 인증",
 							"originalRequest": {
 								"method": "POST",
@@ -976,10 +973,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/email-confirm",
+									"raw": "http://localhost:8001/api/v1/member/email-confirm",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -1053,11 +1052,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"인증번호를 발송하였습니다.\",\n    \"data\": \"4843\",\n    \"error\": []\n}"
 						},
 						{
-							"id": "2c504f4e-3fd4-465a-a742-0199694b9374",
+							"id": "049aa268-8e96-4855-b080-6a5278d71572",
 							"name": "이미 가입된 이메일인 경우",
 							"originalRequest": {
 								"method": "POST",
@@ -1151,11 +1149,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 409,\n    \"result\": \"fail\",\n    \"message\": \"이미 가입된 이메일입니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "cefd8175-5439-4241-933a-126f98602609",
+							"id": "093507a3-7c39-43a9-825b-311c52ea6fde",
 							"name": "유효성 검증 실패",
 							"originalRequest": {
 								"method": "POST",
@@ -1199,14 +1196,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 400,\n    \"result\": \"fail\",\n    \"message\": \"유효성 검증 실패\",\n    \"data\": {\n        \"valid_email\": \"올바른 이메일 형식이 아닙니다.\"\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "회원탈퇴",
-					"id": "aa6504f7-0a1c-4e8f-8305-e55f86248480",
+					"id": "d423847a-eaa4-4d3a-82b8-6e1a673ec62d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1240,7 +1236,7 @@
 					},
 					"response": [
 						{
-							"id": "cc5d34cc-557d-447d-a893-fc7c07827984",
+							"id": "2d2d4002-2bbd-4002-a46b-7eaf9b524d20",
 							"name": "회원탈퇴",
 							"originalRequest": {
 								"method": "POST",
@@ -1265,14 +1261,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"탈퇴 되었습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "토큰 재발급",
-					"id": "0da13b62-4b87-4765-b396-47e37ef67a4d",
+					"id": "4a35ca41-9808-45cf-be31-d0b5e36ce61c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1305,7 +1300,7 @@
 					},
 					"response": [
 						{
-							"id": "1822b355-b2f4-464c-b567-93e2d2ad6feb",
+							"id": "559c3708-da0c-438a-9b11-4cdcd2ce13c4",
 							"name": "토큰 재발급",
 							"originalRequest": {
 								"method": "POST",
@@ -1320,10 +1315,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/reissue",
+									"raw": "http://localhost:8001/api/v1/member/reissue",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -1390,14 +1387,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"Token 정보가 갱신되었습니다.\",\n    \"data\": {\n        \"grantType\": \"Bearer\",\n        \"memberId\": 1,\n        \"nickName\": \"가지운영팀\",\n        \"email\": \"ggg@gmail.com\",\n        \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4ODAxMDE1Mn0.xb2m_0alOuirlaJcNLTsB-0hO28LPK5gXZAzNo26Cmg\",\n        \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTA1OTY3NTJ9.hc5yISl3zvRFfI7Smh-sXEUNXRlyWFEIEAYyIPMU-wE\",\n        \"accessTokenExpirationTime\": 1688010152944,\n        \"refreshTokenExpirationTime\": 1690596752944,\n        \"notificationByKeyword\": false,\n        \"notificationByRepost\": false,\n        \"notificationByLike\": false,\n        \"firebaseToken\": true\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "fcm 토큰 등록",
-					"id": "e979171d-5a91-45a8-899f-09827549518a",
+					"id": "f51aaa71-85a7-445d-87f8-2593ff9cdc46",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1438,7 +1434,7 @@
 					},
 					"response": [
 						{
-							"id": "1ea5c363-e757-4db6-bead-a49e85ae9c05",
+							"id": "349d8774-b412-41b6-85a5-5897a8c7fa10",
 							"name": "fcm 토큰 등록",
 							"originalRequest": {
 								"method": "POST",
@@ -1453,10 +1449,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/get-firebase-access-key",
+									"raw": "http://localhost:8001/api/v1/member/get-firebase-access-key",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -1523,20 +1521,19 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				}
 			],
-			"id": "df4b82e7-1a0a-4bb5-9705-7736af77bc29"
+			"id": "23f5d47e-8330-42c8-abfa-1805bd489835"
 		},
 		{
 			"name": "키워드",
 			"item": [
 				{
 					"name": "관심 키워드 추가",
-					"id": "f31462f0-4fbd-468b-ac25-724b8d0e509b",
+					"id": "d6c88734-8669-4cd8-8dbe-63181c354a5f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1579,7 +1576,7 @@
 					},
 					"response": [
 						{
-							"id": "fe1913a9-7d69-42d1-a1d6-4d3f64dd9be9",
+							"id": "0e07754a-7d58-434b-86c5-28d747498c8f",
 							"name": "관심 키워드 추가",
 							"originalRequest": {
 								"method": "POST",
@@ -1666,11 +1663,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"관심 키워드가 추가되었습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "689426ee-a7a5-4ae7-9db9-d5b6e3398c14",
+							"id": "d056dd66-4df0-4885-9a2d-c974587b6084",
 							"name": "이미 관심 키워드에 해당 키워드가 존재하는 경우",
 							"originalRequest": {
 								"method": "POST",
@@ -1757,11 +1753,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 409,\n    \"result\": \"fail\",\n    \"message\": \"시위, 연착, 자연재해은(는) 이미 관심 키워드에 존재합니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "c5c92af0-36e8-468d-ac38-74391be4fffc",
+							"id": "cccea4d2-97ae-4721-9d76-8acb2c02df5a",
 							"name": "존재하지 않는 키워드일 경우",
 							"originalRequest": {
 								"method": "POST",
@@ -1848,14 +1843,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"해당 키워드는 존재하지 않습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "관심키워드 조회",
-					"id": "da9bc6d8-d8dc-4e4d-a6a0-995dc6522093",
+					"id": "b57f7908-18fb-482d-ab19-7d43ee8d9c4b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1889,7 +1883,7 @@
 					},
 					"response": [
 						{
-							"id": "b4058ab9-327a-4566-9b71-ff2cca848941",
+							"id": "2278a991-3e67-420d-b559-845a1c3adf3f",
 							"name": "관심키워드 조회",
 							"originalRequest": {
 								"method": "GET",
@@ -1967,14 +1961,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"keywordEnum\": \"ISSUE\",\n            \"vehicle\": null,\n            \"keywordName\": \"시위\"\n        },\n        {\n            \"id\": 2,\n            \"keywordEnum\": \"ISSUE\",\n            \"vehicle\": null,\n            \"keywordName\": \"연착\"\n        },\n        {\n            \"id\": 3,\n            \"keywordEnum\": \"ISSUE\",\n            \"vehicle\": null,\n            \"keywordName\": \"자연재해\"\n        },\n        {\n            \"id\": 4,\n            \"keywordEnum\": \"ISSUE\",\n            \"vehicle\": null,\n            \"keywordName\": \"공사\"\n        },\n        {\n            \"id\": 8,\n            \"keywordEnum\": \"ISSUE\",\n            \"vehicle\": null,\n            \"keywordName\": \"기타\"\n        }\n    ],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "관심 키워드 수정",
-					"id": "6c416981-03b1-42bb-ae05-8d370b934062",
+					"id": "ded70b3c-dfae-43bd-be43-062686d990b4",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2017,7 +2010,7 @@
 					},
 					"response": [
 						{
-							"id": "285b1923-c63b-4b62-9ee8-3981d24abbec",
+							"id": "83e6ed2c-e067-485f-9e6c-093276b99976",
 							"name": "관심 키워드 수정",
 							"originalRequest": {
 								"method": "PUT",
@@ -2104,11 +2097,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"키워드 업데이트 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "54430711-b6e5-4cbc-971b-98410d2478ac",
+							"id": "2e8f6805-a616-495b-adef-9ac443cc89c2",
 							"name": "관심 키워드에 존재하지 않는 키워드인 경우",
 							"originalRequest": {
 								"method": "PUT",
@@ -2195,13 +2187,12 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"해당 하는 키워드가 존재하지 않습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				}
 			],
-			"id": "c900f3e3-6ab2-45fb-9969-1dd48b1af1a8"
+			"id": "264a5a8c-a00d-408c-a893-683066c8c789"
 		},
 		{
 			"name": "커뮤니티",
@@ -2212,7 +2203,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b9c88c22-8e45-4f41-abba-20dbf820c433",
+								"id": "4aadedc5-304a-46fc-8b71-ecf5d8ff2036",
 								"exec": [
 									""
 								],
@@ -2220,7 +2211,7 @@
 							}
 						}
 					],
-					"id": "456dfb34-1783-4fc8-8ebd-53ee551b65cf",
+					"id": "5ab66cbf-374b-4922-84ea-bef47504dcca",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2278,7 +2269,7 @@
 					},
 					"response": [
 						{
-							"id": "923bb29d-afce-4a44-9d6e-9d3d0673b98f",
+							"id": "624d2bc6-3ba5-42b5-a88c-1e417d59882e",
 							"name": "상위 게시글 작성",
 							"originalRequest": {
 								"method": "POST",
@@ -2289,7 +2280,7 @@
 										{
 											"key": "files",
 											"type": "file",
-											"value": null
+											"src": []
 										},
 										{
 											"key": "dto",
@@ -2300,7 +2291,7 @@
 										{
 											"key": "thumbnail",
 											"type": "file",
-											"value": null
+											"src": []
 										}
 									],
 									"options": {
@@ -2369,14 +2360,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"timestamp\": \"2023-05-09T09:33:56.725+00:00\",\n    \"status\": 500,\n    \"error\": \"Internal Server Error\",\n    \"path\": \"/api/v1/post/topPost\"\n}"
 						}
 					]
 				},
 				{
 					"name": "상위 게시글 작성( 임의)",
-					"id": "86e1842c-86ff-47f9-aad6-df3f5fdca937",
+					"id": "83098b2b-10be-48e0-805b-1a921386db4c",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2419,7 +2409,7 @@
 					},
 					"response": [
 						{
-							"id": "1dd5bc91-c2fd-4315-9660-97fbf8bf49bc",
+							"id": "94a36b5b-17c0-45ab-aa64-1ae37ef41c9f",
 							"name": "게시글 작성( 임의)",
 							"originalRequest": {
 								"method": "POST",
@@ -2434,10 +2424,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/top-post",
+									"raw": "http://localhost:8001/api/v1/post/top-post",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -2504,14 +2496,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 201,\n    \"result\": \"success\",\n    \"message\": \"글 작성을 완료했습니다.\",\n    \"data\": 1456,\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "상위 게시글 파일 업로드(임의)",
-					"id": "10cca42e-44fb-4957-98ed-4ea804373d51",
+					"id": "ab98753f-bed5-401e-a7b6-09c7dc90ab21",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2561,7 +2552,7 @@
 					},
 					"response": [
 						{
-							"id": "bd761911-f779-4e1b-92b8-67981ac3b8b2",
+							"id": "fe272850-f382-4c7b-82e6-d4a5f1906147",
 							"name": "게시글 파일 업로드(임의)",
 							"originalRequest": {
 								"method": "POST",
@@ -2572,26 +2563,34 @@
 										{
 											"key": "files",
 											"type": "file",
-											"src": "/Users/changhee/Downloads/IMG_0945.png",
+											"src": [
+												"/Users/changhee/Downloads/IMG_0945.png"
+											],
 											"disabled": true
 										},
 										{
 											"key": "thumbnail",
 											"type": "file",
-											"src": "/Users/changhee/Downloads/IMG_0945.png"
+											"src": [
+												"/Users/changhee/Downloads/IMG_0945.png"
+											]
 										},
 										{
 											"key": "backgroundMap",
 											"type": "file",
-											"src": "/Users/changhee/Downloads/나미야 잡화점의 기적.jpeg"
+											"src": [
+												"/Users/changhee/Downloads/나미야 잡화점의 기적.jpeg"
+											]
 										}
 									]
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/top-post-file?postId=41",
+									"raw": "http://localhost:8001/api/v1/post/top-post-file?postId=41",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -2664,14 +2663,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "상위 게시글 조회",
-					"id": "f347b257-b24c-4ab3-a71a-601ecaf4a492",
+					"id": "6c11b48a-8c6f-4889-a6ad-63ec8f4e50c6",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2721,16 +2719,18 @@
 					},
 					"response": [
 						{
-							"id": "9a03e29d-06a4-4403-9eff-f5de4746f986",
+							"id": "f47a15a3-ea52-4222-a5ef-91c46b4cfdfd",
 							"name": "상위 게시글 조회",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/top-post?postId=1135&curX=37.5449523&curY=127.2",
+									"raw": "http://localhost:8001/api/v1/post/top-post?postId=1135&curX=37.5449523&curY=127.2",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -2811,11 +2811,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"상위 게시글 조회\",\n    \"data\": {\n        \"userId\": 1,\n        \"title\": \"한강물..\",\n        \"distance\": \"1Km\",\n        \"time\": \"4일 전\",\n        \"rePostCount\": 1,\n        \"placeName\": \"한강\",\n        \"headKeywordId\": 2,\n        \"postList\": {\n            \"content\": [\n                {\n                    \"postId\": 1135,\n                    \"userId\": 1,\n                    \"distance\": \"1Km\",\n                    \"content\": \" 이쪽으로 안오시는게 좋아요.\",\n                    \"fileList\": [],\n                    \"nickName\": \"가지운영팀\",\n                    \"time\": \"4일 전\",\n                    \"likeCount\": 0,\n                    \"keywordIdList\": [\n                        2,\n                        3\n                    ],\n                    \"like\": false,\n                    \"report\": false\n                }\n            ],\n            \"pageable\": {\n                \"sort\": {\n                    \"empty\": false,\n                    \"unsorted\": false,\n                    \"sorted\": true\n                },\n                \"offset\": 0,\n                \"pageNumber\": 0,\n                \"pageSize\": 15,\n                \"paged\": true,\n                \"unpaged\": false\n            },\n            \"totalElements\": 1,\n            \"totalPages\": 1,\n            \"last\": true,\n            \"size\": 15,\n            \"number\": 0,\n            \"sort\": {\n                \"empty\": false,\n                \"unsorted\": false,\n                \"sorted\": true\n            },\n            \"numberOfElements\": 1,\n            \"first\": true,\n            \"empty\": false\n        },\n        \"hit\": 3,\n        \"backgroundMapUrl\": null\n    },\n    \"error\": []\n}"
 						},
 						{
-							"id": "9521ecb5-d060-4690-94f7-a5ab06f137a0",
+							"id": "1c76d8a6-7c10-4c21-849b-25838943a7b2",
 							"name": "존재하지 않는게시글일 경우",
 							"originalRequest": {
 								"method": "GET",
@@ -2905,14 +2904,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"게시물을 찾을 수 없습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "상위 게시글 삭제",
-					"id": "84cde0ad-a9cd-45f2-b59b-3c82df37e015",
+					"id": "faf90eee-4bdc-4fb8-bbfd-61efded4029f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -2955,16 +2953,18 @@
 					},
 					"response": [
 						{
-							"id": "6abb016e-e6ff-4ad1-923d-7f0961ed2e3a",
+							"id": "5aa242fb-1954-4aa2-ba62-a3ff512b830a",
 							"name": "상위 게시글 삭제",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/top-post?postId=569",
+									"raw": "http://localhost:8001/api/v1/post/top-post?postId=569",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -3037,11 +3037,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"글 삭제를 완료 했습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "f78ec6b2-2787-41a6-b05a-84a61028d234",
+							"id": "87803aa2-47cc-4a66-acf6-d02d5c6aba56",
 							"name": "존재하지 않는 게시글 번호 입력시",
 							"originalRequest": {
 								"method": "DELETE",
@@ -3123,14 +3122,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"해당 게시글은 존재하지 않습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "상위 게시글 수정",
-					"id": "88bd5b7c-1861-44c4-8b45-927de7c6d5ce",
+					"id": "63eafbdc-5510-4bdb-8585-08da65522571",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -3192,7 +3190,7 @@
 				},
 				{
 					"name": "게시글 도움돼요",
-					"id": "25dd3b95-558e-470a-aed1-eb75c676e849",
+					"id": "dde2f34d-d454-4da1-be4e-0ce93be08697",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -3234,7 +3232,7 @@
 					},
 					"response": [
 						{
-							"id": "d79a28a9-1494-48ea-8124-8d043058bf8d",
+							"id": "0ae5b6c9-5151-48e7-9f59-fb3d15a3bb18",
 							"name": "상위 게시글 도움돼요",
 							"originalRequest": {
 								"method": "POST",
@@ -3249,10 +3247,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{domain}}/api/v1/like",
+									"raw": "http://3.38.6.168:8080/api/v1/like",
+									"protocol": "http",
 									"host": [
-										"{{domain}}"
+										"3",
+										"38",
+										"6",
+										"168"
 									],
+									"port": "8080",
 									"path": [
 										"api",
 										"v1",
@@ -3318,11 +3321,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"3046번 상위 게시글 도움돼요 등록 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "32404be8-b7b0-4d69-b518-1d65430b532b",
+							"id": "1bedd7a7-cb69-49d2-842b-9d605a0502cc",
 							"name": "하위게시글 도움돼요",
 							"originalRequest": {
 								"method": "POST",
@@ -3406,11 +3408,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"4번 하위 게시글 도움돼요 등록 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "1f0adedb-79b5-41a2-9605-a11ed1ab2fbe",
+							"id": "22226d6a-1dfd-40ed-862d-52f9476d2c8a",
 							"name": "이미 도움돼요를 누른 게시글",
 							"originalRequest": {
 								"method": "POST",
@@ -3494,14 +3495,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"이미 도움돼요 버튼을 누른 게시물입니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "게시글 도움돼요 해제",
-					"id": "c4affa75-2e4c-41ef-b6e8-bb3fce8be9f6",
+					"id": "e666ef79-94df-45ca-ba2c-14623759accf",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -3543,7 +3543,7 @@
 					},
 					"response": [
 						{
-							"id": "0d367419-e945-4497-a744-6f3c2f9e98e9",
+							"id": "081119d2-4f75-462d-aeaf-8a3b4507fb80",
 							"name": "상위 게시글 도움돼요 해제",
 							"originalRequest": {
 								"method": "DELETE",
@@ -3558,10 +3558,15 @@
 									}
 								},
 								"url": {
-									"raw": "{{domain}}/api/v1/like",
+									"raw": "http://3.38.6.168:8080/api/v1/like",
+									"protocol": "http",
 									"host": [
-										"{{domain}}"
+										"3",
+										"38",
+										"6",
+										"168"
 									],
+									"port": "8080",
 									"path": [
 										"api",
 										"v1",
@@ -3627,11 +3632,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"3046번 상위 게시글 도움돼요 삭제 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "51d304ad-8c1f-42c5-a613-5424d4ccd0cd",
+							"id": "f9c07e7b-5212-44e0-a67a-4250b96aadcd",
 							"name": "하위 게시글 도움돼요 해제",
 							"originalRequest": {
 								"method": "DELETE",
@@ -3715,11 +3719,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"3046번 하위 게시글 도움돼요 삭제 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "09354c45-5c9f-44b1-8402-0a57d1e98207",
+							"id": "4ea1f243-dbbb-4c00-b6e3-06cd432d21aa",
 							"name": "도움돼요를 누르지 않은 게시글",
 							"originalRequest": {
 								"method": "DELETE",
@@ -3803,14 +3806,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"해당 게시물을 좋아요 테이블에서 찾을 수 없습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "게시글 신고하기",
-					"id": "d0b1e575-e2f3-408d-8d3d-9ef586b12e74",
+					"id": "8e4fbe30-e914-4a25-b249-08cf78bd8ab9",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -3820,7 +3822,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4Mzk5Mjc2N30.BwnRnuKOo-unHA5aJj1Vap0KdZpz4_Xc-ADjW7v-EtY",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4ODEwNDgxMX0.irFr2V1seTINGWlYve5zBKUtZdUtQEAt3NW5Tv3IORs",
 									"type": "string"
 								}
 							]
@@ -3829,7 +3831,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"postId\" : null,\n    \"repostId\" : 3\n}",
+							"raw": "{\n    \"postId\" : null,\n    \"repostId\" : 3,\n    \"reportEnum\" : \"IN_APPOSITE\",\n    \"reason\" : \"\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3846,18 +3848,26 @@
 								"v1",
 								"report"
 							]
-						}
+						},
+						"description": "NotificationEnum List\n\n1. 부적절한 글 -> IN_APPOSITE\n2. 거짓 정보 -> FALSE_INFORMATION\n3. 광고/홍보성 글 -> ADVERTISEMENT\n4. 남을 비방/차별/혐오하는 글 -> HATE\n5. 기타 -> ETC\n    \n\nETC 일때만 reson 을 이용해서 기타 사유 입력하시면됩니다. (나머지는 \"\"로 보내면 됨)"
 					},
 					"response": [
 						{
-							"id": "e3d71a83-fb03-448e-955f-a6771440ef75",
+							"id": "e867eb49-e598-4350-a090-b227b8d631d2",
 							"name": "게시글 신고하기",
 							"originalRequest": {
-								"method": "POST",
-								"header": [],
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"postId\" : null,\n    \"repostId\" : 2\n}",
+									"raw": "{\n    \"postId\" : null,\n    \"repostId\" : 3,\n    \"reportEnum\" : \"IN_APPOSITE\",\n    \"reason\" : \"\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -3865,15 +3875,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/report",
-									"host": [
-										"{{localhost}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"report"
-									]
+									"raw": ""
 								}
 							},
 							"status": "OK",
@@ -3922,7 +3924,7 @@
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 29 Jun 2023 04:24:03 GMT"
+									"value": "Fri, 30 Jun 2023 05:00:20 GMT"
 								},
 								{
 									"key": "Keep-Alive",
@@ -3934,11 +3936,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
-							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"2번 게시글 신고 완료\",\n    \"data\": [],\n    \"error\": []\n}"
+							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"3번 게시글 신고 완료\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "80ee3c8c-a113-45e7-aa11-437659d7ec59",
+							"id": "da878dcb-8eb6-4193-88f4-9e6df4ffd50b",
 							"name": "이미 신고한 게시물",
 							"originalRequest": {
 								"method": "POST",
@@ -4022,11 +4023,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"이미 신고한 게시물입니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "f0106b48-9228-4520-9f2b-d7158943f66f",
+							"id": "a07271e3-ba92-4848-9649-1850ccf437e7",
 							"name": "게시글이 존재하지 않을 경우",
 							"originalRequest": {
 								"method": "POST",
@@ -4110,11 +4110,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"하위 게시글을 찾을 수 없습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "1da57839-1915-44a6-b798-7c3a7c8c4cfc",
+							"id": "1fbfe758-3940-49d7-8254-9c99ece60774",
 							"name": "게시글 5번 신고 당할경우",
 							"originalRequest": {
 								"method": "POST",
@@ -4143,14 +4142,13 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"신고 횟수가 5회를 초과하여 해당게시글은 삭제되었습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "위치 게시글 조회",
-					"id": "25a9c399-49c3-4f60-9d66-aad6a6b37803",
+					"id": "17f5643e-6949-4594-9a89-1a7c1b01c95f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4230,7 +4228,7 @@
 					},
 					"response": [
 						{
-							"id": "bc610fc7-3390-43c7-9bee-b4f390ca2fee",
+							"id": "3c3a98cd-451a-4212-88e1-ff85cc88ea19",
 							"name": "위치 게시글 조회",
 							"originalRequest": {
 								"method": "GET",
@@ -4245,10 +4243,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/locationPost?minLat=37.50778219813837&minLon=127.18862514942886&maxLat=37.579540319497575&maxLon=127.23725326359272&curLat=37.555895&curLon=126.972303&page=1&isNearSearch=true",
+									"raw": "http://localhost:8001/api/v1/post/locationPost?minLat=37.50778219813837&minLon=127.18862514942886&maxLat=37.579540319497575&maxLon=127.23725326359272&curLat=37.555895&curLon=126.972303&page=1&isNearSearch=true",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -4349,14 +4349,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": {\n        \"content\": [\n            {\n                \"title\": \"[종료] 교통사고로 인한 부분 통제\",\n                \"distance\": \"5Km\",\n                \"time\": \"20시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일\",\n                \"latitude\": 37.51718945730328,\n                \"longitude\": 126.94331671670199,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1482,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"5Km\",\n                \"time\": \"20시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.51374693977908,\n                \"longitude\": 126.94190968267546,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1479,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 차량고장으로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"20시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.차량고장으로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28\",\n                \"latitude\": 37.571611379527035,\n                \"longitude\": 126.92123298116616,\n                \"headKeyword\": 9,\n                \"thumbNail\": null,\n                \"postId\": 1478,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 집회및행사로 인한 부분 통제\",\n                \"distance\": \"5Km\",\n                \"time\": \"21시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28\",\n                \"latitude\": 37.526627581561236,\n                \"longitude\": 126.92630643238839,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1460,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 교통사고로 인한 부분 통제\",\n                \"distance\": \"137m\",\n                \"time\": \"21시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일\",\n                \"latitude\": 37.55469449156059,\n                \"longitude\": 126.97268841925427,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1455,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"22시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.59582381219475,\n                \"longitude\": 126.95654529015943,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1450,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"22시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.532891474862026,\n                \"longitude\": 126.93558230943678,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1435,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.541409881952646,\n                \"longitude\": 126.970098047564,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1417,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 교통사고로 인한 부분 통제\",\n                \"distance\": \"5Km\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일\",\n                \"latitude\": 37.52381748150458,\n                \"longitude\": 127.01616373100676,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1413,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 집회및행사로 인한 부분 통제\",\n                \"distance\": \"606m\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28\",\n                \"latitude\": 37.56074635724034,\n                \"longitude\": 126.97543751996025,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1410,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"5Km\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.51654356291172,\n                \"longitude\": 126.94406870839967,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1409,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 집회및행사로 인한 전면 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 전면 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28\",\n                \"latitude\": 37.56479975103437,\n                \"longitude\": 126.97517200982999,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1407,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 교통사고로 인한 부분 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"23시간 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일\",\n                \"latitude\": 37.56457007358708,\n                \"longitude\": 126.9655053157682,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1403,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 교통사고로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"1일 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일\",\n                \"latitude\": 37.5420248296843,\n                \"longitude\": 127.00230523036277,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1401,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"[종료] 공사로 인한 부분 통제\",\n                \"distance\": \"6Km\",\n                \"time\": \"1일 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 28일 1\",\n                \"latitude\": 37.59969666554097,\n                \"longitude\": 126.91696233236024,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1386,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            }\n        ],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": false,\n                \"unsorted\": false,\n                \"sorted\": true\n            },\n            \"offset\": 15,\n            \"pageSize\": 15,\n            \"pageNumber\": 1,\n            \"paged\": true,\n            \"unpaged\": false\n        },\n        \"totalElements\": 353,\n        \"totalPages\": 24,\n        \"last\": false,\n        \"size\": 15,\n        \"number\": 1,\n        \"sort\": {\n            \"empty\": false,\n            \"unsorted\": false,\n            \"sorted\": true\n        },\n        \"numberOfElements\": 15,\n        \"first\": false,\n        \"empty\": false\n    },\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "하위 게시글 작성 (임의)",
-					"id": "95524e8d-a28a-440e-a2a4-b9296b8c7c50",
+					"id": "74864028-b5a7-4727-8ab7-96f13851189d",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4389,7 +4388,7 @@
 					},
 					"response": [
 						{
-							"id": "9b7ef2e0-dff7-4169-90e7-ba12fddb6f4b",
+							"id": "39980218-ce5b-4153-b9ea-8d0720deb4cb",
 							"name": "하위 게시글 작성 (임의)",
 							"originalRequest": {
 								"method": "POST",
@@ -4476,11 +4475,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 201,\n    \"result\": \"success\",\n    \"message\": \"하위 게시글 작성을 완료했습니다.\",\n    \"data\": 14,\n    \"error\": []\n}"
 						},
 						{
-							"id": "da4707ba-29be-493f-8f7e-bdbf86c623e7",
+							"id": "8173b111-d4c9-4f3e-a80a-af6486698188",
 							"name": "상위게시글이 존재하지 않을경우",
 							"originalRequest": {
 								"method": "POST",
@@ -4565,14 +4563,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"게시글이 존재하지 않습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "하위 게시글 파일 업로드 (임의)",
-					"id": "f00602e0-57aa-4d74-81e0-f5ef03028092",
+					"id": "dc22818d-5457-48ad-b28e-0f17f9c74cd7",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4618,7 +4615,7 @@
 					},
 					"response": [
 						{
-							"id": "0bbd2b0b-bf8e-4882-b31d-c0fe9a26c39f",
+							"id": "37e34e08-9c6b-4c70-ad93-72359aa752a0",
 							"name": "하위 게시글 파일 업로드 (임의)",
 							"originalRequest": {
 								"method": "POST",
@@ -4629,7 +4626,9 @@
 										{
 											"key": "files",
 											"type": "file",
-											"src": "/Users/changhee/Downloads/KakaoTalk_Image_2023-04-27-12-09-57.jpeg"
+											"src": [
+												"/Users/changhee/Downloads/KakaoTalk_Image_2023-04-27-12-09-57.jpeg"
+											]
 										},
 										{
 											"key": "",
@@ -4718,11 +4717,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "8d9c1260-8cec-466c-9607-1b2065dc51e8",
+							"id": "04e227d0-3d99-46b7-9371-a525dc800985",
 							"name": "존재하지 않는 하위게시글번호 입력할 경우",
 							"originalRequest": {
 								"method": "POST",
@@ -4733,7 +4731,9 @@
 										{
 											"key": "files",
 											"type": "file",
-											"src": "/Users/changhee/Downloads/KakaoTalk_Image_2023-04-27-12-09-57.jpeg"
+											"src": [
+												"/Users/changhee/Downloads/KakaoTalk_Image_2023-04-27-12-09-57.jpeg"
+											]
 										},
 										{
 											"key": "",
@@ -4822,14 +4822,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 404,\n    \"result\": \"fail\",\n    \"message\": \"게시글을 찾을수 없습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "하위 게시글 작성",
-					"id": "103ec3bf-ff4d-4877-91ea-287817d9cede",
+					"id": "0139d6de-730f-4143-97c2-40a8de3103cc",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4882,7 +4881,7 @@
 				},
 				{
 					"name": "하위 게시글 수정",
-					"id": "7ab16fca-fd41-4d9f-a556-a0920262ad71",
+					"id": "0d359421-c25a-4b59-be2b-541a7c92b9c2",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4946,7 +4945,7 @@
 				},
 				{
 					"name": "하위 게시글 삭제",
-					"id": "3a18be68-ef14-4089-8d4d-b292fe22fb18",
+					"id": "3bfff86f-6af0-4501-8f17-2f73d8152109",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -4989,16 +4988,18 @@
 					},
 					"response": [
 						{
-							"id": "183768a6-4c55-4ea3-9e66-9546cd6640e4",
+							"id": "59f83862-993a-4ae8-911f-a1bfd392fbcd",
 							"name": "하위 게시글 삭제",
 							"originalRequest": {
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/post/repost?repostId=1",
+									"raw": "http://localhost:8001/api/v1/post/repost?repostId=1",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -5071,11 +5072,10 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"하위글 삭제를 완료 했습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						},
 						{
-							"id": "4ff0454a-53ad-4d09-be68-bcc1cecca044",
+							"id": "4b308d9a-c6e7-4367-b6aa-7d621704c6af",
 							"name": "존재하지 않은 게시글",
 							"originalRequest": {
 								"method": "DELETE",
@@ -5157,14 +5157,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 401,\n    \"result\": \"fail\",\n    \"message\": \"해당 게시글은 존재하지 않습니다.\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "커뮤니티 게시글 조회",
-					"id": "b9421118-6db5-43e1-9f69-8ecdcf786e56",
+					"id": "1d7a04fc-220e-47cd-9f29-71a2d2d7327b",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5216,7 +5215,7 @@
 					},
 					"response": [
 						{
-							"id": "980af6fe-7997-42e4-8e1f-ce0f98f77436",
+							"id": "662980eb-3d1a-4b31-a93b-07a430504f70",
 							"name": "커뮤니티 게시글 전체조회",
 							"originalRequest": {
 								"method": "GET",
@@ -5253,11 +5252,10 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": {\n        \"content\": [\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"13Km\",\n                \"time\": \"1분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.53694749951083,\n                \"longitude\": 126.90305679797058,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1557,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"1Km\",\n                \"time\": \"7분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50881305917985,\n                \"longitude\": 127.06793796605302,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1556,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"5Km\",\n                \"time\": \"11분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.478528495740576,\n                \"longitude\": 127.02754863993277,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1555,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.533704288765634,\n                \"longitude\": 127.05919457854142,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1554,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"7Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.461553264287915,\n                \"longitude\": 127.04188234603433,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1553,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"2Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.520989619310015,\n                \"longitude\": 127.03271670899672,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1552,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"집회및행사로 인한 부분 통제\",\n                \"distance\": \"7Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.535628229145274,\n                \"longitude\": 126.9740467238345,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1551,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"9Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.56761264109095,\n                \"longitude\": 127.15236941701222,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1550,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"26분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.49911461470393,\n                \"longitude\": 127.02725701436553,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1549,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"603m\",\n                \"time\": \"31분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.526642026080104,\n                \"longitude\": 127.06429973777638,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1548,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"14Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.65299272010979,\n                \"longitude\": 127.0553208739687,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1547,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.514459784906826,\n                \"longitude\": 127.00622989474034,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1546,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.54468792819958,\n                \"longitude\": 127.0245472196041,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1545,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"3Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.52291149849736,\n                \"longitude\": 127.1008769593952,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1544,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"차량고장으로 인한 부분 통제\",\n                \"distance\": \"8Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.차량고장으로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50807558035541,\n                \"longitude\": 126.9647563473541,\n                \"headKeyword\": 9,\n                \"thumbNail\": null,\n                \"postId\": 1543,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            }\n        ],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": false,\n                \"sorted\": true,\n                \"unsorted\": false\n            },\n            \"offset\": 0,\n            \"pageNumber\": 0,\n            \"pageSize\": 15,\n            \"unpaged\": false,\n            \"paged\": true\n        },\n        \"totalElements\": 1553,\n        \"totalPages\": 104,\n        \"last\": false,\n        \"size\": 15,\n        \"number\": 0,\n        \"sort\": {\n            \"empty\": false,\n            \"sorted\": true,\n            \"unsorted\": false\n        },\n        \"numberOfElements\": 15,\n        \"first\": true,\n        \"empty\": false\n    },\n    \"error\": []\n}"
 						},
 						{
-							"id": "b702f04b-de8e-4cf9-a2ff-1e2f2aaa000d",
+							"id": "41a527fb-b888-4507-801a-47a816473050",
 							"name": "커뮤니티 게시글 관심키워드 단일조회",
 							"originalRequest": {
 								"method": "GET",
@@ -5298,11 +5296,10 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": {\n        \"content\": [\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"13Km\",\n                \"time\": \"1분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.53694749951083,\n                \"longitude\": 126.90305679797058,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1557,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"1Km\",\n                \"time\": \"7분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50881305917985,\n                \"longitude\": 127.06793796605302,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1556,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"5Km\",\n                \"time\": \"11분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.478528495740576,\n                \"longitude\": 127.02754863993277,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1555,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.533704288765634,\n                \"longitude\": 127.05919457854142,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1554,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"7Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.461553264287915,\n                \"longitude\": 127.04188234603433,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1553,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"2Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.520989619310015,\n                \"longitude\": 127.03271670899672,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1552,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"집회및행사로 인한 부분 통제\",\n                \"distance\": \"7Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.535628229145274,\n                \"longitude\": 126.9740467238345,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1551,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"9Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.56761264109095,\n                \"longitude\": 127.15236941701222,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1550,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"26분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.49911461470393,\n                \"longitude\": 127.02725701436553,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1549,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"603m\",\n                \"time\": \"31분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.526642026080104,\n                \"longitude\": 127.06429973777638,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1548,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"14Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.65299272010979,\n                \"longitude\": 127.0553208739687,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1547,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.514459784906826,\n                \"longitude\": 127.00622989474034,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1546,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.54468792819958,\n                \"longitude\": 127.0245472196041,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1545,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"3Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.52291149849736,\n                \"longitude\": 127.1008769593952,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1544,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"차량고장으로 인한 부분 통제\",\n                \"distance\": \"8Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.차량고장으로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50807558035541,\n                \"longitude\": 126.9647563473541,\n                \"headKeyword\": 9,\n                \"thumbNail\": null,\n                \"postId\": 1543,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            }\n        ],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": false,\n                \"sorted\": true,\n                \"unsorted\": false\n            },\n            \"offset\": 0,\n            \"pageNumber\": 0,\n            \"pageSize\": 15,\n            \"unpaged\": false,\n            \"paged\": true\n        },\n        \"totalElements\": 1553,\n        \"totalPages\": 104,\n        \"last\": false,\n        \"size\": 15,\n        \"number\": 0,\n        \"sort\": {\n            \"empty\": false,\n            \"sorted\": true,\n            \"unsorted\": false\n        },\n        \"numberOfElements\": 15,\n        \"first\": true,\n        \"empty\": false\n    },\n    \"error\": []\n}"
 						},
 						{
-							"id": "aa1a0431-9116-4857-89d0-60b21fe21b7b",
+							"id": "eac64c84-3a43-42c3-af25-2d5f4cf40f49",
 							"name": "커뮤니티 게시글 전체조회",
 							"originalRequest": {
 								"method": "GET",
@@ -5347,20 +5344,19 @@
 							"_postman_previewlanguage": "json",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": null,\n    \"data\": {\n        \"content\": [\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"13Km\",\n                \"time\": \"1분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.53694749951083,\n                \"longitude\": 126.90305679797058,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1557,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"1Km\",\n                \"time\": \"7분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50881305917985,\n                \"longitude\": 127.06793796605302,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1556,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"5Km\",\n                \"time\": \"11분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.478528495740576,\n                \"longitude\": 127.02754863993277,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1555,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"1Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.533704288765634,\n                \"longitude\": 127.05919457854142,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1554,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"7Km\",\n                \"time\": \"16분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.461553264287915,\n                \"longitude\": 127.04188234603433,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1553,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"2Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.520989619310015,\n                \"longitude\": 127.03271670899672,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1552,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"집회및행사로 인한 부분 통제\",\n                \"distance\": \"7Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.집회및행사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.535628229145274,\n                \"longitude\": 126.9740467238345,\n                \"headKeyword\": 8,\n                \"thumbNail\": null,\n                \"postId\": 1551,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"9Km\",\n                \"time\": \"21분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.56761264109095,\n                \"longitude\": 127.15236941701222,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1550,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"공사로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"26분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.공사로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일 1\",\n                \"latitude\": 37.49911461470393,\n                \"longitude\": 127.02725701436553,\n                \"headKeyword\": 4,\n                \"thumbNail\": null,\n                \"postId\": 1549,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"603m\",\n                \"time\": \"31분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.526642026080104,\n                \"longitude\": 127.06429973777638,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1548,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"14Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.65299272010979,\n                \"longitude\": 127.0553208739687,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1547,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"4Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.514459784906826,\n                \"longitude\": 127.00622989474034,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1546,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"교통사고로 인한 부분 통제\",\n                \"distance\": \"3Km\",\n                \"time\": \"36분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.교통사고로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29일\",\n                \"latitude\": 37.54468792819958,\n                \"longitude\": 127.0245472196041,\n                \"headKeyword\": 1,\n                \"thumbNail\": null,\n                \"postId\": 1545,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"기상/재난으로 인한 알수없음\",\n                \"distance\": \"3Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.기상/재난으로 인한 알수없음가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.52291149849736,\n                \"longitude\": 127.1008769593952,\n                \"headKeyword\": 3,\n                \"thumbNail\": null,\n                \"postId\": 1544,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            },\n            {\n                \"title\": \"차량고장으로 인한 부분 통제\",\n                \"distance\": \"8Km\",\n                \"time\": \"41분 전\",\n                \"rePostCount\": 1,\n                \"content\": \"안녕하세요, \\\"가는길 지금\\\" 팀 입니다.차량고장으로 인한 부분 통제가 있을 예정입니다.하기 내용을 바탕으로 교통편 이용 혹은 통행에 참고 바랍니다.- 발생일: 2023년 06월 29\",\n                \"latitude\": 37.50807558035541,\n                \"longitude\": 126.9647563473541,\n                \"headKeyword\": 9,\n                \"thumbNail\": null,\n                \"postId\": 1543,\n                \"backgroundMap\": null,\n                \"placeName\": null\n            }\n        ],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": false,\n                \"sorted\": true,\n                \"unsorted\": false\n            },\n            \"offset\": 0,\n            \"pageNumber\": 0,\n            \"pageSize\": 15,\n            \"unpaged\": false,\n            \"paged\": true\n        },\n        \"totalElements\": 1553,\n        \"totalPages\": 104,\n        \"last\": false,\n        \"size\": 15,\n        \"number\": 0,\n        \"sort\": {\n            \"empty\": false,\n            \"sorted\": true,\n            \"unsorted\": false\n        },\n        \"numberOfElements\": 15,\n        \"first\": true,\n        \"empty\": false\n    },\n    \"error\": []\n}"
 						}
 					]
 				}
 			],
-			"id": "efb54ad2-dfe2-4713-8fcf-a41f8d73489d"
+			"id": "4a013dc4-7802-45be-8936-da70e9f6dba1"
 		},
 		{
 			"name": "마이페이지",
 			"item": [
 				{
 					"name": "내 게시글 조회하기",
-					"id": "60d23b9b-2475-451a-bb6d-91246cd90c04",
+					"id": "b7804651-fd70-4b45-b7af-2de64cd8a427",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5410,7 +5406,7 @@
 					},
 					"response": [
 						{
-							"id": "2733a019-db4d-43ef-8e1d-05efb9812c99",
+							"id": "bcf05b0e-2cd5-4e3d-8716-810f8bc5d07d",
 							"name": "내 게시글 조회하기",
 							"originalRequest": {
 								"method": "GET",
@@ -5447,17 +5443,16 @@
 									]
 								}
 							},
-							"_postman_previewlanguage": null,
+							"_postman_previewlanguage": "Text",
 							"header": null,
 							"cookie": [],
-							"responseTime": null,
 							"body": null
 						}
 					]
 				},
 				{
 					"name": "알림 리스트 조회하기",
-					"id": "06a5b87f-cab6-46b9-ae5d-67aed28a28e6",
+					"id": "c410f584-007d-474d-b4ea-3ca13bdde4c5",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5467,7 +5462,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2ZkZkBnbWFpbC5jb20iLCJhdXRoIjoiUk9MRV9VU0VSIiwiZXhwIjoxNjg3NzY0ODkwfQ.sMCLO0VkLfQ2KEMMdtvlowu4o7ZMSLZrrMsckYVQG8k",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4ODMwODI2OH0.0zN09RUbd2_UdGEP_2sXqbo4yIM-WMpwCabBC2I_feo",
 									"type": "string"
 								}
 							]
@@ -5475,9 +5470,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{localhost}}/api/v1/member/get_notification_list?notificationEnum=KEYWORD",
+							"raw": "{{domain}}/api/v1/member/get_notification_list?notificationEnums=REPOST&notificationEnums=LIKE&page=1",
 							"host": [
-								"{{localhost}}"
+								"{{domain}}"
 							],
 							"path": [
 								"api",
@@ -5487,35 +5482,243 @@
 							],
 							"query": [
 								{
-									"key": "notificationEnum",
-									"value": "KEYWORD"
-								},
-								{
-									"key": "notificationEnum",
-									"value": "REPOST",
-									"type": "text",
+									"key": "notificationEnums",
+									"value": "KEYWORD",
 									"disabled": true
 								},
 								{
-									"key": "notificationEnum",
-									"value": "LIKE",
-									"type": "text",
-									"disabled": true
+									"key": "notificationEnums",
+									"value": "REPOST"
+								},
+								{
+									"key": "notificationEnums",
+									"value": "LIKE"
+								},
+								{
+									"key": "page",
+									"value": "1"
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"id": "52e43291-1812-47af-94f9-dd674f07cf6a",
+							"name": "관심 키워드 알림",
+							"originalRequest": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZ2dAZ21haWwuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTY4ODMwODI2OH0.0zN09RUbd2_UdGEP_2sXqbo4yIM-WMpwCabBC2I_feo",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/api/v1/member/get_notification_list?notificationEnums=REPOST&notificationEnums=LIKE&page=1",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"member",
+										"get_notification_list"
+									],
+									"query": [
+										{
+											"key": "notificationEnums",
+											"value": "KEYWORD",
+											"disabled": true
+										},
+										{
+											"key": "notificationEnums",
+											"value": "REPOST"
+										},
+										{
+											"key": "notificationEnums",
+											"value": "LIKE"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Jul 2023 13:01:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"알림리스트 조회 성공\",\n    \"data\": {\n        \"content\": [],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": true,\n                \"sorted\": false,\n                \"unsorted\": true\n            },\n            \"offset\": 20,\n            \"pageSize\": 20,\n            \"pageNumber\": 1,\n            \"paged\": true,\n            \"unpaged\": false\n        },\n        \"totalElements\": 0,\n        \"totalPages\": 0,\n        \"last\": true,\n        \"size\": 20,\n        \"number\": 1,\n        \"sort\": {\n            \"empty\": true,\n            \"sorted\": false,\n            \"unsorted\": true\n        },\n        \"numberOfElements\": 0,\n        \"first\": false,\n        \"empty\": true\n    },\n    \"error\": []\n}"
+						},
+						{
+							"id": "967e049a-79d1-49cf-b516-3de419265b20",
+							"name": "새 소식 알림",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{domain}}/api/v1/member/get_notification_list?notificationEnums=REPOST&notificationEnums=LIKE&page=1",
+									"host": [
+										"{{domain}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"member",
+										"get_notification_list"
+									],
+									"query": [
+										{
+											"key": "notificationEnums",
+											"value": "KEYWORD",
+											"disabled": true
+										},
+										{
+											"key": "notificationEnums",
+											"value": "REPOST"
+										},
+										{
+											"key": "notificationEnums",
+											"value": "LIKE"
+										},
+										{
+											"key": "page",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 02 Jul 2023 13:01:28 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"알림리스트 조회 성공\",\n    \"data\": {\n        \"content\": [],\n        \"pageable\": {\n            \"sort\": {\n                \"empty\": true,\n                \"sorted\": false,\n                \"unsorted\": true\n            },\n            \"offset\": 20,\n            \"pageSize\": 20,\n            \"pageNumber\": 1,\n            \"paged\": true,\n            \"unpaged\": false\n        },\n        \"totalElements\": 0,\n        \"totalPages\": 0,\n        \"last\": true,\n        \"size\": 20,\n        \"number\": 1,\n        \"sort\": {\n            \"empty\": true,\n            \"sorted\": false,\n            \"unsorted\": true\n        },\n        \"numberOfElements\": 0,\n        \"first\": false,\n        \"empty\": true\n    },\n    \"error\": []\n}"
+						}
+					]
 				}
 			],
-			"id": "4cdce920-ce91-4280-9d73-269fcaca9d69"
+			"id": "75278b4c-570c-4d14-812b-de49b11b730d"
 		},
 		{
 			"name": "알림기능",
 			"item": [
 				{
 					"name": "알림 보내기",
-					"id": "959c090c-cccc-4052-94d2-6d3a07d3d697",
+					"id": "0397fe25-7e81-4aad-8bcf-567e357d172f",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5557,7 +5760,7 @@
 				},
 				{
 					"name": "관심 키워드 알림설정",
-					"id": "bc5ed407-2bde-4e41-9f63-3ff396c9ad26",
+					"id": "32ea8fa3-e30c-4f1c-b409-ac97384856a3",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5589,16 +5792,18 @@
 					},
 					"response": [
 						{
-							"id": "8f23c92c-315a-4ef1-8eaa-7e680ee4c595",
+							"id": "b4850f67-e21e-4431-b52a-c83d948d0a0b",
 							"name": "관심 키워드 알림설정",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/change_notification_keyword",
+									"raw": "http://localhost:8001/api/v1/member/change_notification_keyword",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -5665,14 +5870,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"관심키워드 알림설정 변경 true->false\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				},
 				{
 					"name": "새스래드 알림설정",
-					"id": "b7beeff1-72a4-4ee1-bc78-51102150900c",
+					"id": "399a5730-5436-4a41-8d18-9f464995db05",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5704,16 +5908,18 @@
 					},
 					"response": [
 						{
-							"id": "adb38e80-90ac-4f7e-af70-41e607f2a2d3",
+							"id": "a99da593-abf1-4cb9-b23a-56f2971b36dc",
 							"name": "새스래드 알림설정",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/change_notification_repost",
+									"raw": "http://localhost:8001/api/v1/member/change_notification_repost",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -5764,14 +5970,13 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": null
 						}
 					]
 				},
 				{
 					"name": "도움돼요 알림설정",
-					"id": "1c8c02ab-d853-4ce7-a711-097d63cbbba2",
+					"id": "65c29c44-44dd-444b-8da2-d00c1a0367bd",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5803,16 +6008,18 @@
 					},
 					"response": [
 						{
-							"id": "b9e3e5e4-f8f2-43ea-b995-f8159fc677fa",
+							"id": "3b11eaab-bcda-4ac1-bfc3-2c8f3e443eda",
 							"name": "도움돼요 알림설정",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
 								"url": {
-									"raw": "{{localhost}}/api/v1/member/change_notification_like",
+									"raw": "http://localhost:8001/api/v1/member/change_notification_like",
+									"protocol": "http",
 									"host": [
-										"{{localhost}}"
+										"localhost"
 									],
+									"port": "8001",
 									"path": [
 										"api",
 										"v1",
@@ -5879,20 +6086,19 @@
 								}
 							],
 							"cookie": [],
-							"responseTime": null,
 							"body": "{\n    \"state\": 200,\n    \"result\": \"success\",\n    \"message\": \"도움돼요 알림설정 변경 true->false\",\n    \"data\": [],\n    \"error\": []\n}"
 						}
 					]
 				}
 			],
-			"id": "3b651125-0308-44d2-922e-e4dfd695e723"
+			"id": "78f316b5-b689-47bd-bc68-bbc148fa6f31"
 		},
 		{
 			"name": "소셜 로그인 &회원가입",
 			"item": [
 				{
 					"name": "네이버",
-					"id": "e2f6bbdc-767a-4247-bccb-70eda4d65597",
+					"id": "a3176eb5-c262-4874-bb97-1a039c528a36",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5915,7 +6121,7 @@
 				},
 				{
 					"name": "kakao",
-					"id": "a52f357f-d07d-48df-b7f9-6b712539e6a1",
+					"id": "3de8ac53-95c9-41a7-bbd1-153b4d8f66a9",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -5937,11 +6143,11 @@
 					"response": []
 				}
 			],
-			"id": "0e39fba2-2934-498b-b384-3521fd0d2d1b"
+			"id": "f6a6eec4-e695-435c-a669-2acf67c40e3a"
 		},
 		{
 			"name": "TEST",
-			"id": "cd376892-7923-44b9-9ebc-7cd99077d383",
+			"id": "2d5cb979-0106-4f67-a246-873f50b64bc0",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true,
 				"disabledSystemHeaders": {}
@@ -5985,13 +6191,16 @@
 		},
 		{
 			"name": "파일 업로드 테스트",
-			"id": "0ada7dfb-466d-447c-aeb5-fe24cd2b1959",
+			"id": "8df76039-13ed-4bca-a0e6-debf8726a483",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
 			"request": {
 				"method": "GET",
-				"header": []
+				"header": [],
+				"url": {
+					"raw": ""
+				}
 			},
 			"response": []
 		}
