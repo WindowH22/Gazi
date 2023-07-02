@@ -1,7 +1,7 @@
 package com.example.gazi.oauth.dto;
 
 import com.example.gazi.domain.Member;
-import com.example.gazi.domain.Role;
+import com.example.gazi.domain.enums.Role;
 import lombok.Builder;
 import lombok.Getter;
 
