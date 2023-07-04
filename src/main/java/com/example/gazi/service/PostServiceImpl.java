@@ -136,7 +136,7 @@ public class PostServiceImpl implements PostService {
         }
 
         // 관심 키워드 설정한 유저들에게 알림 보내기
-        fcmNotificationService.sendMessageByKeyword(member,post,dto.getKeywordIdList());
+        fcmNotificationService.sendMessageByKeyword(member, post, dto.getKeywordIdList());
 
         return response.success(post.getId(), "글 작성을 완료했습니다.", HttpStatus.CREATED);
     }
@@ -258,7 +258,7 @@ public class PostServiceImpl implements PostService {
             } else {
                 return response.fail("삭제 권한이 없습니다.", HttpStatus.FORBIDDEN);
             }
-        } catch(EntityNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return response.fail("해당 게시글은 존재하지 않습니다.", HttpStatus.NOT_FOUND);
         }
 
@@ -293,31 +293,38 @@ public class PostServiceImpl implements PostService {
 
             // 답글
             List<Repost> rePosts = rePostRepository.findAllByPostOrderByCreatedAtDesc(post);
-
+            boolean hasRepost = true;
             List<ResponsePostListDto> postList = new ArrayList<>();
 
             List<ResponseFileDto> fileList;
 
-            for (Repost repost : rePosts) {
+            if (rePosts.size() == 0) {
+                hasRepost = false;
 
-                List<FileRepost> fileReposts = repost.getFileRePosts();
-                likeCount = likePostRepository.countByRepost(repost);
-                keywordIdList.clear();
-                for (KeywordRepost keywordRepost : repost.getRepostCart().getKeywordReposts()) {
-                    keywordIdList.add(keywordRepost.getKeyword().getId());
+            } else {
+                log.info("답글 개수" + rePosts.size());
+                for (Repost repost : rePosts) {
+
+                    List<FileRepost> fileReposts = repost.getFileRePosts();
+                    likeCount = likePostRepository.countByRepost(repost);
+                    keywordIdList.clear();
+                    for (KeywordRepost keywordRepost : repost.getRepostCart().getKeywordReposts()) {
+                        keywordIdList.add(keywordRepost.getKeyword().getId());
+                    }
+
+                    isLike = likePostRepository.existsByLikeIdAndRepostId(like.getId(), repost.getId());
+                    // 신고하기
+                    isReport = reportPostRepository.existsByReportIdAndRepostId(report.getId(), repost.getId());
+                    fileList = new ArrayList<>();
+                    for (FileRepost fileRepost : fileReposts) {
+                        ResponseFileDto dto = new ResponseFileDto(fileRepost.getFileName(), fileRepost.getFileUrl());
+                        fileList.add(dto);
+                    }
+
+                    ResponsePostListDto rePostDto = ResponsePostListDto.toDto(repost, getTime(repost.getCreatedAt()), getDistance(curX, curY, repost.getLatitude(), repost.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList);
+                    postList.add(rePostDto);
                 }
 
-                isLike = likePostRepository.existsByLikeIdAndRepostId(like.getId(), repost.getId());
-                // 신고하기
-                isReport = reportPostRepository.existsByReportIdAndRepostId(report.getId(), repost.getId());
-                fileList = new ArrayList<>();
-                for (FileRepost fileRepost : fileReposts) {
-                    ResponseFileDto dto = new ResponseFileDto(fileRepost.getFileName(), fileRepost.getFileUrl());
-                    fileList.add(dto);
-                }
-
-                ResponsePostListDto rePostDto = ResponsePostListDto.toDto(repost, getTime(repost.getCreatedAt()), getDistance(curX, curY, repost.getLatitude(), repost.getLongitude()), fileList, likeCount, isLike, isReport, keywordIdList);
-                postList.add(rePostDto);
             }
 
             fileList = new ArrayList<>();
@@ -347,7 +354,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post, getDistance(curX, curY, post.getLatitude(), post.getLongitude()), getTime(post.getCreatedAt()), postDtoPage);
+            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post, getDistance(curX, curY, post.getLatitude(), post.getLongitude()), getTime(post.getCreatedAt()), postDtoPage, hasRepost);
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {

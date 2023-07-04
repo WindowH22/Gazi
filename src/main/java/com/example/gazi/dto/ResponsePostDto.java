@@ -25,8 +25,9 @@ public class ResponsePostDto {
         private Page<ResponsePostListDto> postList;
         private Long hit;
         private String backgroundMapUrl;
+        private boolean hasRepost;
 
-        public static getTopPostDto toDto(Post post, String distance, String time, Page<ResponsePostListDto> postList) {
+        public static getTopPostDto toDto(Post post, String distance, String time, Page<ResponsePostListDto> postList,boolean hasRepost) {
             return getTopPostDto.builder()
                     .userId(post.getMember().getId())
                     .title(post.getTitle())
@@ -38,6 +39,7 @@ public class ResponsePostDto {
                     .hit(post.getHit())
                     .backgroundMapUrl(post.getBackgroundMap())
                     .postList(postList)
+                    .hasRepost(hasRepost)
                     .build();
         }
 
