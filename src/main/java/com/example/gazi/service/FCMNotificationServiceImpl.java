@@ -139,7 +139,7 @@ public class FCMNotificationServiceImpl implements FCMNotificationService {
         try {
             sendGroupNotification(requestDto);
             for (Member memberKeyword : memberIdByKeyword) {
-                notificationRepository.save(com.example.gazi.domain.Notification.toEntity(requestDto, memberKeyword, NotificationEnum.KEYWORD));
+                notificationRepository.save(com.example.gazi.domain.Notification.toEntity(requestDto, memberKeyword, NotificationEnum.KEYWORD, Long.valueOf(requestDto.getData().get("postId")),true));
             }
 
             log.info("알림 보내기 성공");

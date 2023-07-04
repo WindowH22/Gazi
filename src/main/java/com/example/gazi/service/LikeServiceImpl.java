@@ -107,7 +107,7 @@ public class LikeServiceImpl implements LikeService {
                         .data(RequestFCMNotificationDto.makeMapByRepost(repost))
                         .build();
                 fcmNotificationService.sendNotificationByToken(request);
-                notificationRepository.save(Notification.toEntity(request, repost.getMember(), NotificationEnum.LIKE));
+                notificationRepository.save(Notification.toEntity(request, repost.getMember(), NotificationEnum.LIKE,repost.getId(),false));
             }
             log.info("알림 동작완료");
 
