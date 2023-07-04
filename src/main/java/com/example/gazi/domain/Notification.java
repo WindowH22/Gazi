@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @Table(name = "NOTIFICATION")
 @Entity
-public class Notification {
+public class Notification extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,10 @@ public class Notification {
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
-    public static Notification toEntity(RequestFCMNotificationDto dto, Member member, NotificationEnum notificationEnum){
+    private Long postId;
+    private Long repostId;
+
+    public static Notification toEntity(RequestFCMNotificationDto dto, Member member, NotificationEnum notificationEnum,Long id, boolean isPost){
         Notification notification = Notification.builder()
                 .title(dto.getTitle())
                 .body(dto.getBody())
