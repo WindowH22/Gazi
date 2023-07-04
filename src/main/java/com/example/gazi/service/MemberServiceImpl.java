@@ -7,6 +7,7 @@ import com.example.gazi.domain.enums.NotificationEnum;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
 import com.example.gazi.dto.Response.Body;
+import com.example.gazi.dto.ResponseFCMNotificationDto;
 import com.example.gazi.dto.ResponseMember.MemberInfo;
 import com.example.gazi.dto.ResponseToken;
 import com.example.gazi.repository.*;
@@ -371,7 +372,24 @@ public class MemberServiceImpl implements MemberService {
         if (memberRes.isPresent()) {
             Member member = memberRes.get();
             Page<Notification> notificationPage = notificationRepository.findAllByMemberAndNotificationEnumIn(member, notificationEnums, pageable);
-            return response.success(notificationPage, "알림리스트 조회 성공", HttpStatus.OK);
+            Page<ResponseFCMNotificationDto> responseFCMNotificationDtoPage = notificationPage.map(
+                    m -> m.getPostId() != null ?
+                            ResponseFCMNotificationDto.builder()
+                                    .title(m.getTitle())
+                                    .body(m.getBody())
+                                    .postId(m.getPostId())
+                                    .createdAt(m.getCreatedAt())
+                                    .build()
+                            :
+                            ResponseFCMNotificationDto.builder()
+                                    .title(m.getTitle())
+                                    .body(m.getBody())
+                                    .repostId(m.getRepostId())
+                                    .createdAt(m.getCreatedAt())
+                                    .build()
+
+            );
+            return response.success(responseFCMNotificationDtoPage, "알림리스트 조회 성공", HttpStatus.OK);
         } else {
             return response.fail("이메일을 통해 회원을 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
         }
