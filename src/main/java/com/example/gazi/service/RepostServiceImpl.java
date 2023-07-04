@@ -125,7 +125,7 @@ public class RepostServiceImpl implements RepostService {
                         .body("답글이 달렸어요.")
                         .build();
                 fcmNotificationService.sendNotificationByToken(request);
-                notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.REPOST));
+                notificationRepository.save(Notification.toEntity(request, post.getMember(), NotificationEnum.REPOST,post.getId(),true));
             }
             return response.success(repost.getId(), "하위 게시글 작성을 완료했습니다.", HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
