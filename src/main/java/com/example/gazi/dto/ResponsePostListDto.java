@@ -25,6 +25,7 @@ public class ResponsePostListDto {
     private boolean isLike;
     private Long likeCount;
     private boolean isReport;
+    private boolean isPost;
     private List<Long> keywordIdList;
 
 
@@ -41,6 +42,7 @@ public class ResponsePostListDto {
                 .likeCount(likeCount)
                 .isReport(isReport)
                 .keywordIdList(keywordIdList)
+                .isPost(true)
                 .build();
     }
     public static ResponsePostListDto toDto(Repost repost, String time, String distance, List<ResponseFileDto> fileList, Long likeCount, boolean isLike, boolean isReport, List<Long> keywordIdList){
@@ -56,6 +58,7 @@ public class ResponsePostListDto {
                 .likeCount(likeCount)
                 .isReport(isReport)
                 .keywordIdList(keywordIdList)
+                .isPost(false)
                 .build();
     }
 

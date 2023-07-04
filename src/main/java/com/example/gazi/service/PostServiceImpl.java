@@ -293,14 +293,12 @@ public class PostServiceImpl implements PostService {
 
             // 답글
             List<Repost> rePosts = rePostRepository.findAllByPostOrderByCreatedAtDesc(post);
-            boolean hasRepost = true;
             List<ResponsePostListDto> postList = new ArrayList<>();
 
             List<ResponseFileDto> fileList;
 
             if (rePosts.size() == 0) {
-                hasRepost = false;
-
+                log.info("답글이 존재하지 않습니다.");
             } else {
                 log.info("답글 개수" + rePosts.size());
                 for (Repost repost : rePosts) {
@@ -354,7 +352,7 @@ public class PostServiceImpl implements PostService {
             }
             postRepository.save(post);
 
-            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post, getDistance(curX, curY, post.getLatitude(), post.getLongitude()), getTime(post.getCreatedAt()), postDtoPage, hasRepost);
+            ResponsePostDto.getTopPostDto responsePostDto = ResponsePostDto.getTopPostDto.toDto(post, getDistance(curX, curY, post.getLatitude(), post.getLongitude()), getTime(post.getCreatedAt()), postDtoPage);
 
             return response.success(responsePostDto, "상위 게시글 조회", HttpStatus.OK);
         } catch (EntityNotFoundException e) {
@@ -555,7 +553,7 @@ public class PostServiceImpl implements PostService {
     }
 
     // 시간 구하기 로직
-    private String getTime(LocalDateTime writeTime) {
+    public static String getTime(LocalDateTime writeTime) {
 
         LocalDateTime nowDate = LocalDateTime.now();
         Duration duration = Duration.between(writeTime, nowDate);
