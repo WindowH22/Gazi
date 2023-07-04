@@ -39,6 +39,13 @@ public class Notification extends AuditingFields {
                 .member(member)
                 .build();
 
+        if(isPost){
+            notification.postId = id;
+        }else{
+            notification.repostId = id;
+        }
+
+
         return notification;
     }
 }
