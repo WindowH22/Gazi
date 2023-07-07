@@ -81,4 +81,34 @@ public class RequestMember {
     public static class FirebaseToken{
         private String fireBaseToken;
     }
+
+    @Getter
+    public static class SocialSignUp{
+        private String email;
+        private String provider;
+        private String secretKey;
+
+        public Member toEntity() {
+            return Member.builder()
+                    .nickName(email+provider)
+                    .email(email)
+                    .provider(provider)
+                    .isAgree(true) // 고민해봐야할 부분
+                    .role(Role.ROLE_USER)
+                    .notificationByLike(true)
+                    .notificationByRepost(true)
+                    .notificationByKeyword(true)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Setter
+    public static class SocialLogin{
+        private String email;
+        private String secretKey;
+
+    }
+
+
 }
