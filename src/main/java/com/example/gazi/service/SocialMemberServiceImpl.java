@@ -32,7 +32,6 @@ public class SocialMemberServiceImpl implements SocialMemberService {
     private final JwtTokenProvider jwtTokenProvider;
     @Value("${social.secretKey}")
     private String secretKey;
-
     @Override
     public ResponseEntity<Response.Body> saveOrUpdate(RequestMember.SocialSignUp social) {
 

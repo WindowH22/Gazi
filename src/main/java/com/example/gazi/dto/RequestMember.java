@@ -86,11 +86,12 @@ public class RequestMember {
     public static class SocialSignUp{
         private String email;
         private String provider;
+        private String nickName;
         private String secretKey;
 
         public Member toEntity() {
             return Member.builder()
-                    .nickName(email+provider)
+                    .nickName(nickName)
                     .email(email)
                     .provider(provider)
                     .isAgree(true) // 고민해봐야할 부분
