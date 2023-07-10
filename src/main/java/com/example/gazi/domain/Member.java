@@ -60,8 +60,9 @@ public class Member extends AuditingFields {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt; // 생성일시
 
-    public Member update(String nickName, String provider) {
+    public Member update(String nickName,String email, String provider) {
         this.nickName = nickName;
+        this.email = email;
         this.provider = provider;
         return this;
     }

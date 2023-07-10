@@ -36,7 +36,7 @@ public class SocialMemberServiceImpl implements SocialMemberService {
     public ResponseEntity<Response.Body> saveOrUpdate(RequestMember.SocialSignUp social) {
 
         Member member = memberRepository.findByEmail(social.getEmail())
-                .map(entity -> entity.update(social.getEmail(), social.getProvider()))
+                .map(entity -> entity.update(social.getNickName(), social.getEmail(), social.getProvider()))
                 .orElse(social.toEntity());
         memberRepository.save(member);
         return response.success("회원가입 완료");
