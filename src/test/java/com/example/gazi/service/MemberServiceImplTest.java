@@ -42,7 +42,28 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("이메일 중복 테스트")
     void checkEmail() {
+        // given
+        RequestMember.SignUp dto1 = new RequestMember.SignUp();
+        dto1.setEmail("dlckdgml35@gmail.com");
+        dto1.setPassword("kkkllll");
+        dto1.setNickName("testnick");
+
+        RequestMember.SignUp dto2 = new RequestMember.SignUp();
+        dto2.setEmail("dlckdgml35@gmail.com");
+        dto2.setPassword("ddd");
+        dto2.setNickName("fadf");
+
+        // when
+        Member member1 =  memberService.signUp(dto1);
+        try{
+            Member member2 =  memberService.signUp(dto2);
+        }catch (IllegalStateException e){
+            return;
+        }
+        // then
+
     }
 
     @Test
