@@ -28,11 +28,15 @@ class MemberServiceImplTest {
     @Autowired
     Response response;
 
-    RequestMember.SignUp setUp(){
+    String email = "dlckdgml35@gmail.com";
+    String password = "kkkllll";
+    String nickName = "testnick";
+
+    RequestMember.SignUp signUpSetUp() {
         RequestMember.SignUp dto = new RequestMember.SignUp();
-        dto.setEmail("dlckdgml35@gmail.com");
-        dto.setPassword("kkkllll");
-        dto.setNickName("testnick");
+        dto.setEmail(email);
+        dto.setPassword(password);
+        dto.setNickName(nickName);
 
         return dto;
     }
