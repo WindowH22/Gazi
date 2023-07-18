@@ -3,6 +3,7 @@ package com.example.gazi.service;
 import com.example.gazi.domain.Member;
 import com.example.gazi.dto.RequestMember;
 import com.example.gazi.dto.Response;
+import com.example.gazi.dto.ResponseToken;
 import com.example.gazi.repository.MemberRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -159,7 +160,31 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("로그아웃되어 Redis 에 RefreshToken 이 존재하지 않는 경우")
+    void reissueFail() {
+        // given
+        RequestMember.Reissue reissueDto = reissueSetUp();
+        RequestMember.Logout logoutDto = new RequestMember.Logout(reissueDto.getAccessToken(), reissueDto.getRefreshToken());
+        // when
+        memberService.logout(logoutDto);
+        ResponseEntity<Response.Body> responseEntity = memberService.reissue(reissueDto);
+
+        // then
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals("Refresh Token 정보가 유효하지 않습니다.", responseEntity.getBody().getMessage());
+
+    }
+
+    @Test
+    @DisplayName("토큰 재발급 sucess")
     void reissue() {
+        // given
+        RequestMember.Reissue reissueDto = reissueSetUp();
+
+        // when
+        ResponseEntity<Response.Body> responseEntity = memberService.reissue(reissueDto);
+        // then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
     @Test
