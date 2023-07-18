@@ -171,7 +171,7 @@ class MemberServiceImplTest {
 
         // then
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals("Refresh Token 정보가 유효하지 않습니다.", responseEntity.getBody().getMessage());
+        assertEquals("잘못된 요청입니다. 엑세스토큰으로 찾은 유저 이메일 : " + email, responseEntity.getBody().getMessage());
 
     }
 
