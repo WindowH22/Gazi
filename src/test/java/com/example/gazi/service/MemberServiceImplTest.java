@@ -62,13 +62,13 @@ class MemberServiceImplTest {
     @DisplayName("회원가입")
     void signUp() {
         // given
-        RequestMember.SignUp dto = setUp();
+        RequestMember.SignUp dto = signUpSetUp();
 
         // when
         Member member = memberService.signUp(dto);
 
         // then
-        assertEquals(member,memberRepository.findByEmail(dto.getEmail()).get());
+        assertEquals(member, memberRepository.findByEmail(dto.getEmail()).get());
 
     }
 
@@ -76,19 +76,19 @@ class MemberServiceImplTest {
     @DisplayName("이메일 중복 테스트")
     void checkEmail() {
         // given
-        RequestMember.SignUp dto1 = setUp();
+        RequestMember.SignUp dto1 = signUpSetUp();
         RequestMember.SignUp dto2 = new RequestMember.SignUp();
         dto2.setEmail("dlckdgml35@gmail.com");
         dto2.setPassword("ddd");
         dto2.setNickName("fadf");
 
         // when
-        try{
-            Member member1 =  memberService.signUp(dto1);
-            Member member2 =  memberService.signUp(dto2);
+        try {
+            Member member1 = memberService.signUp(dto1);
+            Member member2 = memberService.signUp(dto2);
         }
         // then
-        catch (IllegalStateException e){
+        catch (IllegalStateException e) {
             return;
         }
 
@@ -99,44 +99,37 @@ class MemberServiceImplTest {
     @DisplayName("닉네임 중복체크")
     void checkNickName() {
         // given
-        RequestMember.SignUp dto1 = setUp();
+        RequestMember.SignUp dto1 = signUpSetUp();
         RequestMember.SignUp dto2 = new RequestMember.SignUp();
         dto2.setEmail("dlckdgml1235@gmail.com");
         dto2.setPassword("ddd");
         dto2.setNickName("fadf");
         // when
-        try{
-            Member member1 =  memberService.signUp(dto1);
-            Member member2 =  memberService.signUp(dto2);
+        try {
+            Member member1 = memberService.signUp(dto1);
+            Member member2 = memberService.signUp(dto2);
         }
         // then
-        catch (IllegalStateException e){
+        catch (IllegalStateException e) {
             return;
         }
 
     }
 
-    RequestMember.Login loginSetUp(){
-        RequestMember.Login login = new RequestMember.Login();
-        login.setEmail("dlckdgml35@gmail.com");
-        login.setPassword("kkkllll");
-        return login;
-    }
-
     @Test
     @DisplayName("로그인 성공")
     void login() {
-        RequestMember.SignUp signUp = setUp();
+        RequestMember.SignUp signUp = signUpSetUp();
         memberService.signUp(signUp);
         RequestMember.Login login = loginSetUp();
-        assertEquals(HttpStatus.OK,memberService.login(login).getStatusCode());
+        assertEquals(HttpStatus.OK, memberService.login(login).getStatusCode());
     }
 
     @Test
     @DisplayName("등록되지 않은 이메일로 로그인")
     void noAuthorityEmailLogin() {
         // given
-        RequestMember.SignUp signUp = setUp();
+        RequestMember.SignUp signUp = signUpSetUp();
         memberService.signUp(signUp);
         // when
         RequestMember.Login login = loginSetUp();
@@ -144,15 +137,15 @@ class MemberServiceImplTest {
         ResponseEntity<Response.Body> responseEntity = memberService.login(login);
 
         // then
-        assertEquals(HttpStatus.UNAUTHORIZED,responseEntity.getStatusCode());
-        assertEquals("등록되지 않은 이메일입니다.",responseEntity.getBody().getMessage());
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+        assertEquals("등록되지 않은 이메일입니다.", responseEntity.getBody().getMessage());
     }
 
     @Test
     @DisplayName("잘못된 비밀번호 입력")
     void noAuthorityPasswordLogin() {
         // given
-        RequestMember.SignUp signUp = setUp();
+        RequestMember.SignUp signUp = signUpSetUp();
         memberService.signUp(signUp);
         // when
         RequestMember.Login login = loginSetUp();
@@ -161,8 +154,8 @@ class MemberServiceImplTest {
         ResponseEntity<Response.Body> responseEntity = memberService.login(login);
 
         // then
-        assertEquals(HttpStatus.UNAUTHORIZED,responseEntity.getStatusCode());
-        assertEquals("비밀번호가 올바르지 않습니다.",responseEntity.getBody().getMessage());
+        assertEquals(HttpStatus.UNAUTHORIZED, responseEntity.getStatusCode());
+        assertEquals("비밀번호가 올바르지 않습니다.", responseEntity.getBody().getMessage());
     }
 
     @Test
