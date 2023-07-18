@@ -41,6 +41,23 @@ class MemberServiceImplTest {
         return dto;
     }
 
+    RequestMember.Login loginSetUp() {
+        RequestMember.Login login = new RequestMember.Login();
+        login.setEmail(email);
+        login.setPassword(password);
+        return login;
+    }
+
+    RequestMember.Reissue reissueSetUp() {
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        ResponseToken token = (ResponseToken) memberService.login(login).getBody().getData();
+        String accessToken = token.getAccessToken();
+        String refreshToken = token.getRefreshToken();
+        return new RequestMember.Reissue(accessToken, refreshToken);
+    }
+
     @Test
     @DisplayName("회원가입")
     void signUp() {
