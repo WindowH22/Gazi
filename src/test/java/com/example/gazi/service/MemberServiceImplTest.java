@@ -230,7 +230,23 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("멤버 탈퇴")
     void deleteMember() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.deleteMember();
+
+        //then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("탈퇴 되었습니다.", responseEntity.getBody().getMessage());
+
     }
 
     @Test
