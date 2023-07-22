@@ -250,7 +250,59 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("성공적인 닉네임 변경")
     void changeNickName() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        nickName = "hewllo";
+
+        RequestMember.NickName nickNameDto = new RequestMember.NickName();
+        nickNameDto.setNickName(nickName);
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNickName(nickNameDto);
+
+        //then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+    }
+
+    @Test
+    @DisplayName("닉네임 중복에 의한 실패")
+    void changeNickNameByExist() {
+        //given
+        RequestMember.SignUp dto = new RequestMember.SignUp();
+        dto.setEmail("dlckdgml5@gmail.com");
+        dto.setPassword("ddd");
+        dto.setNickName("fadf");
+        memberService.signUp(dto);
+
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        nickName = "fadf";
+
+        RequestMember.NickName nickNameDto = new RequestMember.NickName();
+        nickNameDto.setNickName(nickName);
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNickName(nickNameDto);
+        System.out.println(responseEntity.getBody().getMessage());
+        //then
+        assertEquals(HttpStatus.CONFLICT, responseEntity.getStatusCode());
+        assertEquals("중복된 닉네임입니다.", responseEntity.getBody().getMessage());
     }
 
     @Test
