@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -207,7 +210,23 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("내 정보확인하기")
     void getInfo() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.getInfo();
+
+        //then
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals("유저 정보를 불러왔습니다.", responseEntity.getBody().getMessage());
     }
 
     @Test
