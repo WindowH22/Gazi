@@ -93,7 +93,6 @@ class MemberServiceImplTest {
             return;
         }
 
-
     }
 
     @Test
@@ -188,7 +187,23 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("성공적인 로그아웃")
     void logout() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        ResponseEntity<Response.Body> loginResponse = memberService.login(login);
+        ResponseToken token = (ResponseToken) loginResponse.getBody().getData();
+        String accessToken = token.getAccessToken();
+        String refreshToken = token.getRefreshToken();
+        RequestMember.Logout logoutDto = new RequestMember.Logout(accessToken,refreshToken);
+
+        //when
+        ResponseEntity<Response.Body> responseEntity= memberService.logout(logoutDto);
+
+        //then
+        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
     }
 
     @Test
