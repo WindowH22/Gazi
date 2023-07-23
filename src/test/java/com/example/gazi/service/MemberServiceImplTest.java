@@ -436,6 +436,43 @@ class MemberServiceImplTest {
     }
 
     @Test
-    void changeNotificationByLike() {
+    @DisplayName("도움돼요 알림설정 변경 true -> false")
+    void changeFalseNotificationByLike() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNotificationByLike();
+
+        //then
+        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        assertEquals("도움돼요 알림설정 변경 true -> false",responseEntity.getBody().getMessage());
+    }
+
+    @Test
+    @DisplayName("도움돼요 알림설정 변경 false -> true")
+    void changeTrueNotificationByLike() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        memberService.changeNotificationByLike();
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNotificationByLike();
+
+        //then
+        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        assertEquals("도움돼요 알림설정 변경 false -> true",responseEntity.getBody().getMessage());
     }
 }
