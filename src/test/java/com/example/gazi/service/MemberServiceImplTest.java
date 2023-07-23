@@ -329,6 +329,29 @@ class MemberServiceImplTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 이메일로 인한 파이어베이스 토큰 등록 실패")
+    void failGetFirebaseAccessToken() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail()+"fail", login.getPassword()));
+
+        RequestMember.FirebaseToken firebaseToken = new RequestMember.FirebaseToken();
+        firebaseToken.setFireBaseToken("fireBaseTokenTest");
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.getFirebaseAccessToken(firebaseToken);
+
+        //then
+        assertEquals(HttpStatus.NOT_FOUND,responseEntity.getStatusCode());
+
+    }
+
+    @Test
     void changeNotificationByKeyword() {
     }
 
