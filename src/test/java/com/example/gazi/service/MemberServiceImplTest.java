@@ -352,7 +352,46 @@ class MemberServiceImplTest {
     }
 
     @Test
-    void changeNotificationByKeyword() {
+    @DisplayName("관심키워드 알림 true -> false")
+    void changeFalseNotificationByKeyword() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNotificationByKeyword();
+
+        //then
+        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        assertEquals("관심키워드 알림설정 변경 true -> false",responseEntity.getBody().getMessage());
+
+    }
+
+    @Test
+    @DisplayName("관심키워드 알림 false -> true")
+    void changeTrueNotificationByKeyword() {
+        //given
+        RequestMember.SignUp signUp = signUpSetUp();
+        memberService.signUp(signUp);
+        RequestMember.Login login = loginSetUp();
+        memberService.login(login);
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword()));
+
+        //when
+        memberService.changeNotificationByKeyword();
+        ResponseEntity<Response.Body> responseEntity = memberService.changeNotificationByKeyword();
+
+        //then
+        assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
+        assertEquals("관심키워드 알림설정 변경 false -> true",responseEntity.getBody().getMessage());
+
     }
 
     @Test
